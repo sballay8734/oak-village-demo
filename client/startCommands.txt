@@ -4,4 +4,5 @@ npm run web
 
 npm run start
 
-//
+// OTHER NOTES
+- If android emulator is not auto refreshing, type r in terminal to refresh app
