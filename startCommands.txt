@@ -1,0 +1,5 @@
+npm run ios
+npm run android
+npm run web
+
+npm run start
