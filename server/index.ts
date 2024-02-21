@@ -4,6 +4,10 @@ import mongoose, { ConnectOptions } from "mongoose"
 import cookieParser from "cookie-parser"
 import { Err } from "./types/error"
 
+import authRouter from "./routes/authRoute"
+import { authenticateUser } from "./middleware/authenticateUser"
+import maintenanceRouter from "./routes/maintenanceRoute"
+
 dotenv.config({ path: "./config/.env" })
 
 const clientOptions: ConnectOptions = {
@@ -29,6 +33,9 @@ app.use(cookieParser())
 const port = process.env.PORT || 3001
 app.listen(port, () => console.log(`Server Running on port ${port}`))
 
+app.use("/api/auth", authRouter)
+app.use("/api/maintenance", authenticateUser, maintenanceRouter)
+
 // app.use("/api/auth", authRouter)
 // app.use("/api/records", recordsRouter)
 // app.use("/api/owners", ownersRouter)
@@ -47,3 +54,5 @@ app.use((err: Err, req: Request, res: Response, next: NextFunction) => {
     message
   })
 })
+
+// roles: ["admin", "manager", "teacher", "maintenence"]
