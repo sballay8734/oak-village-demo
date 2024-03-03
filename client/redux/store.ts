@@ -4,13 +4,18 @@ import { persistStore, persistReducer } from "redux-persist"
 import storage from "redux-persist/lib/storage"
 
 import { authApi } from "./auth/authApi"
-import authReducer from "./auth/authSlice"
+import { rootReducer } from "./rootReducer"
+
+const persistConfig = {
+  key: "root",
+  storage,
+  version: 1
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const store = configureStore({
-  reducer: {
-    authSlice: authReducer,
-    [authApi.reducerPath]: authApi.reducer
-  },
+  reducer: persistedReducer,
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
@@ -23,3 +28,4 @@ setupListeners(store.dispatch)
 export type RootState = ReturnType<typeof store.getState>
 // Inferred
 export type AppDispatch = typeof store.dispatch
+export const persistor = persistStore(store)

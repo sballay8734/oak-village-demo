@@ -1,9 +1,17 @@
 import { StyleSheet } from "react-native"
+import { useSelector } from "react-redux"
 
 import EditScreenInfo from "@/components/EditScreenInfo"
 import { Text, View } from "@/components/Themed"
+import { RootState } from "@/redux/store"
 
 export default function HomeScreen() {
+  const employee = useSelector(
+    (state: RootState) => state.employeeSlice.employee
+  )
+
+  console.log(employee)
+
   return (
     <View style={styles.container}>
       {/* if (signedIn) return <SignedInStack /> */}
