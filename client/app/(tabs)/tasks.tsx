@@ -3,16 +3,16 @@ import { StyleSheet } from "react-native"
 import EditScreenInfo from "@/components/EditScreenInfo"
 import { Text, View } from "@/components/Themed"
 
-export default function ReportsScreen() {
+export default function TasksScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Reports</Text>
+      <Text style={styles.title}>Tasks</Text>
       <View
         style={styles.separator}
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <EditScreenInfo path="app/(tabs)/two.tsx" />
+      <EditScreenInfo path="app/(tabs)/tasks.tsx" />
     </View>
   )
 }

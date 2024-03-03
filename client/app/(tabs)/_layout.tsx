@@ -1,11 +1,15 @@
 import React from "react"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
 import { Link, Tabs } from "expo-router"
-import { Pressable } from "react-native"
+import { Pressable, Text } from "react-native"
 
 import Colors from "@/constants/Colors"
 import { useColorScheme } from "@/components/useColorScheme"
 import { useClientOnlyValue } from "@/components/useClientOnlyValue"
+import { MaterialCommunityIcons } from "@expo/vector-icons"
+import { MaterialIcons } from "@expo/vector-icons"
+import { FontAwesome5 } from "@expo/vector-icons"
+import { FontAwesome6 } from "@expo/vector-icons"
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -31,7 +35,9 @@ export default function TabLayout() {
         name="schedule"
         options={{
           title: "Schedule",
-          tabBarIcon: ({ color }) => <TabBarIcon name="link" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="schedule" size={24} color={color} />
+          ),
           // TODO: Can you change the content of the modal here?
           headerRight: () => (
             <Link href="/modal" asChild>
@@ -50,10 +56,12 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="reports"
+        name="tasks"
         options={{
-          title: "Reports",
-          tabBarIcon: ({ color }) => <TabBarIcon name="link" color={color} />,
+          title: "Tasks",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome5 name="tasks" size={24} color={color} />
+          ),
           // TODO: Can you change the content of the modal here?
           headerRight: () => (
             <Link href="/modal" asChild>
@@ -85,7 +93,10 @@ export default function TabLayout() {
                     name="info-circle"
                     size={25}
                     color={Colors[colorScheme ?? "light"].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                    style={{
+                      marginRight: 15,
+                      opacity: pressed ? 0.5 : 1
+                    }}
                   />
                 )}
               </Pressable>
@@ -97,17 +108,25 @@ export default function TabLayout() {
         name="orders"
         options={{
           title: "Work Orders",
-          tabBarIcon: ({ color }) => <TabBarIcon name="minus" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="account-wrench"
+              size={24}
+              color={color}
+            />
+          ),
           headerRight: () => (
-            <Link href="/modal" asChild>
+            <Link href="/work-order" asChild>
               <Pressable>
                 {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? "light"].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
+                  <>
+                    <FontAwesome6
+                      name="add"
+                      size={25}
+                      color={Colors[colorScheme ?? "light"].tabIconSelected}
+                      style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                    />
+                  </>
                 )}
               </Pressable>
             </Link>
@@ -118,7 +137,9 @@ export default function TabLayout() {
         name="messages"
         options={{
           title: "Messages",
-          tabBarIcon: ({ color }) => <TabBarIcon name="link" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="message" size={24} color={color} />
+          ),
           // TODO: Can you change the content of the modal here?
           headerRight: () => (
             <Link href="/modal" asChild>
