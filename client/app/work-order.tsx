@@ -1,26 +1,20 @@
 // TODO: DARK MODE LOOK TERRIBLE
-
+// TODO: Validation with schema (This should also fix error with task needed)
+// TODO: classroom should be a dropdown
+// TODO: Close modal
+// TODO: Global State for form ("minimizing" formModal should not clear content)
+// TODO: Dropdowns should also have text input that filters classes
 import { StatusBar } from "expo-status-bar"
+import { useForm, Controller } from "react-hook-form"
 import { useState } from "react"
-import {
-  StyleSheet,
-  Button,
-  TextInput,
-  GestureResponderEvent
-} from "react-native"
-import {
-  Formik,
-  FormikHelpers,
-  FormikProps,
-  Form,
-  Field,
-  FieldProps
-} from "formik"
+import { StyleSheet, Button, TextInput, Pressable } from "react-native"
+import { Link, router } from "expo-router"
 
-import EditScreenInfo from "@/components/EditScreenInfo"
 import { Text, View } from "@/components/Themed"
+import Colors from "@/constants/Colors"
+import { AntDesign } from "@expo/vector-icons"
 
-interface WorkOrderFormValues {
+interface FormData {
   classroom: string // dropdown
   areaInClassroom: string
   taskNeeded: string
@@ -33,12 +27,54 @@ const darkPrimaryColor = "#2e0666"
 export default function WorkOrderModal() {
   const [borderColor, setBorderColor] = useState<string>("black")
   const [showBoxShadow, setShowBoxShadow] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
 
-  const initialValues: WorkOrderFormValues = {
+  const initialValues: FormData = {
     classroom: "",
     areaInClassroom: "",
     taskNeeded: "",
     additionalDetails: ""
+  }
+
+  const {
+    control,
+    reset,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({ defaultValues: initialValues })
+
+  const onSubmit = async (formData: FormData) => {
+    setError(null)
+    setSuccess(null)
+    try {
+      const res = await fetch(
+        "http://localhost:3001/api/maintenance/create-work-order",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            ...formData,
+            teacherName: "John Smith",
+            teacherId: "asd093jalksdjf902rh"
+          })
+        }
+      )
+
+      const data = await res.json()
+
+      if (data.success === false) {
+        setError(data.message)
+        return
+      }
+
+      setSuccess("Work order created successfully!")
+      reset()
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   function handleFocus() {
@@ -51,92 +87,162 @@ export default function WorkOrderModal() {
     setShowBoxShadow(false)
   }
 
+  function handleCancel() {
+    router.back()
+  }
+
   return (
     <View style={styles.page}>
+      {/* HEADER */}
       <View style={styles.containerHeader}>
+        {/* TODO: STYLE THIS HEADER BETTER */}
+        <Link href="/orders" asChild>
+          <Pressable>
+            {({ pressed }) => (
+              <>
+                <AntDesign
+                  name="closecircle"
+                  size={24}
+                  color="red"
+                  style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                />
+              </>
+            )}
+          </Pressable>
+        </Link>
         <Text style={styles.title}>Create a new work order</Text>
         <Text style={styles.info}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </Text>
       </View>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={(values, actions) => {
-          console.log({ values, actions })
-        }}
-      >
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
-          <View style={styles.container}>
-            {/* DROPDOWN */}
-            <View style={styles.inputWrapper}>
-              <Text style={styles.label}>Location of desired task</Text>
+      {/* INPUT CONTAINER */}
+      <View style={styles.container}>
+        {/* CLASSROOM */}
+        <View style={styles.inputWrapper}>
+          <Text style={styles.label}>Classroom of desired task*</Text>
+          <Controller
+            control={control}
+            name="classroom"
+            rules={{ required: true }}
+            render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
+                placeholder="Toddler"
+                onBlur={() => console.log("Need to handle BLUR individually")}
+                onFocus={() => console.log("Need to handle FOCUS individually")}
+                onChangeText={onChange}
+                value={value}
                 style={{
                   ...styles.input,
                   borderColor,
                   ...(showBoxShadow ? styles.focused : {})
                 }}
-                onChangeText={handleChange("classroom")}
-                // BLUR IS WHEN IT IS NO LONGER FOCUSED
-                // onBlur={() => console.log("BLUR")}
-                // onBlur={handleBlur("classroom")}
-                value={values.classroom}
-                placeholder="Toddler"
-                // FOCUS IS WHEN IT GOES FROM NOT FOCUSED TO FOCUSED
-                onFocus={handleFocus}
-                onBlur={handleBluring}
               />
-            </View>
-            <View style={styles.inputWrapper}>
-              <Text style={styles.label}>
-                Specific classroom/area (optional)
-              </Text>
+            )}
+          />
+          {errors.classroom ? (
+            <Text style={styles.error}>This field is required</Text>
+          ) : (
+            <Text style={styles.error}></Text>
+          )}
+        </View>
+        {/* AREA IN CLASSROOM */}
+        <View style={styles.inputWrapper}>
+          <Text style={styles.label}>Specific classroom area*</Text>
+          <Controller
+            control={control}
+            name="areaInClassroom"
+            rules={{ required: true }}
+            render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                style={styles.input}
-                onChangeText={handleChange("areaInClassroom")}
-                onBlur={handleBlur("areaInClassroom")}
-                value={values.areaInClassroom}
                 placeholder="e.g. Back of room by the art center"
+                onBlur={() => console.log("Need to handle BLUR individually")}
+                onFocus={() => console.log("Need to handle FOCUS individually")}
+                onChangeText={onChange}
+                value={value}
+                style={styles.input}
               />
-            </View>
-            <View style={styles.inputWrapper}>
-              <Text style={styles.label}>Please describe the task needed</Text>
+            )}
+          />
+          {errors.areaInClassroom ? (
+            <Text style={styles.error}>This field is required</Text>
+          ) : (
+            <Text style={styles.error}></Text>
+          )}
+        </View>
+        {/* Task Needed */}
+        {/* TODO: When form is submitted, error still appears */}
+        <View style={styles.inputWrapper}>
+          <Text style={styles.label}>Please describe the task needed*</Text>
+          <Controller
+            control={control}
+            rules={{ required: true }}
+            name="taskNeeded"
+            render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
                 style={styles.inputLarger}
-                onChangeText={handleChange("taskNeeded")}
-                onBlur={handleBlur("taskNeeded")}
-                value={values.taskNeeded}
+                onBlur={() => console.log("Need to handle BLUR individually")}
+                onFocus={() => console.log("Need to handle FOCUS individually")}
+                onChangeText={onChange}
+                value={value}
                 multiline
                 maxLength={500}
               />
-            </View>
-            <View style={styles.inputWrapper}>
-              <Text style={styles.label}>Additional details</Text>
+            )}
+          />
+          {errors.taskNeeded ? (
+            <Text style={styles.error}>This field is required</Text>
+          ) : (
+            <Text style={styles.error}></Text>
+          )}
+        </View>
+        {/* Additional Details */}
+        <View style={styles.inputWrapper}>
+          <Text style={styles.label}>Additional details</Text>
+          <Controller
+            control={control}
+            name="additionalDetails"
+            render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
                 style={styles.inputLarger2}
-                onChangeText={handleChange("additionalDetails")}
-                onBlur={handleBlur("additionalDetails")}
-                value={values.additionalDetails}
+                onBlur={() => console.log("Need to handle BLUR individually")}
+                onFocus={() => console.log("Need to handle FOCUS individually")}
+                onChangeText={onChange}
+                value={value}
                 multiline
                 maxLength={500}
               />
-            </View>
-            <Button
-              // TODO: Not a long term solution for onPress
-              onPress={handleSubmit as (e?: GestureResponderEvent) => void}
-              title="Submit"
-              color={darkPrimaryColor}
-            />
-            <Button
-              // TODO: Not a long term solution for onPress
-              onPress={() => console.log("This button should close modal")}
-              title="Cancel"
-              color={"red"}
-            />
-          </View>
-        )}
-      </Formik>
+            )}
+          />
+          {errors.additionalDetails ? (
+            <Text style={styles.error}>Something is wrong</Text>
+          ) : (
+            <Text style={styles.error}></Text>
+          )}
+        </View>
+      </View>
+      {/* TODO: These need to appear from top as reqModal */}
+
+      {/* {error !== null ? (
+        <Text style={styles.reqError}>{error}</Text>
+      ) : (
+        <Text style={styles.reqError}></Text>
+      )}
+      {success !== null ? (
+        <Text style={styles.reqSuccess}>{success}</Text>
+      ) : (
+        <Text style={styles.reqSuccess}></Text>
+      )} */}
+
+      {/* BUTTON WRAPPER */}
+      <View style={styles.buttonWrapper}>
+        <Button
+          color={darkPrimaryColor}
+          title="Submit"
+          onPress={handleSubmit(onSubmit)}
+        ></Button>
+        <Button color="red" title="Cancel" onPress={handleCancel}></Button>
+      </View>
     </View>
   )
 }
@@ -148,7 +254,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     height: "100%",
     paddingBottom: 30,
-    gap: 30
+    gap: 20
   },
   container: {
     display: "flex",
@@ -189,11 +295,10 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderWidth: 1,
     width: "100%",
-    height: 55,
-    padding: 10,
+    height: 50,
+    padding: 8,
     borderRadius: 8
   },
-  // TODO: Padding is not applying (There is apparently a fix, must update)
   inputLarger: {
     fontSize: 15,
     color: "black",
@@ -221,7 +326,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // flexGrow: 1
     width: "90%",
-    marginBottom: 20
+    marginBottom: 12
   },
   label: {
     alignSelf: "flex-start",
@@ -239,5 +344,31 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowColor: "purple",
     shadowOffset: { width: 0, height: 0 }
+  },
+  buttonWrapper: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    width: "90%"
+  },
+  error: {
+    color: "red",
+    marginTop: 5,
+    alignSelf: "flex-start",
+    height: 14,
+    fontSize: 10
+  },
+  reqError: {
+    color: "red",
+    alignSelf: "center",
+    fontSize: 14,
+    fontWeight: "600"
+  },
+  reqSuccess: {
+    color: "green",
+    alignSelf: "center",
+    fontSize: 14,
+    fontWeight: "600"
   }
 })

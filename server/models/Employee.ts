@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose"
 
-export interface IEmployee {
+export interface IEmployee_To {
   email: string
   password: string
   firstName: string
@@ -18,6 +18,6 @@ const employeeSchema = new Schema({
   role: { type: String, required: true, default: "employee" }
 })
 
-const Employee = mongoose.model<IEmployee>("Employee", employeeSchema)
+const Employee = mongoose.model<IEmployee_To>("Employee", employeeSchema)
 
 export default Employee

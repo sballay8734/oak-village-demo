@@ -1,3 +1,5 @@
+// TODO: Add authenticateUser back to middleware flow (before mRouter)
+
 import express, { Request, Response, NextFunction } from "express"
 import dotenv from "dotenv"
 import mongoose, { ConnectOptions } from "mongoose"
@@ -34,16 +36,7 @@ const port = process.env.PORT || 3001
 app.listen(port, () => console.log(`Server Running on port ${port}`))
 
 app.use("/api/auth", authRouter)
-app.use("/api/maintenance", authenticateUser, maintenanceRouter)
-
-// app.use("/api/auth", authRouter)
-// app.use("/api/records", recordsRouter)
-// app.use("/api/owners", ownersRouter)
-// app.use("/api/kings", kingsRouter)
-// app.use("/api/profile", updateProfileRouter)
-// app.use("/api/posts", postsRouter)
-// app.use("/api/props", propsRouter)
-// app.use("/api/update", updateDataRouter)
+app.use("/api/maintenance", maintenanceRouter)
 
 app.use((err: Err, req: Request, res: Response, next: NextFunction) => {
   const statusCode = err.statusCode || 500
