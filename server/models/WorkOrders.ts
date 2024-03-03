@@ -1,13 +1,25 @@
 import mongoose, { Schema } from "mongoose"
 
-// TODO: Add status, seenByMaintenance
 export interface IWorkOrder_To {
-  classroom: string
+  classroom:
+    | "Infant 1"
+    | "Infant 2"
+    | "Toddler 1"
+    | "Toddler 2"
+    | "Toddler 3"
+    | "Prep 1"
+    | "Prep 2"
+    | "Prep 3"
+    | "Preschool 1"
+    | "Preschool 2"
+    | "Preschool 3"
+    | "Pre-K 1"
+    | "Pre-K 2"
   areaInClassroom: string
   taskNeeded: string
   additionalDetails?: string
-  teacherName: string
-  teacherId: string
+  employeeName: string
+  employeeId: string
   status:
     | "Pending"
     | "Received"
@@ -24,8 +36,8 @@ const workOrderSchema = new Schema({
   areaInClassroom: { type: String, required: true },
   taskNeeded: { type: String, required: true },
   additionalDetails: { type: String },
-  teacherName: { type: String, required: true },
-  teacherId: { type: String, required: true },
+  employeeName: { type: String, required: true },
+  employeeId: { type: String, required: true },
   status: { type: String, required: true, default: "Pending" },
   dateSubmitted: {
     type: String,

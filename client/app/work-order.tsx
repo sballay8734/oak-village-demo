@@ -4,6 +4,7 @@
 // TODO: Close modal
 // TODO: Global State for form ("minimizing" formModal should not clear content)
 // TODO: Dropdowns should also have text input that filters classes
+// TODO: Classroom should be autopopulated with employee classroom
 import { StatusBar } from "expo-status-bar"
 import { useForm, Controller } from "react-hook-form"
 import { useState } from "react"
@@ -57,8 +58,8 @@ export default function WorkOrderModal() {
           },
           body: JSON.stringify({
             ...formData,
-            teacherName: "John Smith",
-            teacherId: "asd093jalksdjf902rh"
+            employeeName: "John Smith",
+            employeeId: "asd093jalksdjf902rh"
           })
         }
       )

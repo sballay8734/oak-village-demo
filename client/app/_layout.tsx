@@ -1,4 +1,3 @@
-import FontAwesome from "@expo/vector-icons/FontAwesome"
 import {
   DarkTheme,
   DefaultTheme,
@@ -8,8 +7,11 @@ import { useFonts } from "expo-font"
 import { Stack } from "expo-router"
 import * as SplashScreen from "expo-splash-screen"
 import { useEffect } from "react"
+import { Provider } from "react-redux"
+import { store } from "@/redux/store"
 
 import { useColorScheme } from "@/components/useColorScheme"
+import FontAwesome from "@expo/vector-icons/FontAwesome"
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -52,16 +54,18 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme()
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-        {/* TODO: You might be able to customize header here */}
-        <Stack.Screen
-          name="work-order"
-          options={{ presentation: "modal", headerShown: false }}
-        />
-      </Stack>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+          {/* TODO: You might be able to customize header here */}
+          <Stack.Screen
+            name="work-order"
+            options={{ presentation: "modal", headerShown: false }}
+          />
+        </Stack>
+      </ThemeProvider>
+    </Provider>
   )
 }
