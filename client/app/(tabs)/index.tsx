@@ -1,6 +1,5 @@
 import { StyleSheet, Button } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
-import { PURGE } from "redux-persist"
 
 import EditScreenInfo from "@/components/EditScreenInfo"
 import { Text, View } from "@/components/Themed"
