@@ -6,16 +6,17 @@ interface EmployeeState {
   employee: IEmployee_From | null
 }
 
-const initialState = {
+const initialState: EmployeeState = {
   employee: null
 }
 
 const employeeSlice = createSlice({
   name: "employee",
-  initialState: initialState,
+  initialState,
   reducers: {
-    setEmployee: (state, action: PayloadAction<IEmployee_From>) => {
-      console.log(action.payload)
+    // TODO: Replace "string" with IEmployee_From eventually
+    setEmployee: (state, action: PayloadAction<IEmployee_From | null>) => {
+      state.employee = action.payload
     }
   }
 })

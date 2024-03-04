@@ -1,6 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query"
-import { persistStore, persistReducer } from "redux-persist"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+
+import {
+  persistStore,
+  persistReducer,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  FLUSH,
+  REGISTER
+} from "redux-persist"
 import storage from "redux-persist/lib/storage"
 
 import { authApi } from "./auth/authApi"
@@ -8,7 +18,7 @@ import { rootReducer } from "./rootReducer"
 
 const persistConfig = {
   key: "root",
-  storage,
+  storage: AsyncStorage,
   version: 1
 }
 
@@ -19,7 +29,9 @@ export const store = configureStore({
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authApi.middleware)
+    getDefaultMiddleware({
+      serializableCheck: false
+    }).concat(authApi.middleware)
 })
 
 setupListeners(store.dispatch)

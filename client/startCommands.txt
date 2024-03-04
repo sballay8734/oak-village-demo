@@ -4,6 +4,8 @@ npm run web
 
 npm run start
 
+clear expo cache - npx expo start --clear
+
 // OTHER NOTES
 - If android emulator is not auto refreshing, type r in terminal to refresh app
 - m (to bring up dev tools and inspection)

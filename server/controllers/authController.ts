@@ -78,3 +78,21 @@ export const signout = async (
 ) => {
   console.log("Hit sign IN route")
 }
+
+export const dummysignin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  console.log(req.body)
+  try {
+    console.log(`Logged in as ${req.body.formData}`)
+    return res.status(201).json({
+      employeeName: "Shawn Ballay",
+      employeeId: "Dlkjf9834fasdlk489",
+      employeeClassroom: "Infants 1"
+    })
+  } catch (error) {
+    next(error)
+  }
+}

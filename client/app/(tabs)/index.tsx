@@ -1,14 +1,21 @@
-import { StyleSheet } from "react-native"
-import { useSelector } from "react-redux"
+import { StyleSheet, Button } from "react-native"
+import { useDispatch, useSelector } from "react-redux"
+import { PURGE } from "redux-persist"
 
 import EditScreenInfo from "@/components/EditScreenInfo"
 import { Text, View } from "@/components/Themed"
 import { RootState } from "@/redux/store"
+import { setEmployee } from "@/redux/auth/employeeSlice"
 
 export default function HomeScreen() {
+  const dispatch = useDispatch()
   const employee = useSelector(
     (state: RootState) => state.employeeSlice.employee
   )
+
+  function handleClearState() {
+    dispatch(setEmployee(null))
+  }
 
   console.log(employee)
 
@@ -22,6 +29,10 @@ export default function HomeScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
+      <Button
+        onPress={handleClearState}
+        title={`Clear LS for ${employee?.employeeClassroom}`}
+      ></Button>
       <EditScreenInfo path="app/(tabs)/index.tsx" />
     </View>
   )
