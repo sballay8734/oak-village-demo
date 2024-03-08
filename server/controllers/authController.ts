@@ -90,7 +90,9 @@ export const dummysignin = async (
     return res.status(201).json({
       employeeName: "Shawn Ballay",
       employeeId: "Dlkjf9834fasdlk489",
-      employeeClassroom: "Infants 1"
+      employeeClassroom: "Infants 1",
+      // TODO: Temporary. Correct files should be served from backend.
+      role: req.body.formData
     })
   } catch (error) {
     next(error)
