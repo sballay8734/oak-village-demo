@@ -13,7 +13,9 @@ export default function Login() {
   const [trigger, { isError, isLoading, isSuccess }] =
     useLazyStandardSignInMutation()
 
-  async function handleLogin(role: "admin" | "teacher" | "maintenance") {
+  async function handleLogin(
+    role: "admin" | "teacher" | "maintenance" | "parent"
+  ) {
     // TODO: Temorarily just sending string (you will need to send email and password instead eventually)
     const res = await trigger(role)
 
@@ -26,6 +28,7 @@ export default function Login() {
       {/* <Text>LOGIN</Text> */}
       <Button onPress={() => handleLogin("admin")} title="Admin"></Button>
       <Button onPress={() => handleLogin("teacher")} title="Teacher"></Button>
+      <Button onPress={() => handleLogin("parent")} title="Parent"></Button>
       <Button
         onPress={() => handleLogin("maintenance")}
         title="Maintenance"

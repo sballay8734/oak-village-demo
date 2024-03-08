@@ -22,7 +22,9 @@ export default function HomeScreen() {
     <View style={styles.container}>
       {/* if (signedIn) return <SignedInStack /> */}
       {/* else return <SignedOutStack /> */}
-      <Text style={styles.title}>Home</Text>
+      <Text style={styles.title}>
+        {employee?.role.toLocaleUpperCase() ?? "Error"}
+      </Text>
       <View
         style={styles.separator}
         lightColor="#eee"
