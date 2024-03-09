@@ -116,7 +116,7 @@ export default function TabLayout() {
             />
           ),
           headerRight: () => (
-            <Link href="../../components/work-order.tsx" asChild>
+            <Link href="../work-order.tsx" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <>

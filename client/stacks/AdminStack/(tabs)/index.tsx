@@ -16,7 +16,7 @@ export default function HomeScreen() {
     dispatch(setEmployee(null))
   }
 
-  console.log("HIT BABY")
+  console.log("YESSSSSSSS")
 
   return (
     <View style={styles.container}>

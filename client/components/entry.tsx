@@ -2,10 +2,10 @@ import { RootState } from "@/redux/store"
 import { Stack } from "expo-router"
 import { useSelector } from "react-redux"
 import Login from "./login"
-import TeacherStack from "@/stacks/TeacherStack/teacherStack"
-import AdminStack from "@/stacks/AdminStack/adminStack"
-import MaintenanceStack from "@/stacks/MaintenanceStack/maintenanceStack"
-import ParentStack from "@/stacks/ParentStack/parentStack"
+import TeacherStack from "../stacks/teacherStack/teacherStack"
+import AdminStack from "../stacks/adminStack/adminStack"
+import MaintenanceStack from "../stacks/maintenanceStack/maintenanceStack"
+import ParentStack from "../stacks/parentStack/parentStack"
 
 export default function Entry() {
   const employee = useSelector(

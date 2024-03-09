@@ -16,12 +16,10 @@ export default function HomeScreen() {
     dispatch(setEmployee(null))
   }
 
-  console.log(employee)
+  console.log("HIT...")
 
   return (
     <View style={styles.container}>
-      {/* if (signedIn) return <SignedInStack /> */}
-      {/* else return <SignedOutStack /> */}
       <Text style={styles.title}>
         {employee?.role.toLocaleUpperCase() ?? "Error"}
       </Text>
@@ -30,11 +28,8 @@ export default function HomeScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <Button
-        onPress={handleClearState}
-        title={`Clear LS for ${employee?.employeeClassroom}`}
-      ></Button>
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+      <Button onPress={handleClearState} title={`Clear Local Storage`}></Button>
+      {/* <EditScreenInfo path="app/(tabs)/index.tsx" /> */}
     </View>
   )
 }
