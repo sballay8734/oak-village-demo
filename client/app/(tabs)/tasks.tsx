@@ -12,7 +12,7 @@ export default function TasksScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <EditScreenInfo path="app/(tabs)/tasks.tsx" />
+      {/* <EditScreenInfo path="app/(tabs)/tasks.tsx" /> */}
     </View>
   )
 }

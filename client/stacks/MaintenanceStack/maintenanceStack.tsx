@@ -7,7 +7,7 @@ export default function MaintenanceStack() {
       <Stack.Screen name="modal" options={{ presentation: "modal" }} />
       {/* TODO: You might be able to customize header here */}
       <Stack.Screen
-        name="work-order"
+        name="order"
         options={{ presentation: "modal", headerShown: false }}
       />
     </Stack>

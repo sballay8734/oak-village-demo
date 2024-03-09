@@ -12,7 +12,7 @@ export default function WorkOrdersScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <EditScreenInfo path="app/orders.tsx" />
+      {/* <EditScreenInfo path="app/orders.tsx" /> */}
     </View>
   )
 }

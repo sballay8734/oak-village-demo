@@ -12,7 +12,7 @@ export default function ScheduleScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <EditScreenInfo path="app/(tabs)/schedule.tsx" />
+      {/* <EditScreenInfo path="app/(tabs)/schedule.tsx" /> */}
     </View>
   )
 }
