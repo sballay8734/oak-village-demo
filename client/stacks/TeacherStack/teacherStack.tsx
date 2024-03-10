@@ -8,6 +8,7 @@ export default function TeacherStack() {
       {/* TODO: You might be able to customize header here */}
       <Stack.Screen
         name="order"
+        // use headerTitle option to customize title
         options={{ presentation: "modal", headerShown: false }}
       />
     </Stack>
