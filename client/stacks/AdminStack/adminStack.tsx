@@ -7,7 +7,7 @@ export default function AdminStack() {
       <Stack.Screen name="modal" options={{ presentation: "modal" }} />
       {/* TODO: You might be able to customize header here */}
       <Stack.Screen
-        name="order"
+        name="modal-work-order"
         options={{ presentation: "modal", headerShown: false }}
       />
     </Stack>

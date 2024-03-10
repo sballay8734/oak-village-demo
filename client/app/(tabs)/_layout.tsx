@@ -40,7 +40,7 @@ export default function TabLayout() {
           ),
           // TODO: Can you change the content of the modal here?
           headerRight: () => (
-            <Link href="/modal" asChild>
+            <Link href="/modal-info" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <FontAwesome
@@ -64,7 +64,7 @@ export default function TabLayout() {
           ),
           // TODO: Can you change the content of the modal here?
           headerRight: () => (
-            <Link href="/modal" asChild>
+            <Link href="/modal-info" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <FontAwesome
@@ -86,7 +86,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           // TODO: Can you change the content of the modal here?
           headerRight: () => (
-            <Link href="/modal" asChild>
+            <Link href="/modal-info" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <FontAwesome
@@ -116,7 +116,7 @@ export default function TabLayout() {
             />
           ),
           headerRight: () => (
-            <Link href="/order" asChild>
+            <Link href="/modal-work-order" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <>
@@ -142,7 +142,7 @@ export default function TabLayout() {
           ),
           // TODO: Can you change the content of the modal here?
           headerRight: () => (
-            <Link href="/modal" asChild>
+            <Link href="/modal-info" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <FontAwesome
