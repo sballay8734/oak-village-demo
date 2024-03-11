@@ -8,6 +8,7 @@ import { setEmployee } from "@/redux/auth/employeeSlice"
 // TODO: Different logins should show different screens
 
 export default function Login() {
+  console.log("RENDERING LOGIN...")
   const router = useRouter()
   const dispatch = useDispatch()
   const [trigger, { isError, isLoading, isSuccess }] =
@@ -20,7 +21,7 @@ export default function Login() {
     const res = await trigger(role)
 
     // TODO: Navigate depending on role of user
-    router.navigate("(tabs)")
+    router.push(`/${role}/`)
   }
 
   return (

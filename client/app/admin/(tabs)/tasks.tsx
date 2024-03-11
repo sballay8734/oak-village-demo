@@ -1,18 +1,16 @@
 import { StyleSheet } from "react-native"
 
-import EditScreenInfo from "@/components/EditScreenInfo"
-import { Text, View } from "@/components/Themed"
+import { View, Text } from "@/components/Themed"
 
 export default function TasksScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tasks</Text>
+      <Text style={styles.title}>ADMIN Tasks</Text>
       <View
         style={styles.separator}
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      {/* <EditScreenInfo path="app/(tabs)/tasks.tsx" /> */}
     </View>
   )
 }

@@ -16,12 +16,12 @@ export default function HomeScreen() {
     dispatch(setEmployee(null))
   }
 
-  console.log("HIT...")
+  console.log("HIT MAINTENANCE TABS...")
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-        {employee?.role.toLocaleUpperCase() ?? "Error"}
+        {employee?.role.toLocaleUpperCase() + " Home" ?? "Error"}
       </Text>
       <View
         style={styles.separator}
@@ -29,7 +29,6 @@ export default function HomeScreen() {
         darkColor="rgba(255,255,255,0.1)"
       />
       <Button onPress={handleClearState} title={`Clear Local Storage`}></Button>
-      {/* <EditScreenInfo path="app/(tabs)/index.tsx" /> */}
     </View>
   )
 }

@@ -6,23 +6,13 @@ import {
 import { useFonts } from "expo-font"
 import * as SplashScreen from "expo-splash-screen"
 import { useEffect } from "react"
-import { Provider } from "react-redux"
+import { Provider, useDispatch } from "react-redux"
 import { store, persistor } from "@/redux/store"
 import { PersistGate } from "redux-persist/integration/react"
+import { Slot } from "expo-router"
 
 import { useColorScheme } from "@/components/useColorScheme"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
-import Entry from "../components/entry"
-
-// *********************************************************************
-// *********************************************************************
-// *********************************************************************
-// *********************************************************************
-// TODO: FIRST NEED TO FIX PROJECT ORGANIZATION AND ROUTING TO CORRECT STACKS
-// *********************************************************************
-// *********************************************************************
-// *********************************************************************
-// *********************************************************************
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -31,7 +21,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "../components/entry.tsx"
+  initialRouteName: "index"
 }
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -70,7 +60,7 @@ function RootLayoutNav() {
         <ThemeProvider
           value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
-          <Entry />
+          <Slot />
         </ThemeProvider>
       </PersistGate>
     </Provider>
