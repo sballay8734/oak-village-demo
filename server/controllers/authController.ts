@@ -42,7 +42,7 @@ export const signup = async (
   }
 }
 
-// TODO: Still need to test signin route
+// TODO: REMEMBER, DON'T SEND ROLE BACK TO FRONT END
 export const signin = async (
   req: Request,
   res: Response,
@@ -79,6 +79,8 @@ export const signout = async (
   console.log("Hit sign IN route")
 }
 
+// TODO: REMEMBER, DON'T SEND ROLE BACK TO FRONT END
+// FIND ANOTHER WAY TO INSTRUCT THE FRONT-END WHAT TO RENDER
 export const dummysignin = async (
   req: Request,
   res: Response,

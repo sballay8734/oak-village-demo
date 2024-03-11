@@ -1,7 +1,7 @@
 import React from "react"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
 import { Link, Tabs } from "expo-router"
-import { Pressable, Text } from "react-native"
+import { Pressable, Text, View, StyleSheet } from "react-native"
 
 import Colors from "@/constants/Colors"
 import { useColorScheme } from "@/components/useColorScheme"
@@ -82,8 +82,13 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          // was "Home"
+          title: "",
+          tabBarIcon: ({ color }) => (
+            <View style={styles.homeTab}>
+              <TabBarIcon name="home" color={color} />
+            </View>
+          ),
           // TODO: Can you change the content of the modal here?
           headerRight: () => (
             <Link href="/admin/modal-info" asChild>
@@ -160,3 +165,18 @@ export default function TabLayout() {
     </Tabs>
   )
 }
+
+const styles = StyleSheet.create({
+  homeTab: {
+    height: 80,
+    width: 80,
+    borderRadius: 100,
+    backgroundColor: "#FE6D64",
+    // paddingTop: 20,
+    paddingLeft: 2,
+    paddingBottom: 2,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  }
+})
