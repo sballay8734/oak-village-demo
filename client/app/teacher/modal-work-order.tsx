@@ -97,7 +97,7 @@ export default function WorkOrderModal() {
       {/* HEADER */}
       <View style={styles.containerHeader}>
         {/* TODO: STYLE THIS HEADER BETTER */}
-        <Link href="/admin/(tabs)/orders" asChild>
+        <Link href="/teacher/(tabs)/orders" asChild>
           <Pressable>
             {({ pressed }) => (
               <>
