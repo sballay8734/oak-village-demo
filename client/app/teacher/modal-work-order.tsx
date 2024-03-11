@@ -42,7 +42,8 @@ export default function WorkOrderModal() {
     control,
     reset,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    clearErrors
   } = useForm({ defaultValues: initialValues })
 
   const onSubmit = async (formData: FormData) => {
@@ -72,6 +73,7 @@ export default function WorkOrderModal() {
       }
 
       setSuccess("Work order created successfully!")
+      clearErrors()
       reset()
     } catch (error) {
       console.log(error)
@@ -141,7 +143,7 @@ export default function WorkOrderModal() {
               />
             )}
           />
-          {errors.classroom ? (
+          {errors.classroom?.message ? (
             <Text style={styles.error}>This field is required</Text>
           ) : (
             <Text style={styles.error}></Text>
@@ -165,7 +167,7 @@ export default function WorkOrderModal() {
               />
             )}
           />
-          {errors.areaInClassroom ? (
+          {errors.areaInClassroom?.message ? (
             <Text style={styles.error}>This field is required</Text>
           ) : (
             <Text style={styles.error}></Text>
@@ -191,7 +193,7 @@ export default function WorkOrderModal() {
               />
             )}
           />
-          {errors.taskNeeded ? (
+          {errors.taskNeeded?.message ? (
             <Text style={styles.error}>This field is required</Text>
           ) : (
             <Text style={styles.error}></Text>
@@ -215,7 +217,7 @@ export default function WorkOrderModal() {
               />
             )}
           />
-          {errors.additionalDetails ? (
+          {errors.additionalDetails?.message ? (
             <Text style={styles.error}>Something is wrong</Text>
           ) : (
             <Text style={styles.error}></Text>

@@ -1,3 +1,4 @@
+import ErrorModal from "@/components/ErrorModal"
 import { RootState } from "@/redux/store"
 import { Stack, useRouter } from "expo-router"
 import { useEffect } from "react"
@@ -7,6 +8,9 @@ export default function TeacherLayout() {
   const router = useRouter()
   const employee = useSelector(
     (state: RootState) => state.employeeSlice.employee
+  )
+  const errMessage = useSelector(
+    (state: RootState) => state.errorSlice.errMessage
   )
 
   console.log("Grabbing TEACHER Layout")
@@ -28,6 +32,7 @@ export default function TeacherLayout() {
         name="modal-work-order"
         options={{ presentation: "modal", headerShown: false }}
       />
+      {errMessage !== null && <ErrorModal />}
     </Stack>
   )
 }
