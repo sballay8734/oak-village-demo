@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router"
 import { useSelector, useDispatch } from "react-redux"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 import Login from "./login"
 import { RootState } from "@/redux/store"
@@ -12,14 +12,16 @@ export default function Entry() {
   const employee = useSelector(
     (state: RootState) => state.employeeSlice.employee
   )
+  const [isReady, setIsReady] = useState<boolean>(false)
   console.log("RENDERING ENTRY...")
   console.log(employee)
 
-  // FIXME: If you are already logged in, this causes an error
   useEffect(() => {
-    // TEMPORARY WORK AROUND FOR TESTING ONLY
-    // dispatch(setEmployee(null))
-    if (employee !== null) {
+    setIsReady(true)
+  }, [])
+
+  useEffect(() => {
+    if (isReady && employee !== null) {
       console.log("RUNNING USE EFFECT")
       switch (employee.role) {
         case "teacher":
@@ -42,11 +44,11 @@ export default function Entry() {
           console.log("NO MATCHING ROUTE")
       }
     }
-  }, [employee])
+  }, [isReady, employee])
 
-  if (employee !== null) {
-    return null // Render nothing while navigating to the stack
-  } else {
+  if (!isReady || employee === null) {
     return <Login />
+  } else {
+    return null // Render nothing while navigating to the stack
   }
 }
