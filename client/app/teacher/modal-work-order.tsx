@@ -5,6 +5,7 @@
 // TODO: Global State for form ("minimizing" formModal should not clear content)
 // TODO: Dropdowns should also have text input that filters classes
 // TODO: Classroom should be autopopulated with employee classroom
+// FIXME: DO FIRST! - You need to work out server response for success and fail. Also, you added "unhandled" to the final middleware function on server
 import { StatusBar } from "expo-status-bar"
 import { useForm, Controller } from "react-hook-form"
 import { useState } from "react"
@@ -16,6 +17,21 @@ import { Text, View } from "@/components/Themed"
 import Colors from "@/constants/Colors"
 import { AntDesign } from "@expo/vector-icons"
 import { hideErrorModal, setError } from "@/redux/errorSlice/errorSlice"
+import { IWorkOrder_From } from "@/types/workOrders"
+
+interface SuccessResponse {
+  success: true
+  data: any // Replace 'any' with the specific type of the success response data
+}
+
+interface ErrorResponse {
+  success: false
+  type: string
+  message: string
+  // Add any other properties specific to error responses
+}
+
+type ApiResponse = SuccessResponse | ErrorResponse
 
 interface FormData {
   classroom: string // dropdown
@@ -27,7 +43,6 @@ interface FormData {
 const primaryColor = "#e8dff5"
 const darkPrimaryColor = "#2e0666"
 
-// FIXME: All form validation is lost for some reason.
 export default function WorkOrderModal() {
   const dispatch = useDispatch()
   const [borderColor, setBorderColor] = useState<string>("black")
@@ -51,8 +66,6 @@ export default function WorkOrderModal() {
     setValue
   } = useForm({ defaultValues: initialValues })
 
-  console.log(errors)
-
   const onSubmit = async (formData: FormData) => {
     setTaskNeededError(null)
     setResponseError(null)
@@ -64,6 +77,7 @@ export default function WorkOrderModal() {
           headers: {
             "Content-Type": "application/json"
           },
+          // TODO: Change this to employee name and id from logged in employee
           body: JSON.stringify({
             ...formData,
             employeeName: "John Smith",
@@ -72,16 +86,16 @@ export default function WorkOrderModal() {
         }
       )
 
-      const data = await res.json()
+      const data: ApiResponse = await res.json()
       console.log(data)
 
       if (data.success === false) {
         // TODO: Hopefully can fix this eventually (react-hook-form limitation)
-        if (data.message === "Please describe the task.") {
+        if (data.type === "formInput") {
           setTaskNeededError(data.message)
           return
         }
-        setResponseError(data.message)
+        dispatch(setError(data.message))
         return
       }
 

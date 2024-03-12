@@ -1,7 +1,7 @@
 import React from "react"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
 import { Link, Tabs } from "expo-router"
-import { Pressable, Text } from "react-native"
+import { Pressable, Text, View, StyleSheet } from "react-native"
 
 import Colors from "@/constants/Colors"
 import { useColorScheme } from "@/components/useColorScheme"
@@ -119,14 +119,24 @@ export default function TabLayout() {
             <Link href="/teacher/modal-work-order" asChild>
               <Pressable>
                 {({ pressed }) => (
-                  <>
+                  <View style={styles.buttonWrapper}>
+                    <Text
+                      style={{
+                        color: Colors[colorScheme ?? "light"].tabIconSelected,
+                        fontSize: 11,
+                        fontWeight: "bold"
+                      }}
+                    >
+                      Create Work Order
+                    </Text>
                     <FontAwesome6
                       name="add"
-                      size={25}
+                      size={11}
                       color={Colors[colorScheme ?? "light"].tabIconSelected}
                       style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                      solid
                     />
-                  </>
+                  </View>
                 )}
               </Pressable>
             </Link>
@@ -160,3 +170,13 @@ export default function TabLayout() {
     </Tabs>
   )
 }
+
+const styles = StyleSheet.create({
+  buttonWrapper: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 3,
+    color: "blue"
+  }
+})

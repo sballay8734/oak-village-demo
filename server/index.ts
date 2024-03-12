@@ -41,10 +41,12 @@ app.use("/api/maintenance", maintenanceRouter)
 app.use((err: Err, req: Request, res: Response, next: NextFunction) => {
   const statusCode = err.statusCode || 500
   const message = err.message || "Internal server error"
+  const type = err.type || "unhandled"
   return res.status(statusCode).json({
     success: false,
     statusCode,
-    message
+    message,
+    type
   })
 })
 

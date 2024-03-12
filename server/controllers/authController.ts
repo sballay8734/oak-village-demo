@@ -14,10 +14,22 @@ export const signup = async (
   const { email, password, firstName, lastName, preferredName } = req.body
 
   if (!whitelistedEmails.includes(email))
-    return next(errorHandler(403, "Unauthorized: Email is not whitelisted."))
+    return next(
+      errorHandler(
+        403,
+        "Unauthorized: Email is not whitelisted.",
+        "requestResult"
+      )
+    )
 
   if (!email || !password || !firstName || !lastName || !preferredName) {
-    return next(errorHandler(400, "Invalid Request: All fields required."))
+    return next(
+      errorHandler(
+        400,
+        "Invalid Request: All fields required.",
+        "requestResult"
+      )
+    )
   }
 
   const hashedPassword = bcrypt.hashSync(password, 14)
@@ -52,13 +64,15 @@ export const signin = async (
 
   try {
     const validEmployee = await Employee.findOne({ email })
-    if (!validEmployee) return next(errorHandler(400, "Employee not found."))
+    if (!validEmployee)
+      return next(errorHandler(400, "Employee not found.", "requestResult"))
 
     const validPassword = bcrypt.compareSync(
       signInPassword,
       validEmployee.password
     )
-    if (!validPassword) return next(errorHandler(401, "Invalid credentials."))
+    if (!validPassword)
+      return next(errorHandler(401, "Invalid credentials.", "requestResult"))
 
     const token = jwt.sign({ _id: validEmployee._id }, process.env.JWT_SECRET!)
 

@@ -23,9 +23,10 @@ export default function TeacherLayout() {
         name="modal-info"
         options={{ presentation: "modal", headerShown: false }}
       />
+      {/* TODO: Add back button to modal */}
       <Stack.Screen
         name="modal-work-order"
-        options={{ presentation: "modal", headerShown: false }}
+        options={{ presentation: "card", headerShown: false }}
       />
     </Stack>
   )

@@ -1,6 +1,7 @@
 // TODO FOR TUESDAY
 // TODO: clean up error handling (fail renders red, success renders green)
 // TODO: set up api to handle errors and use a global error handler
+// TODO: Need to use different Icons as expo/vector-icons don't have a "solid" or "bold options"
 // FIXME: Change work-order-form to be a new screen that renders from the right when clicking on "create work order". The default work-order screen should show all work orders with the ability to filter by status, active, etc. and at the top right should be a button that says "create work order" (or something like that). NATIVE modals should ONLY be used for displaying information. They should NOT be able to trigger things that might cause errors.
 // TODO: Maybe modify your responses on the server to send a "type" parameter. BECAUSE you might need to use a different dispatch depending on the error/success type and where you want to display the resulting message/response (middle modal, under form input, top of screen, etc). Example types: "formInput" (for handling limitations of RHF), "reqResult" (for rendering at top of screen)
 
@@ -22,10 +23,12 @@ export const createWorkOrder = async (
   const employee = req.employee
   // handling taskNeeded here because of RHF limitations
   if (!req.body.taskNeeded)
-    return next(errorHandler(400, "Please describe the task."))
+    return next(errorHandler(400, "Please describe the task.", "formInput"))
 
   if (!employee)
-    return next(errorHandler(401, "You must be logged in to do that!"))
+    return next(
+      errorHandler(401, "You must be logged in to do that!", "requestResult")
+    )
 
   try {
     // create new workorder
@@ -37,7 +40,7 @@ export const createWorkOrder = async (
       (error as MongooseError).name === "ValidationError" ||
       (error as MongooseError).name === "MongoError"
     ) {
-      next(errorHandler(400, "Work order creation failed"))
+      next(errorHandler(400, "Work order creation failed", "requestResult"))
     }
     next(error)
   }
