@@ -17,12 +17,9 @@ export default function Entry() {
 
   useEffect(() => {
     if (responseMessage !== undefined) {
-      console.log("ERR MSG: ", responseMessage)
       setShowErrorModal(responseMessage !== null)
     }
   }, [responseMessage])
-
-  console.log("ERR MSG: ", responseMessage)
 
   return (
     <View style={styles.rootPage}>
