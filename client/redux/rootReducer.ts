@@ -2,10 +2,10 @@ import { combineReducers } from "@reduxjs/toolkit"
 
 import { authApi } from "./auth/authApi"
 import employeeReducer from "./auth/employeeSlice"
-import errorReducer from "./errorSlice/errorSlice"
+import serverResponseReducer from "./serverResponseSlice/serverResponseSlice"
 
 export const rootReducer = combineReducers({
   employeeSlice: employeeReducer,
-  errorSlice: errorReducer,
+  serverResponseSlice: serverResponseReducer,
   [authApi.reducerPath]: authApi.reducer
 })

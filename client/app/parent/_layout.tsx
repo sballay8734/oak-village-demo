@@ -25,7 +25,7 @@ export default function ParentLayout() {
         options={{ presentation: "modal", headerShown: false }}
       />
       <Stack.Screen
-        name="modal-work-order"
+        name="work-order-form"
         options={{ presentation: "modal", headerShown: false }}
       />
     </Stack>

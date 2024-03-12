@@ -1,19 +1,29 @@
 // TODO: DARK MODE LOOK TERRIBLE
-// TODO: Validation with schema (This should also fix error with task needed)
+// TODO: Validation with schema (This should also fix error with taskNeeded)
 // TODO: classroom should be a dropdown
-// TODO: Close modal
-// TODO: Global State for form ("minimizing" formModal should not clear content)
 // TODO: Dropdowns should also have text input that filters classes
 // TODO: Classroom should be autopopulated with employee classroom
-import { StatusBar } from "expo-status-bar"
+// TODO: LOADING STATES for requests
+// TODO: STYLE FORM, ADD BACK BUTTON
+// TODO: Need to use different Icons as expo/vector-icons don't have a "solid" or "bold options"
+// FIXME: NATIVE modals should ONLY be used for displaying information. They should NOT be able to trigger things that might cause errors.
+
 import { useForm, Controller } from "react-hook-form"
 import { useState } from "react"
 import { StyleSheet, Button, TextInput, Pressable } from "react-native"
 import { Link, router } from "expo-router"
+import { useDispatch } from "react-redux"
 
 import { Text, View } from "@/components/Themed"
-import Colors from "@/constants/Colors"
 import { AntDesign } from "@expo/vector-icons"
+import {
+  hideResponseModal,
+  setResponseMessage
+} from "@/redux/serverResponseSlice/serverResponseSlice"
+import {
+  ApiResponse,
+  WorkOrderCreateResponse
+} from "@/types/responsesFromServer"
 
 interface FormData {
   classroom: string // dropdown
@@ -25,11 +35,12 @@ interface FormData {
 const primaryColor = "#e8dff5"
 const darkPrimaryColor = "#2e0666"
 
-export default function WorkOrderModal() {
+export default function WorkOrderForm() {
+  const dispatch = useDispatch()
   const [borderColor, setBorderColor] = useState<string>("black")
   const [showBoxShadow, setShowBoxShadow] = useState<boolean>(false)
-  const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState<string | null>(null)
+  const [taskNeededError, setTaskNeededError] = useState<string | null>(null)
+  const [responseError, setResponseError] = useState<string | null>(null)
 
   const initialValues: FormData = {
     classroom: "",
@@ -42,12 +53,15 @@ export default function WorkOrderModal() {
     control,
     reset,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    clearErrors,
+    setValue
   } = useForm({ defaultValues: initialValues })
 
   const onSubmit = async (formData: FormData) => {
-    setError(null)
-    setSuccess(null)
+    console.log(formData)
+    setTaskNeededError(null)
+    setResponseError(null)
     try {
       const res = await fetch(
         "http://localhost:3001/api/maintenance/create-work-order",
@@ -56,6 +70,7 @@ export default function WorkOrderModal() {
           headers: {
             "Content-Type": "application/json"
           },
+          // TODO: Change this to employee name and id from logged in employee
           body: JSON.stringify({
             ...formData,
             employeeName: "John Smith",
@@ -64,15 +79,33 @@ export default function WorkOrderModal() {
         }
       )
 
-      const data = await res.json()
+      const data: ApiResponse<WorkOrderCreateResponse> = await res.json()
 
       if (data.success === false) {
-        setError(data.message)
+        // TODO: Hopefully can fix this eventually (react-hook-form limitation)
+        if (data.type === "formInput") {
+          setTaskNeededError(data.message)
+          return
+        }
+        dispatch(
+          setResponseMessage({
+            successResult: data.success,
+            message: data.message
+          })
+        )
         return
       }
 
-      setSuccess("Work order created successfully!")
+      // TODO: Use payload to set state if you need to
+      console.log(data.payload)
+      dispatch(
+        setResponseMessage({
+          successResult: data.success,
+          message: data.message
+        })
+      )
       reset()
+      clearErrors()
     } catch (error) {
       console.log(error)
     }
@@ -90,6 +123,7 @@ export default function WorkOrderModal() {
 
   function handleCancel() {
     router.back()
+    dispatch(hideResponseModal())
   }
 
   return (
@@ -97,7 +131,7 @@ export default function WorkOrderModal() {
       {/* HEADER */}
       <View style={styles.containerHeader}>
         {/* TODO: STYLE THIS HEADER BETTER */}
-        <Link href="/admin/(tabs)/orders" asChild>
+        <Link href="/teacher/(tabs)/orders" asChild>
           <Pressable>
             {({ pressed }) => (
               <>
@@ -111,7 +145,7 @@ export default function WorkOrderModal() {
             )}
           </Pressable>
         </Link>
-        <Text style={styles.title}>Create a new work order as ADMIN</Text>
+        <Text style={styles.title}>Create a new work order as TEACHER</Text>
         <Text style={styles.info}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -177,7 +211,9 @@ export default function WorkOrderModal() {
           <Text style={styles.label}>Please describe the task needed*</Text>
           <Controller
             control={control}
-            rules={{ required: true }}
+            // !FIXME: Remove required for now
+            // TODO: Add error message for minLength of 10
+            rules={{ maxLength: 500 }}
             name="taskNeeded"
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
@@ -187,12 +223,12 @@ export default function WorkOrderModal() {
                 onChangeText={onChange}
                 value={value}
                 multiline
-                maxLength={500}
               />
             )}
           />
-          {errors.taskNeeded ? (
-            <Text style={styles.error}>This field is required</Text>
+          {/* FIXME: This error persists even when form is reset and errors are cleared. Removing "multiline" fixes the error but screws with the TextBox format. This is your current work-around (using the server response to render the error) */}
+          {taskNeededError ? (
+            <Text style={styles.error}>{taskNeededError}</Text>
           ) : (
             <Text style={styles.error}></Text>
           )}
@@ -219,6 +255,14 @@ export default function WorkOrderModal() {
             <Text style={styles.error}>Something is wrong</Text>
           ) : (
             <Text style={styles.error}></Text>
+          )}
+        </View>
+        {/* SERVER ERRORS */}
+        <View>
+          {responseError ? (
+            <Text style={styles.serverError}>{responseError}</Text>
+          ) : (
+            <Text style={styles.serverErrorNone}></Text>
           )}
         </View>
       </View>
@@ -309,7 +353,8 @@ const styles = StyleSheet.create({
     height: 150,
     padding: 10,
     paddingTop: 10,
-    borderRadius: 8
+    borderRadius: 8,
+    textAlignVertical: "top"
   },
   inputLarger2: {
     fontSize: 15,
@@ -359,6 +404,28 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     height: 14,
     fontSize: 10
+  },
+  serverError: {
+    color: "black",
+    backgroundColor: "red",
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    marginTop: 5,
+    alignSelf: "flex-start",
+    height: 20,
+    fontSize: 11,
+    borderRadius: 10,
+    fontWeight: "bold"
+  },
+  serverErrorNone: {
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    marginTop: 5,
+    alignSelf: "flex-start",
+    height: 20,
+    fontSize: 11,
+    borderRadius: 10,
+    fontWeight: "bold"
   },
   reqError: {
     color: "red",

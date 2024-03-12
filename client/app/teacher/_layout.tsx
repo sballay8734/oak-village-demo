@@ -1,4 +1,4 @@
-import ErrorModal from "@/components/ErrorModal"
+import ErrorModal from "@/components/ResponseModal"
 import { RootState } from "@/redux/store"
 import { Stack, useRouter } from "expo-router"
 import { useEffect } from "react"
@@ -25,7 +25,7 @@ export default function TeacherLayout() {
       />
       {/* TODO: Add back button to modal */}
       <Stack.Screen
-        name="modal-work-order"
+        name="work-order-form"
         options={{ presentation: "card", headerShown: false }}
       />
     </Stack>

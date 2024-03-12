@@ -25,7 +25,7 @@ interface FormData {
 const primaryColor = "#e8dff5"
 const darkPrimaryColor = "#2e0666"
 
-export default function WorkOrderModal() {
+export default function WorkOrderForm() {
   const [borderColor, setBorderColor] = useState<string>("black")
   const [showBoxShadow, setShowBoxShadow] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
@@ -97,7 +97,7 @@ export default function WorkOrderModal() {
       {/* HEADER */}
       <View style={styles.containerHeader}>
         {/* TODO: STYLE THIS HEADER BETTER */}
-        <Link href="/maintenance/(tabs)/orders" asChild>
+        <Link href="/parent/(tabs)/orders" asChild>
           <Pressable>
             {({ pressed }) => (
               <>
@@ -111,7 +111,7 @@ export default function WorkOrderModal() {
             )}
           </Pressable>
         </Link>
-        <Text style={styles.title}>Create a new work order as MAINTENANCE</Text>
+        <Text style={styles.title}>Create a new work order as PARENT</Text>
         <Text style={styles.info}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua.

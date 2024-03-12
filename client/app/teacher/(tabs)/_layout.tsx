@@ -116,7 +116,7 @@ export default function TabLayout() {
             />
           ),
           headerRight: () => (
-            <Link href="/teacher/modal-work-order" asChild>
+            <Link href="/teacher/work-order-form" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <View style={styles.buttonWrapper}>

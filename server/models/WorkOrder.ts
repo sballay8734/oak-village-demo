@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose"
 
+// Structure provided by user
 export interface IWorkOrder_To {
   classroom:
     | "Infant 1"
@@ -20,6 +21,10 @@ export interface IWorkOrder_To {
   additionalDetails?: string
   employeeName: string
   employeeId: string
+}
+
+// Final structure of object in database
+interface IWorkOrderDocument extends IWorkOrder_To, Document {
   status:
     | "Pending"
     | "Received"
@@ -46,6 +51,10 @@ const workOrderSchema = new Schema({
   }
 })
 
-const WorkOrder = mongoose.model<IWorkOrder_To>("WorkOrder", workOrderSchema)
+// ARE WE SURE THE ISSUE ISN'T COMING FROM THIS LINE HERE?
+const WorkOrder = mongoose.model<IWorkOrderDocument>(
+  "WorkOrder",
+  workOrderSchema
+)
 
 export default WorkOrder

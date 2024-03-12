@@ -1,11 +1,13 @@
 import { StyleSheet, Button } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 
-import EditScreenInfo from "@/components/EditScreenInfo"
 import { Text, View } from "@/components/Themed"
 import { RootState } from "@/redux/store"
 import { setEmployee } from "@/redux/auth/employeeSlice"
-import { hideErrorModal, setError } from "@/redux/errorSlice/errorSlice"
+import {
+  hideResponseModal,
+  setResponseMessage
+} from "@/redux/serverResponseSlice/serverResponseSlice"
 
 export default function HomeScreen() {
   const dispatch = useDispatch()
@@ -15,7 +17,7 @@ export default function HomeScreen() {
 
   function handleClearState() {
     dispatch(setEmployee(null))
-    dispatch(hideErrorModal())
+    dispatch(hideResponseModal())
   }
 
   return (
@@ -30,7 +32,11 @@ export default function HomeScreen() {
       />
       <Button onPress={handleClearState} title={`Clear Local Storage`}></Button>
       <Button
-        onPress={() => dispatch(setError("TESTING MODAL"))}
+        onPress={() =>
+          dispatch(
+            setResponseMessage({ successResult: false, message: "ERROR!" })
+          )
+        }
         title={`Show Modal`}
       ></Button>
     </View>

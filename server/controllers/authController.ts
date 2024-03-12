@@ -53,7 +53,6 @@ export const signup = async (
     next(error)
   }
 }
-
 // TODO: REMEMBER, DON'T SEND ROLE BACK TO FRONT END
 export const signin = async (
   req: Request,
@@ -90,7 +89,7 @@ export const signout = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("Hit sign IN route")
+  console.log("Hit sign OUT route")
 }
 
 // TODO: REMEMBER, DON'T SEND ROLE BACK TO FRONT END

@@ -116,7 +116,7 @@ export default function TabLayout() {
             />
           ),
           headerRight: () => (
-            <Link href="/parent/modal-work-order" asChild>
+            <Link href="/parent/work-order-form" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <>

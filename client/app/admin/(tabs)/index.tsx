@@ -5,7 +5,7 @@ import EditScreenInfo from "@/components/EditScreenInfo"
 import { Text, View } from "@/components/Themed"
 import { RootState } from "@/redux/store"
 import { setEmployee } from "@/redux/auth/employeeSlice"
-import { hideErrorModal } from "@/redux/errorSlice/errorSlice"
+import { hideResponseModal } from "@/redux/serverResponseSlice/serverResponseSlice"
 
 export default function HomeScreen() {
   const dispatch = useDispatch()
@@ -15,7 +15,7 @@ export default function HomeScreen() {
 
   function handleClearState() {
     dispatch(setEmployee(null))
-    dispatch(hideErrorModal())
+    dispatch(hideResponseModal())
   }
 
   console.log("HIT ADMIN TABS...")
