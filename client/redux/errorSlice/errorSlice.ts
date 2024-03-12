@@ -5,7 +5,8 @@ interface ErrorState {
 }
 
 const initialState: ErrorState = {
-  errMessage: ""
+  // TODO: Swap this back to null after styling
+  errMessage: null
 }
 
 const errorSlice = createSlice({
@@ -13,6 +14,7 @@ const errorSlice = createSlice({
   initialState,
   reducers: {
     setError: (state, action: PayloadAction<string>) => {
+      console.log("SETTING ERROR")
       state.errMessage = action.payload
     },
     hideErrorModal: (state) => {

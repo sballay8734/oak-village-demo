@@ -10,9 +10,13 @@ const ErrorModal = () => {
     (state: RootState) => state.errorSlice.errMessage
   )
 
+  console.log("Rendering Error Modal")
+
   const closeModal = () => {
     dispatch(hideErrorModal())
   }
+
+  console.log(errMessage)
 
   return (
     <Modal
@@ -34,17 +38,35 @@ const ErrorModal = () => {
 
 const styles = StyleSheet.create({
   modalContainer: {
-    display: "flex",
-    width: "90%",
-    height: "10%",
-    backgroundColor: "white",
-    position: "relative",
-    zIndex: 1000
+    position: "absolute",
+    zIndex: 1000,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center"
   },
-  modalContent: {},
-  errorMessage: {},
-  closeButton: {},
-  closeButtonText: {}
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10
+  },
+  errorMessage: {
+    fontSize: 16,
+    marginBottom: 20
+  },
+  closeButton: {
+    backgroundColor: "#007AFF",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5
+  },
+  closeButtonText: {
+    color: "white",
+    fontWeight: "bold"
+  }
 })
 
 export default ErrorModal

@@ -9,11 +9,6 @@ export default function TeacherLayout() {
   const employee = useSelector(
     (state: RootState) => state.employeeSlice.employee
   )
-  const errMessage = useSelector(
-    (state: RootState) => state.errorSlice.errMessage
-  )
-
-  console.log("Grabbing TEACHER Layout")
 
   useEffect(() => {
     if (employee === null || employee === undefined) {
@@ -32,7 +27,6 @@ export default function TeacherLayout() {
         name="modal-work-order"
         options={{ presentation: "modal", headerShown: false }}
       />
-      {errMessage !== null && <ErrorModal />}
     </Stack>
   )
 }

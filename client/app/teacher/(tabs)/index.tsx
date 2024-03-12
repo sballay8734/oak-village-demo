@@ -5,6 +5,7 @@ import EditScreenInfo from "@/components/EditScreenInfo"
 import { Text, View } from "@/components/Themed"
 import { RootState } from "@/redux/store"
 import { setEmployee } from "@/redux/auth/employeeSlice"
+import { hideErrorModal, setError } from "@/redux/errorSlice/errorSlice"
 
 export default function HomeScreen() {
   const dispatch = useDispatch()
@@ -14,9 +15,8 @@ export default function HomeScreen() {
 
   function handleClearState() {
     dispatch(setEmployee(null))
+    dispatch(hideErrorModal())
   }
-
-  console.log("HIT TEACHER TABS...")
 
   return (
     <View style={styles.container}>
@@ -29,6 +29,10 @@ export default function HomeScreen() {
         darkColor="rgba(255,255,255,0.1)"
       />
       <Button onPress={handleClearState} title={`Clear Local Storage`}></Button>
+      <Button
+        onPress={() => dispatch(setError("TESTING MODAL"))}
+        title={`Show Modal`}
+      ></Button>
     </View>
   )
 }

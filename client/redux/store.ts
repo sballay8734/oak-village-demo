@@ -9,7 +9,8 @@ import {
   PAUSE,
   PERSIST,
   FLUSH,
-  REGISTER
+  REGISTER,
+  PURGE
 } from "redux-persist"
 import storage from "redux-persist/lib/storage"
 
@@ -30,7 +31,9 @@ export const store = configureStore({
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
+      }
     }).concat(authApi.middleware)
 })
 

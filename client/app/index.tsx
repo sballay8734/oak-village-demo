@@ -13,8 +13,6 @@ export default function Entry() {
     (state: RootState) => state.employeeSlice.employee
   )
   const [isReady, setIsReady] = useState<boolean>(false)
-  console.log("RENDERING ENTRY...")
-  console.log(employee)
 
   useEffect(() => {
     setIsReady(true)
@@ -22,10 +20,8 @@ export default function Entry() {
 
   useEffect(() => {
     if (isReady && employee !== null) {
-      console.log("RUNNING USE EFFECT")
       switch (employee.role) {
         case "teacher":
-          console.log("Hit 1")
           router.push("/teacher/")
           break
         case "admin":

@@ -13,6 +13,7 @@ import { Slot } from "expo-router"
 
 import { useColorScheme } from "@/components/useColorScheme"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
+import Entry from "./entry"
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -60,7 +61,8 @@ function RootLayoutNav() {
         <ThemeProvider
           value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
-          <Slot />
+          <Entry />
+          {/* <Slot /> */}
         </ThemeProvider>
       </PersistGate>
     </Provider>

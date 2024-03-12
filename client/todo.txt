@@ -1,6 +1,7 @@
 1. Organize routing. Each role should see a different stack
 2. Use "<Link>" when ... I want button styling (focus, hover, etc)
 3. use "router.navigate" when ... Submitting forms etc..
+4. Custom modal does NOT and will NOT render above native modal
 
 
 

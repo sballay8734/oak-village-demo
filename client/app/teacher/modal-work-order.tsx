@@ -10,10 +10,12 @@ import { useForm, Controller } from "react-hook-form"
 import { useState } from "react"
 import { StyleSheet, Button, TextInput, Pressable } from "react-native"
 import { Link, router } from "expo-router"
+import { useDispatch } from "react-redux"
 
 import { Text, View } from "@/components/Themed"
 import Colors from "@/constants/Colors"
 import { AntDesign } from "@expo/vector-icons"
+import { hideErrorModal, setError } from "@/redux/errorSlice/errorSlice"
 
 interface FormData {
   classroom: string // dropdown
@@ -25,11 +27,13 @@ interface FormData {
 const primaryColor = "#e8dff5"
 const darkPrimaryColor = "#2e0666"
 
+// FIXME: All form validation is lost for some reason.
 export default function WorkOrderModal() {
+  const dispatch = useDispatch()
   const [borderColor, setBorderColor] = useState<string>("black")
   const [showBoxShadow, setShowBoxShadow] = useState<boolean>(false)
-  const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState<string | null>(null)
+  const [taskNeededError, setTaskNeededError] = useState<string | null>(null)
+  const [responseError, setResponseError] = useState<string | null>(null)
 
   const initialValues: FormData = {
     classroom: "",
@@ -43,12 +47,15 @@ export default function WorkOrderModal() {
     reset,
     handleSubmit,
     formState: { errors },
-    clearErrors
+    clearErrors,
+    setValue
   } = useForm({ defaultValues: initialValues })
 
+  console.log(errors)
+
   const onSubmit = async (formData: FormData) => {
-    setError(null)
-    setSuccess(null)
+    setTaskNeededError(null)
+    setResponseError(null)
     try {
       const res = await fetch(
         "http://localhost:3001/api/maintenance/create-work-order",
@@ -66,15 +73,20 @@ export default function WorkOrderModal() {
       )
 
       const data = await res.json()
+      console.log(data)
 
       if (data.success === false) {
-        setError(data.message)
+        // TODO: Hopefully can fix this eventually (react-hook-form limitation)
+        if (data.message === "Please describe the task.") {
+          setTaskNeededError(data.message)
+          return
+        }
+        setResponseError(data.message)
         return
       }
 
-      setSuccess("Work order created successfully!")
-      clearErrors()
       reset()
+      clearErrors()
     } catch (error) {
       console.log(error)
     }
@@ -92,6 +104,7 @@ export default function WorkOrderModal() {
 
   function handleCancel() {
     router.back()
+    dispatch(hideErrorModal())
   }
 
   return (
@@ -143,7 +156,7 @@ export default function WorkOrderModal() {
               />
             )}
           />
-          {errors.classroom?.message ? (
+          {errors.classroom ? (
             <Text style={styles.error}>This field is required</Text>
           ) : (
             <Text style={styles.error}></Text>
@@ -167,7 +180,7 @@ export default function WorkOrderModal() {
               />
             )}
           />
-          {errors.areaInClassroom?.message ? (
+          {errors.areaInClassroom ? (
             <Text style={styles.error}>This field is required</Text>
           ) : (
             <Text style={styles.error}></Text>
@@ -179,7 +192,8 @@ export default function WorkOrderModal() {
           <Text style={styles.label}>Please describe the task needed*</Text>
           <Controller
             control={control}
-            rules={{ required: true }}
+            // FIXME: Remove required for now
+            rules={{ maxLength: 500 }}
             name="taskNeeded"
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
@@ -189,12 +203,12 @@ export default function WorkOrderModal() {
                 onChangeText={onChange}
                 value={value}
                 multiline
-                maxLength={500}
               />
             )}
           />
-          {errors.taskNeeded?.message ? (
-            <Text style={styles.error}>This field is required</Text>
+          {/* FIXME: This error persists even when form is reset and errors are cleared. Removing "multiline" fixes the error but screws with the TextBox format. This is your current work-around (using the server response to render the error) */}
+          {taskNeededError ? (
+            <Text style={styles.error}>{taskNeededError}</Text>
           ) : (
             <Text style={styles.error}></Text>
           )}
@@ -217,10 +231,18 @@ export default function WorkOrderModal() {
               />
             )}
           />
-          {errors.additionalDetails?.message ? (
+          {errors.additionalDetails ? (
             <Text style={styles.error}>Something is wrong</Text>
           ) : (
             <Text style={styles.error}></Text>
+          )}
+        </View>
+        {/* SERVER ERRORS */}
+        <View>
+          {responseError ? (
+            <Text style={styles.serverError}>{responseError}</Text>
+          ) : (
+            <Text style={styles.serverErrorNone}></Text>
           )}
         </View>
       </View>
@@ -311,7 +333,8 @@ const styles = StyleSheet.create({
     height: 150,
     padding: 10,
     paddingTop: 10,
-    borderRadius: 8
+    borderRadius: 8,
+    textAlignVertical: "top"
   },
   inputLarger2: {
     fontSize: 15,
@@ -361,6 +384,28 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     height: 14,
     fontSize: 10
+  },
+  serverError: {
+    color: "black",
+    backgroundColor: "red",
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    marginTop: 5,
+    alignSelf: "flex-start",
+    height: 20,
+    fontSize: 11,
+    borderRadius: 10,
+    fontWeight: "bold"
+  },
+  serverErrorNone: {
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    marginTop: 5,
+    alignSelf: "flex-start",
+    height: 20,
+    fontSize: 11,
+    borderRadius: 10,
+    fontWeight: "bold"
   },
   reqError: {
     color: "red",
