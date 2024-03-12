@@ -1,11 +1,11 @@
 // TODO FOR TUESDAY
-// TODO: Might need to change work-order-modal to standard, custom modal
 // TODO: clean up error handling (fail renders red, success renders green)
 // TODO: set up api to handle errors and use a global error handler
-// TODO: You should have ErrorModal AND NativeModalError MAYBE (see FIXME)
-// TODO: ErrorModal - for errors that DON'T happen in displayed modals
-// TODO: NativeModalError - for errors that happen in Native Modals
-// FIXME: It would be nice if you could just have one ErrorHandler for both and you might be able to if you change the work-order modal to a custom one. This would allow you to both handle the errors using a single method AND re-use the modal across all Stacks (Bascially you should have one ErrorModal and on ConfirmModal)
+// FIXME: Change work-order-form to be a new screen that renders from the right when clicking on "create work order". The default work-order screen should show all work orders with the ability to filter by status, active, etc. and at the top right should be a button that says "create work order" (or something like that). NATIVE modals should ONLY be used for displaying information. They should NOT be able to trigger things that might cause errors.
+// TODO: Maybe modify your responses on the server to send a "type" parameter. BECAUSE you might need to use a different dispatch depending on the error/success type and where you want to display the resulting message/response (middle modal, under form input, top of screen, etc). Example types: "formInput" (for handling limitations of RHF), "reqResult" (for rendering at top of screen)
+
+// formInput - for rendering under form inputs
+// reqResult - for rendering at top of screen
 
 import { NextFunction, Response, Request } from "express"
 import WorkOrder, { IWorkOrder_To } from "../models/WorkOrder"
