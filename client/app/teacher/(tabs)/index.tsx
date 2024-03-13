@@ -34,10 +34,24 @@ export default function HomeScreen() {
       <Button
         onPress={() =>
           dispatch(
-            setResponseMessage({ successResult: true, message: "SUCCESS!" })
+            setResponseMessage({
+              successResult: true,
+              message: "Account has been created successfully!"
+            })
           )
         }
-        title={`Show Modal`}
+        title={`Show SUCCESS Modal`}
+      ></Button>
+      <Button
+        onPress={() =>
+          dispatch(
+            setResponseMessage({
+              successResult: false,
+              message: "That user already exists!That user already exists! DUH!"
+            })
+          )
+        }
+        title={`Show FAIL Modal`}
       ></Button>
     </View>
   )

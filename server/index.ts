@@ -42,6 +42,9 @@ app.use((err: Err, req: Request, res: Response, next: NextFunction) => {
   const statusCode = err.statusCode || 500
   const message = err.message || "Internal server error"
   const type = err.type || "unhandled"
+  if (message.length > 50) {
+    console.error(`ERR MSG IS TOO LONG! MSG = ${message}`)
+  }
   return res.status(statusCode).json({
     success: false,
     statusCode,

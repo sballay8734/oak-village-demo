@@ -21,6 +21,9 @@ export function successHandler<T>(
   message: string,
   payload: T
 ) {
+  if (message.length > 50) {
+    console.error(`SUCCESS MSG IS TOO LONG! MSG = ${message}`)
+  }
   return res.status(statusCode).json({ success: true, message, payload })
 }
 

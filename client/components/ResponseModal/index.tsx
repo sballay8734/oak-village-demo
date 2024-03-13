@@ -9,6 +9,8 @@ import {
   SafeAreaView
 } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
+import { AntDesign } from "@expo/vector-icons"
+
 import { hideResponseModal } from "@/redux/serverResponseSlice/serverResponseSlice"
 import { RootState } from "@/redux/store"
 
@@ -27,6 +29,10 @@ function ModalComponent({
 }: ModalComponentProps) {
   const [localVisible, setLocalVisible] = useState<boolean>(visible)
 
+  if (message && message.length > 50) {
+    console.error(`MODAL MSG IS TOO LONG! MSG: ${message}`)
+  }
+
   // * This useEffect is needed to ensure that localVisible updates with visible
   // ! You MUST handle isVisible locally. Do NOT change this. If you use your slice state to control visibility directly, the modal will not show/hide properly and content will clear early.
   useEffect(() => {
@@ -41,11 +47,7 @@ function ModalComponent({
     },
     modalContent: {
       backgroundColor:
-        success === true
-          ? "#e6f7ed"
-          : success === false
-          ? "#ffebee"
-          : undefined,
+        success === true ? "white" : success === false ? "white" : undefined,
       borderRadius: 4,
       flexDirection: "row",
       alignItems: "center",
@@ -56,49 +58,82 @@ function ModalComponent({
         width: 0,
         height: 1
       },
-      shadowOpacity: 0.22,
-      shadowRadius: 2.22,
-
+      shadowOpacity: 0.18,
+      shadowRadius: 8.22,
       elevation: 3
     },
+    // * MODAL ICON
     modalIconWrapper: {
-      flex: 1,
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      height: "100%",
-      backgroundColor: success === true ? "green" : "red"
+      backgroundColor: success === true ? "#49c85f" : "#fe6464",
+      borderTopLeftRadius: 4,
+      borderBottomLeftRadius: 4,
+      height: 60,
+      width: 65
     },
     modalIcon: {
       fontSize: 24,
       color:
-        success === true
-          ? "#2e8c41"
-          : success === false
-          ? "#d32f2f"
-          : undefined,
-      backgroundColor: success === true ? "green" : "red"
+        success === true ? "black" : success === false ? "black" : undefined,
+      backgroundColor: success === true ? "#49c85f" : "#fe6464"
     },
-    modalMessage: {
-      fontSize: 16,
-      color:
-        success === true
-          ? "#2e8c41"
-          : success === false
-          ? "#d32f2f"
-          : undefined,
+    // * MODAL MESSAGE
+    modalMessageContainer: {
       flex: 3,
-      paddingHorizontal: 12
-    },
-    closeButton: {
-      flex: 1,
-      backgroundColor: "white",
       height: "100%",
+      paddingHorizontal: 12,
+      borderRightWidth: 1,
+      borderRightColor: "#f5f5f5",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center"
+    },
+    modalMessageTop: {
+      fontSize: 16,
+      fontWeight: "400",
+      letterSpacing: 0.3,
+      color:
+        success === true ? "black" : success === false ? "black" : undefined,
+      backgroundColor: "white"
+    },
+    modalMessageBottomWrapper: {
+      display: "flex",
+      borderRadius: 1,
+      overflow: "hidden"
+    },
+    modalMessageBottom: {
+      fontSize: message && message?.length > 38 ? 9 : 11,
+      fontWeight: "600",
+      color:
+        success === true ? "green" : success === false ? "#870000" : undefined
+      // backgroundColor:
+      //   success === true
+      //     ? "#ceffc7"
+      //     : success === false
+      //     ? "#ffc7c7"
+      //     : undefined,
+      // padding: 2,
+      // paddingHorizontal: 4,
+      // borderRadius: 10,
+      // display: "flex"
+    },
+    // * CLOSE BUTTON
+    closeButton: {
+      backgroundColor: "white",
       display: "flex",
       justifyContent: "center",
-      alignItems: "center"
+      alignItems: "center",
+      borderTopRightRadius: 4,
+      borderBottomRightRadius: 4,
+      height: 60,
+      width: 65
     },
-    closeButtonText: {}
+    closeButtonText: {
+      fontSize: 9,
+      color: "#c9c9c9"
+    }
   })
 
   function closeModal() {
@@ -109,10 +144,10 @@ function ModalComponent({
     <Modal
       isVisible={localVisible}
       animationIn={"slideInRight"}
-      animationInTiming={400}
-      animationOut={"slideOutUp"}
-      animationOutTiming={500}
-      hasBackdrop={false}
+      animationInTiming={300}
+      animationOut={"slideOutRight"}
+      animationOutTiming={300}
+      // hasBackdrop={false}
       onBackdropPress={closeModal}
       onBackButtonPress={closeModal}
       onModalHide={onModalHide}
@@ -121,12 +156,23 @@ function ModalComponent({
         <View style={styles.modalContent}>
           <View style={styles.modalIconWrapper}>
             <Text style={styles.modalIcon}>
-              {success === true ? "✓" : success === false ? "✕" : null}
+              {success === true ? (
+                <AntDesign name="checkcircleo" size={28} color="white" />
+              ) : success === false ? (
+                <AntDesign name="closecircleo" size={28} color="white" />
+              ) : null}
             </Text>
           </View>
-          <Text style={styles.modalMessage}>{message}</Text>
+          <View style={styles.modalMessageContainer}>
+            <Text style={styles.modalMessageTop}>
+              {success ? "Success!" : "Error!"}
+            </Text>
+            <View style={styles.modalMessageBottomWrapper}>
+              <Text style={styles.modalMessageBottom}>{message}</Text>
+            </View>
+          </View>
           <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
-            <Text style={styles.closeButtonText}>Close</Text>
+            <Text style={styles.closeButtonText}>CLOSE</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
