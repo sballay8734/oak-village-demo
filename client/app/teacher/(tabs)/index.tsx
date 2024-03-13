@@ -34,7 +34,7 @@ export default function HomeScreen() {
       <Button
         onPress={() =>
           dispatch(
-            setResponseMessage({ successResult: false, message: "ERROR!" })
+            setResponseMessage({ successResult: true, message: "SUCCESS!" })
           )
         }
         title={`Show Modal`}

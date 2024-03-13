@@ -6,6 +6,8 @@
 // TODO: LOADING STATES for requests
 // TODO: STYLE FORM, ADD BACK BUTTON
 // TODO: Need to use different Icons as expo/vector-icons don't have a "solid" or "bold options"
+
+// TODO: FINISH STYLING REQUEST MODAL (SEE INSPIRATION FOLDER)
 // ! TODO: DEFINE COLORS FOR THEME!!!!
 // FIXME: NATIVE modals should ONLY be used for displaying information. They should NOT be able to trigger things that might cause errors.
 
