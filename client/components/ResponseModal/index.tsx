@@ -1,6 +1,7 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
+// ! React Native Modal is sort of an old library. Be aware.
+import Modal from "react-native-modal"
 import {
-  Modal,
   View,
   Text,
   TouchableOpacity,
@@ -13,21 +14,27 @@ import { RootState } from "@/redux/store"
 
 interface ModalComponentProps {
   visible: boolean
-  onClose: () => void
   message: string | null
   success: boolean | null
+  onModalHide: () => void
 }
 
-const ModalComponent = ({
+function ModalComponent({
   visible,
-  onClose,
   message,
-  success
-}: ModalComponentProps) => {
+  success,
+  onModalHide
+}: ModalComponentProps) {
+  const [localVisible, setLocalVisible] = useState<boolean>(visible)
+
+  useEffect(() => {
+    setLocalVisible(visible)
+  }, [visible])
+
   const styles = StyleSheet.create({
     modalContainer: {
       flex: 1,
-      backgroundColor: "rgba(0, 0, 0, 0.5)",
+      // backgroundColor: "rgba(0, 0, 0, 0.5)",
       justifyContent: "flex-start",
       alignItems: "center"
     },
@@ -52,12 +59,26 @@ const ModalComponent = ({
     }
   })
 
+  function closeModal() {
+    setLocalVisible(false)
+  }
+
   return (
-    <Modal visible={visible} transparent animationType="fade">
+    <Modal
+      isVisible={localVisible}
+      animationIn={"slideInRight"}
+      animationInTiming={400}
+      animationOut={"slideOutUp"}
+      animationOutTiming={500}
+      hasBackdrop={false}
+      onBackdropPress={closeModal}
+      onBackButtonPress={closeModal}
+      onModalHide={onModalHide}
+    >
       <SafeAreaView style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <Text style={styles.errorMessage}>{message}</Text>
-          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+          <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
             <Text style={styles.closeButtonText}>Close</Text>
           </TouchableOpacity>
         </View>
@@ -66,24 +87,22 @@ const ModalComponent = ({
   )
 }
 
-const ResponseModal = () => {
+export default function ResponseModal() {
   const dispatch = useDispatch()
   const { successResult, responseMessage } = useSelector(
     (state: RootState) => state.serverResponseSlice
   )
 
-  const closeModal = () => {
+  function onModalHide() {
     dispatch(hideResponseModal())
   }
 
   return (
     <ModalComponent
       visible={successResult !== null}
-      onClose={closeModal}
       message={responseMessage}
       success={successResult === true}
+      onModalHide={onModalHide}
     />
   )
 }
-
-export default ResponseModal
