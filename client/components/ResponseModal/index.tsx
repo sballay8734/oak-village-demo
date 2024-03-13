@@ -36,29 +36,69 @@ function ModalComponent({
   const styles = StyleSheet.create({
     modalContainer: {
       flex: 1,
-      // backgroundColor: "rgba(0, 0, 0, 0.5)",
       justifyContent: "flex-start",
       alignItems: "center"
     },
     modalContent: {
-      backgroundColor: success ? "green" : "red",
-      padding: 20,
-      borderRadius: 10
+      backgroundColor:
+        success === true
+          ? "#e6f7ed"
+          : success === false
+          ? "#ffebee"
+          : undefined,
+      borderRadius: 4,
+      flexDirection: "row",
+      alignItems: "center",
+      width: "100%",
+      height: 60,
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 1
+      },
+      shadowOpacity: 0.22,
+      shadowRadius: 2.22,
+
+      elevation: 3
     },
-    errorMessage: {
+    modalIconWrapper: {
+      flex: 1,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100%",
+      backgroundColor: success === true ? "green" : "red"
+    },
+    modalIcon: {
+      fontSize: 24,
+      color:
+        success === true
+          ? "#2e8c41"
+          : success === false
+          ? "#d32f2f"
+          : undefined,
+      backgroundColor: success === true ? "green" : "red"
+    },
+    modalMessage: {
       fontSize: 16,
-      marginBottom: 20
+      color:
+        success === true
+          ? "#2e8c41"
+          : success === false
+          ? "#d32f2f"
+          : undefined,
+      flex: 3,
+      paddingHorizontal: 12
     },
     closeButton: {
-      backgroundColor: "#007AFF",
-      paddingVertical: 10,
-      paddingHorizontal: 20,
-      borderRadius: 5
+      flex: 1,
+      backgroundColor: "white",
+      height: "100%",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center"
     },
-    closeButtonText: {
-      color: "white",
-      fontWeight: "bold"
-    }
+    closeButtonText: {}
   })
 
   function closeModal() {
@@ -79,7 +119,12 @@ function ModalComponent({
     >
       <SafeAreaView style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text style={styles.errorMessage}>{message}</Text>
+          <View style={styles.modalIconWrapper}>
+            <Text style={styles.modalIcon}>
+              {success === true ? "✓" : success === false ? "✕" : null}
+            </Text>
+          </View>
+          <Text style={styles.modalMessage}>{message}</Text>
           <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
             <Text style={styles.closeButtonText}>Close</Text>
           </TouchableOpacity>
