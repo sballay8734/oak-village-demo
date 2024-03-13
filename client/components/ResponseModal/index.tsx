@@ -27,6 +27,8 @@ function ModalComponent({
 }: ModalComponentProps) {
   const [localVisible, setLocalVisible] = useState<boolean>(visible)
 
+  // * This useEffect is needed to ensure that localVisible updates with visible
+  // ! You MUST handle isVisible locally. Do NOT change this. If you use your slice state to control visibility directly, the modal will not show/hide properly and content will clear early.
   useEffect(() => {
     setLocalVisible(visible)
   }, [visible])
