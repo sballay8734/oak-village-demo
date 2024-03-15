@@ -12,7 +12,6 @@ import {
   REGISTER,
   PURGE
 } from "redux-persist"
-import storage from "redux-persist/lib/storage"
 
 import { authApi } from "./auth/authApi"
 import { rootReducer } from "./rootReducer"

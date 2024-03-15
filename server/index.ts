@@ -46,9 +46,9 @@ app.use((err: Err, req: Request, res: Response, next: NextFunction) => {
     console.error(`ERR MSG IS TOO LONG! MSG = ${message}`)
   }
   return res.status(statusCode).json({
-    success: false,
-    statusCode,
     message,
+    statusCode,
+    success: false,
     type
   })
 })

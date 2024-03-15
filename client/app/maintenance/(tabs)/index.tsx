@@ -1,7 +1,6 @@
 import { StyleSheet, Button } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 
-import EditScreenInfo from "@/components/EditScreenInfo"
 import { Text, View } from "@/components/Themed"
 import { RootState } from "@/redux/store"
 import { setEmployee } from "@/redux/auth/employeeSlice"

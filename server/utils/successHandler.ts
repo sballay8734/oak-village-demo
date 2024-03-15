@@ -1,20 +1,5 @@
 import { Response } from "express"
 
-interface ErrorResponse {
-  success: boolean
-  statusCode: number
-  message: string
-}
-
-interface SuccessResponse<T> {
-  success: boolean
-  statusCode: number
-  message: string
-  payload: T
-}
-
-export type ApiResponse<T> = ErrorResponse | SuccessResponse<T>
-
 export function successHandler<T>(
   res: Response,
   statusCode: number,

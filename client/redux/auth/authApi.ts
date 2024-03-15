@@ -3,8 +3,18 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import { MutationCacheLifecycleApi } from "@reduxjs/toolkit/dist/query/endpointDefinitions"
 
 // TODO: ILoginInfo needs to replace "string". "string" is just for testing
-import { IEmployee_From, ILoginInfo, IRegisterInfo } from "./types"
+import { IEmployee_From, IRegisterInfo } from "./types"
 import { setEmployee } from "./employeeSlice"
+import {
+  ApiResponse,
+  AuthenticatedUser,
+  ModApiResponse
+} from "@/types/responsesFromServer"
+
+export interface SignInFormData {
+  email: string
+  password: string
+}
 
 // Define a service using a base URL and expected endpoints
 export const authApi = createApi({
@@ -12,25 +22,25 @@ export const authApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3001/api/auth" }),
   endpoints: (builder) => ({
     // First is what we get back, second is what we send TODO: !!!
-    lazyStandardSignIn: builder.mutation<IEmployee_From, string>({
-      query: (formData) => ({
-        // TODO: Change this back to "signin"
-        url: "/dummysignin",
+    lazyStandardSignIn: builder.mutation<
+      ModApiResponse<AuthenticatedUser>,
+      SignInFormData
+    >({
+      query: (body) => ({
+        url: "/signin",
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ formData })
-      }),
-      async onQueryStarted(formData, { dispatch, queryFulfilled }) {
-        // TODO: dispatch start message
-        try {
-          const { data } = await queryFulfilled
-          dispatch(setEmployee(data))
-        } catch (error) {
-          // TODO: dispatch error
-        }
-      }
+        body
+      })
+      // async onQueryStarted(signinData, { dispatch, queryFulfilled }) {
+      //   // TODO: dispatch start message
+      //   try {
+      //     const { data } = await queryFulfilled
+      //     dispatch(setEmployee(data))
+      //   } catch (error) {
+      //     console.error(error)
+      //     // TODO: dispatch error
+      //   }
+      // }
     }),
     lazyStandardRegister: builder.mutation<IEmployee_From, IRegisterInfo>({
       query: (formData) => ({

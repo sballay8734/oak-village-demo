@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken"
 import { whitelistedEmails } from "../utils/tempEmailWhitelist"
 import { errorHandler } from "../utils/errorHandler"
 import Employee from "../models/Employee"
+import { successHandler } from "../utils/successHandler"
 
 export const signup = async (
   req: Request,
@@ -32,6 +33,7 @@ export const signup = async (
     )
   }
 
+  // TODO: Move salt value to .env
   const hashedPassword = bcrypt.hashSync(password, 14)
 
   // TODO: Add name formatting and validation here
@@ -59,28 +61,32 @@ export const signin = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { email, password: signInPassword } = req.body
+  console.log(req.body)
+  const { email, password } = req.body
 
   try {
-    const validEmployee = await Employee.findOne({ email })
-    if (!validEmployee)
-      return next(errorHandler(400, "Employee not found.", "requestResult"))
+    const validUser = await Employee.findOne({ email })
+    if (!validUser)
+      return next(
+        errorHandler(400, "Email or password is incorrect", "requestResult")
+      )
 
-    const validPassword = bcrypt.compareSync(
-      signInPassword,
-      validEmployee.password
-    )
+    const validPassword = bcrypt.compareSync(password, validUser.password)
     if (!validPassword)
-      return next(errorHandler(401, "Invalid credentials.", "requestResult"))
+      return next(
+        errorHandler(400, "Email or password is incorrect", "requestResult")
+      )
 
-    const token = jwt.sign({ _id: validEmployee._id }, process.env.JWT_SECRET!)
+    const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET!)
 
-    const employeeObject = validEmployee.toObject()
-    const { password, ...rest } = employeeObject
+    const userObject = validUser.toObject()
 
-    res.cookie("access_token", token, { httpOnly: true }).status(201).json(rest)
+    const { password: pass, ...rest } = userObject
+
+    res.cookie("access_token", token, { httpOnly: true })
+    return successHandler(res, 200, "Sign in successful!", rest)
   } catch (error) {
-    next(error)
+    next(errorHandler(500, "Could not signin.", "requestResult"))
   }
 }
 
@@ -89,27 +95,10 @@ export const signout = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("Hit sign OUT route")
-}
-
-// TODO: REMEMBER, DON'T SEND ROLE BACK TO FRONT END
-// FIND ANOTHER WAY TO INSTRUCT THE FRONT-END WHAT TO RENDER
-export const dummysignin = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  console.log(req.body)
   try {
-    console.log(`Logged in as ${req.body.formData}`)
-    return res.status(201).json({
-      employeeName: "Shawn Ballay",
-      employeeId: "Dlkjf9834fasdlk489",
-      employeeClassroom: "Infants 1",
-      // TODO: Temporary. Correct files should be served from backend.
-      role: req.body.formData
-    })
+    res.clearCookie("access_token")
+    return successHandler(res, 200, "User has been logged out!", {})
   } catch (error) {
-    next(error)
+    next(errorHandler(500, "Failed to sign out user.", "requestResult"))
   }
 }

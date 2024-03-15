@@ -47,7 +47,7 @@ export default function HomeScreen() {
           dispatch(
             setResponseMessage({
               successResult: false,
-              message: "That user already exists!That user already exists! DUH!"
+              message: "That user already exists!"
             })
           )
         }

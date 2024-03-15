@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
-import { IEmployee_From } from "./types"
+import { AuthenticatedUser } from "@/types/responsesFromServer"
 
 interface EmployeeState {
-  employee: IEmployee_From | null
+  employee: AuthenticatedUser | null
 }
 
 const initialState: EmployeeState = {
@@ -14,8 +14,8 @@ const employeeSlice = createSlice({
   name: "employee",
   initialState,
   reducers: {
-    // TODO: Replace "string" with IEmployee_From eventually
-    setEmployee: (state, action: PayloadAction<IEmployee_From | null>) => {
+    // TODO: STILL NEED TO REMOVE ROLE FROM AUTHENTICATED USER
+    setEmployee: (state, action: PayloadAction<AuthenticatedUser | null>) => {
       state.employee = action.payload
     }
   }
