@@ -25,15 +25,12 @@ export default function Entry() {
           router.push("/teacher/")
           break
         case "admin":
-          console.log("Hit 2")
           router.push("/admin/")
           break
         case "maintenance":
-          console.log("Hit 3")
           router.push("/maintenance/")
           break
         case "parent":
-          console.log("Hit 4")
           router.push("/parent/")
           break
         default:

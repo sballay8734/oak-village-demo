@@ -14,6 +14,7 @@ import { setResponseMessage } from "@/redux/serverResponseSlice/serverResponseSl
 import { IEmployee_From } from "@/redux/auth/types"
 import { AuthenticatedUser, ModApiResponse } from "@/types/responsesFromServer"
 import { isModErrorResponse } from "@/helpers/errorTypeCheck"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 // TODO: Different logins should show different screens
 
@@ -40,7 +41,6 @@ export default function Login() {
   const [trigger, { isLoading }] = useLazyStandardSignInMutation()
 
   async function handleLogin(credentials: SignInFormData) {
-    console.log("TO", credentials)
     // ! This is also correct I think. Not sure why TS is throwing an error
     const res: ModApiResponse<AuthenticatedUser> = await trigger(credentials)
 
@@ -57,7 +57,6 @@ export default function Login() {
     }
 
     // * If successful signin
-    console.log(res.data.payload)
     dispatch(setEmployee(res.data.payload))
     dispatch(
       setResponseMessage({
@@ -72,6 +71,7 @@ export default function Login() {
 
   function handleReduxPurge() {
     persistor.purge()
+    AsyncStorage.clear()
   }
 
   return (

@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { PURGE } from "redux-persist"
 
 interface ServerResponseState {
   successResult: true | false | null
@@ -26,6 +27,12 @@ const serverResponseSlice = createSlice({
       state.successResult = null
       state.responseMessage = null
     }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(PURGE, () => {
+      console.log("Purging Responses")
+      return initialState
+    })
   }
 })
 

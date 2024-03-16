@@ -1,60 +1,39 @@
-import { View, Text, Pressable } from "react-native"
+import { View, Text, Pressable, StyleSheet } from "react-native"
 
 import { Feather } from "@expo/vector-icons"
 import { AntDesign } from "@expo/vector-icons"
 import { getDateDifference } from "@/helpers/dateFormatting"
+import { Link } from "expo-router"
+import { IWorkOrder_From } from "@/types/workOrders"
 
 interface WorkOrderCardProps {
-  classroom: string
-  areaInClassroom: string
-  taskNeeded: string
-  additionalDetails?: string
-  employeeName: string
-  status: string
-  dateSubmitted: string
+  workOrder: IWorkOrder_From
 }
 
 // TODO: FADE OUT TEXT (2 lines max, 2nd line faded)
 
-export default function WorkOrderCard({
-  classroom,
-  areaInClassroom,
-  taskNeeded,
-  additionalDetails,
-  employeeName,
-  status,
-  dateSubmitted
-}: WorkOrderCardProps) {
+export default function WorkOrderCard({ workOrder }: WorkOrderCardProps) {
   return (
-    <View
-      style={{
-        width: "100%",
-        borderColor: "black",
-        borderWidth: 2,
-        borderRadius: 10,
-        padding: 10,
-        display: "flex",
-        flexDirection: "column",
-        gap: 10
-      }}
-    >
+    <View style={styles.cardWrapper}>
       {/* // * Header and three dots (...) */}
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between"
-        }}
-      >
-        <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-          {classroom} - {areaInClassroom}
+      <View style={styles.cardHeaderWrapper}>
+        <Text style={styles.cardHeaderText}>
+          {workOrder.classroom} - {workOrder.areaInClassroom}
         </Text>
-        <Pressable>
-          {({ pressed }) => (
-            <Feather name="more-horizontal" size={24} color="black" />
-          )}
-        </Pressable>
+        <Link
+          href={{
+            pathname: "/maintenance/work-order-info",
+            // /* 1. Navigate to the details route with query params */
+            params: { workOrderId: workOrder._id }
+          }}
+          asChild
+        >
+          <Pressable>
+            {({ pressed }) => (
+              <Feather name="more-horizontal" size={24} color="black" />
+            )}
+          </Pressable>
+        </Link>
       </View>
       {/* // * Description */}
       <View>
@@ -64,28 +43,46 @@ export default function WorkOrderCard({
         </Text>
       </View>
       {/* // * Date and how many days ago it was submitted, status on bottom right */}
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between"
-        }}
-      >
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: 4,
-            alignItems: "center"
-          }}
-        >
+      <View style={styles.cardFooterWrapper}>
+        <View style={styles.dateWrapper}>
           <AntDesign name="calendar" size={16} color="black" />
-          <Text>{new Date(dateSubmitted).toDateString()} -</Text>
-          <Text>{getDateDifference(dateSubmitted)} days ago</Text>
+          <Text>{new Date(workOrder.dateSubmitted).toDateString()} -</Text>
+          <Text>{getDateDifference(workOrder.dateSubmitted)} days ago</Text>
         </View>
-        <Text>{status}</Text>
+        <Text>{workOrder.status}</Text>
         {/* <Text>{employeeName}</Text> */}
       </View>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  cardWrapper: {
+    width: "100%",
+    borderColor: "black",
+    borderWidth: 2,
+    borderRadius: 10,
+    padding: 10,
+    display: "flex",
+    flexDirection: "column",
+    gap: 10
+  },
+  cardHeaderWrapper: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between"
+  },
+  cardHeaderText: { fontSize: 16, fontWeight: "bold" },
+  cardFooterWrapper: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  dateWrapper: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 4,
+    alignItems: "center"
+  }
+})

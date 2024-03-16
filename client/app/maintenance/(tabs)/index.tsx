@@ -17,8 +17,6 @@ export default function HomeScreen() {
     dispatch(hideResponseModal())
   }
 
-  console.log("HIT MAINTENANCE TABS...")
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>

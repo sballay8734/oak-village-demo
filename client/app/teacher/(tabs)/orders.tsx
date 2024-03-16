@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native"
 import { useSelector } from "react-redux"
 
-import { useFetchEmployeeWorkOrdersQuery } from "@/redux/workOrdersSlice/workOrdersApi"
+import { useGetEWorkOrdersQuery } from "@/redux/workOrdersSlice/workOrdersApi"
 
 import { Text, View } from "@/components/Themed"
 import { RootState } from "@/redux/store"
@@ -11,7 +11,7 @@ export default function WorkOrdersScreen() {
   const employee = useSelector(
     (state: RootState) => state.employeeSlice.employee
   )
-  const { data: workOrders, isLoading } = useFetchEmployeeWorkOrdersQuery()
+  const { data: workOrders, isLoading } = useGetEWorkOrdersQuery()
 
   if (employee === null) return null
 

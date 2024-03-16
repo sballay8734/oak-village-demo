@@ -9,8 +9,6 @@ export default function MaintenanceLayout() {
     (state: RootState) => state.employeeSlice.employee
   )
 
-  console.log("Grabbing MAINTENANCE Layout")
-
   useEffect(() => {
     if (employee === null || employee === undefined) {
       router.replace("/login")
@@ -25,7 +23,7 @@ export default function MaintenanceLayout() {
         options={{ presentation: "modal", headerShown: false }}
       />
       <Stack.Screen
-        name="work-order-form"
+        name="work-order-info"
         options={{ presentation: "modal", headerShown: false }}
       />
     </Stack>
