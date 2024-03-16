@@ -19,6 +19,7 @@ const serverResponseSlice = createSlice({
       state,
       action: PayloadAction<{ successResult: boolean; message: string }>
     ) => {
+      console.log("Setting Error")
       const { successResult, message } = action.payload
       state.successResult = successResult
       state.responseMessage = message

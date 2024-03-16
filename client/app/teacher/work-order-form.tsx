@@ -24,7 +24,6 @@ import {
   hideResponseModal,
   setResponseMessage
 } from "@/redux/serverResponseSlice/serverResponseSlice"
-import { ApiResponse, WorkOrderFrom } from "@/types/responsesFromServer"
 import { useCreateWorkOrderMutation } from "@/redux/workOrdersSlice/workOrdersApi"
 
 interface FormData {
@@ -43,7 +42,7 @@ export default function WorkOrderForm() {
   const [showBoxShadow, setShowBoxShadow] = useState<boolean>(false)
   const [taskNeededError, setTaskNeededError] = useState<string | null>(null)
   const [responseError, setResponseError] = useState<string | null>(null)
-  const [createWorkOrder, { isLoading, isError }] = useCreateWorkOrderMutation()
+  const [createWorkOrder] = useCreateWorkOrderMutation()
 
   const initialValues: FormData = {
     classroom: "",
@@ -64,53 +63,15 @@ export default function WorkOrderForm() {
     // dispatch(hideResponseModal())
     setTaskNeededError(null)
     setResponseError(null)
+
     try {
-      const res = await fetch(
-        "http://localhost:3001/api/maintenance/create-work-order",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          // TODO: Change this to employee name and id from logged in employee
-          body: JSON.stringify({
-            ...formData,
-            employeeName: "John Smith",
-            employeeId: "asd093jalksdjf902rh"
-          })
-        }
-      )
-
-      const data: ApiResponse<WorkOrderFrom> = await res.json()
-
-      if (data.success === false) {
-        // TODO: Hopefully can fix this eventually (react-hook-form limitation)
-        if (data.type === "formInput") {
-          setTaskNeededError(data.message)
-          return
-        }
-        dispatch(
-          setResponseMessage({
-            successResult: data.success,
-            message: data.message
-          })
-        )
-        return
-      }
-
-      // TODO: Use payload to set state if you need to
-      console.log(data.payload)
-      dispatch(
-        setResponseMessage({
-          successResult: data.success,
-          message: data.message
-        })
-      )
-      reset()
-      clearErrors()
-    } catch (error) {
-      console.log(error)
+      const res = await createWorkOrder(formData)
+      console.log("FROM COMPONENT", res)
+    } catch (err) {
+      console.log("CAUGHT ERROR", err)
     }
+    // reset()
+    // clearErrors()
   }
 
   function handleFocus() {

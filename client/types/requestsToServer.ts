@@ -20,3 +20,19 @@ export interface IWorkOrder_To {
   employeeName: string
   employeeId: string
 }
+
+export interface CreateUserFormData {
+  classroom: string
+  areaInClassroom: string
+  taskNeeded: string
+  additionalDetails?: string
+}
+
+export interface StatusUpdateParams {
+  workOrderId: string
+  status: string
+}
+export interface SeenUpdateParams {
+  workOrderId: string
+  seenStatus: boolean
+}

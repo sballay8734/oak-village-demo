@@ -1,16 +1,19 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import { WorkOrderFrom } from "@/types/responsesFromServer"
-import { IWorkOrder_To } from "@/types/requestsToServer"
+import {
+  CreateUserFormData,
+  StatusUpdateParams,
+  SeenUpdateParams
+} from "@/types/requestsToServer"
+import { setResponseMessage } from "../serverResponseSlice/serverResponseSlice"
+import {
+  isApiErrorResponse,
+  isErrorWithMessage,
+  isFetchBaseQueryError
+} from "@/helpers/errorHandling"
 
-interface StatusUpdateParams {
-  workOrderId: string
-  status: string
-}
-interface SeenUpdateParams {
-  workOrderId: string
-  seenStatus: boolean
-}
+// ! TODO: Get RID OF SUCCESS, FAIL, etc... and use the custom error handler you made (Also try and move the error handler out of the components)
 interface Success {
   message: string
   payload: WorkOrderFrom[]
@@ -20,6 +23,11 @@ interface Fail {
   message: string
   payload: WorkOrderFrom[]
   success: false
+}
+interface CreateSuccess {
+  message: string
+  payload: WorkOrderFrom
+  success: true
 }
 
 // Define a service using a base URL and expected endpoints
@@ -81,13 +89,58 @@ export const workOrdersApi = createApi({
             ]
           : [{ type: "EmployeeWorkOrders", _id: "LIST" }]
     }),
-    createWorkOrder: builder.mutation<WorkOrderFrom, IWorkOrder_To>({
+    createWorkOrder: builder.mutation<CreateSuccess, CreateUserFormData>({
       query: (body) => ({
         url: `/create-work-order`,
         method: "POST",
         body
       }),
-      invalidatesTags: ["EmployeeWorkOrders"]
+      invalidatesTags: ["EmployeeWorkOrders"],
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const { data: newWorkOrder } = await queryFulfilled
+          dispatch(
+            setResponseMessage({
+              successResult: true,
+              message: "Successfully created work order!"
+            })
+          )
+        } catch (err) {
+          if (isApiErrorResponse(err)) {
+            console.log("TRUE!!")
+            dispatch(
+              setResponseMessage({
+                successResult: false,
+                message: err.error.data.message
+              })
+            )
+          } else if (isFetchBaseQueryError(err)) {
+            const errMsg = "error" in err ? err.error : JSON.stringify(err.data)
+            dispatch(
+              setResponseMessage({
+                successResult: false,
+                message: errMsg
+              })
+            )
+          } else if (isErrorWithMessage(err)) {
+            const errMsg = err.message
+            dispatch(
+              setResponseMessage({
+                successResult: false,
+                message: errMsg
+              })
+            )
+          } else {
+            console.log("FROM API", err)
+            dispatch(
+              setResponseMessage({
+                successResult: false,
+                message: "Something went very VERY wrong."
+              })
+            )
+          }
+        }
+      }
     })
   })
 })

@@ -6,7 +6,12 @@ export const fieldsAreNotValid = (
 ) =>
   // "if classroom.trim() is NOT truthy - meaning it is not empty
   // "" === falsy, "alskjdf" === truthy
-  !classroom.trim() || !areaInClassroom.trim() || !taskNeeded.trim()
+  !classroom ||
+  !areaInClassroom ||
+  !taskNeeded ||
+  !classroom.trim() ||
+  !areaInClassroom.trim() ||
+  !taskNeeded.trim()
 
 // if passwords match
 export const passwordsMatch = (password: string, confirmPassword: string) =>

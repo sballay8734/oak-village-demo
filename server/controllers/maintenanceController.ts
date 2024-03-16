@@ -6,6 +6,7 @@ import { errorHandler } from "../utils/errorHandler"
 import { fieldsAreNotValid } from "../helpers/authHelpers"
 import { successHandler } from "../utils/successHandler"
 import { WorkOrderCreateResponse } from "../types/responsesToClient"
+import Employee from "../models/Employee"
 
 export const createWorkOrder = async (
   req: Request,
@@ -16,17 +17,21 @@ export const createWorkOrder = async (
     classroom,
     areaInClassroom,
     taskNeeded,
-    additionalDetails, // OPTIONAL
-    employeeId,
-    employeeName
+    additionalDetails // OPTIONAL
   } = req.body
+  console.log("HIT CREATE WORK ORDER")
 
   // TODO: Add this back after adding auth
-  // const employee = req.employee
-  // if (!employee)
-  //   return next(
-  //     errorHandler(401, "You must be logged in to do that!", "requestResult")
-  //   )
+  const employeeId = req.employee
+  if (!employeeId)
+    return next(
+      errorHandler(401, "You must be logged in to do that!", "requestResult")
+    )
+  const employee = await Employee.findById(employeeId)
+  if (!employee)
+    return next(
+      errorHandler(401, "You must be logged in to do that!", "requestResult")
+    )
 
   // handling taskNeeded here because of RHF limitations
   if (!req.body.taskNeeded.trim()) {
@@ -50,7 +55,7 @@ export const createWorkOrder = async (
       areaInClassroom,
       taskNeeded,
       additionalDetails: additionalDetails || "",
-      employeeName,
+      // employeeName: employee.firstName,
       employeeId
     })
 
@@ -130,8 +135,6 @@ export const getWorkOrdersOfEmployee = async (
   if (!workOrders || workOrders.length < 1) {
     return next(errorHandler(400, "No work orders found", "requestResult"))
   }
-
-  console.log("TEACHERS", workOrders)
 
   return successHandler(res, 200, "Work Orders Found!", workOrders)
   // TODO: Only get the work orders that are not completed maybe?
