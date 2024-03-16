@@ -30,6 +30,18 @@ export default function WorkOrdersScreen() {
       </View>
     )
 
+  const filteredWorkOrders =
+    workOrders &&
+    workOrders.payload.filter((workOrder) => {
+      if (activeFilter === "All") {
+        return workOrders.payload
+      } else if (activeFilter === "New") {
+        return workOrder.seenByMaintenance === false
+      } else {
+        return workOrder.status === activeFilter
+      }
+    })
+
   return (
     <View style={styles.container}>
       {/* // * NAV/FILTER */}
@@ -38,7 +50,6 @@ export default function WorkOrdersScreen() {
         renderItem={({ item }) => (
           <TabFilter
             filterName={item}
-            count={5}
             active={item === activeFilter}
             handleFilterChange={handleFilterChange}
           />
@@ -57,22 +68,22 @@ export default function WorkOrdersScreen() {
       />
 
       {/* // * WORK ORDER LIST */}
-      <View
-        style={{
-          flex: 1,
-          height: "100%",
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          gap: 10
-        }}
-      >
-        {workOrders &&
-          !isLoading &&
-          workOrders.payload.map((workOrder: IWorkOrder_From) => {
-            return <WorkOrderCard key={workOrder._id} workOrder={workOrder} />
-          })}
-      </View>
+      {filteredWorkOrders?.length ? (
+        <ScrollView
+          style={styles.workOrderList}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.workOrderList}>
+            {filteredWorkOrders.map((workOrder: IWorkOrder_From) => (
+              <WorkOrderCard key={workOrder._id} workOrder={workOrder} />
+            ))}
+          </View>
+        </ScrollView>
+      ) : (
+        <View>
+          <Text>0 {activeFilter} Work Orders</Text>
+        </View>
+      )}
     </View>
   )
 }
@@ -94,5 +105,13 @@ const styles = StyleSheet.create({
     marginVertical: 0,
     height: 1,
     width: "80%"
+  },
+  workOrderList: {
+    flex: 1,
+    height: "100%",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    gap: 10
   }
 })

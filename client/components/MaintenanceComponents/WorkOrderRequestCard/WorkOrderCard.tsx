@@ -5,6 +5,8 @@ import { AntDesign } from "@expo/vector-icons"
 import { getDateDifference } from "@/helpers/dateFormatting"
 import { Link } from "expo-router"
 import { IWorkOrder_From } from "@/types/workOrders"
+import { Ionicons } from "@expo/vector-icons"
+import { useUpdateSeenMutation } from "@/redux/workOrdersSlice/workOrdersApi"
 
 interface WorkOrderCardProps {
   workOrder: IWorkOrder_From
@@ -13,6 +15,15 @@ interface WorkOrderCardProps {
 // TODO: FADE OUT TEXT (2 lines max, 2nd line faded)
 
 export default function WorkOrderCard({ workOrder }: WorkOrderCardProps) {
+  const [updateSeen, { isLoading, isError }] = useUpdateSeenMutation()
+
+  function handleUpdateSeen() {
+    if (workOrder.seenByMaintenance === true) return
+    updateSeen({
+      workOrderId: workOrder._id,
+      seenStatus: workOrder.seenByMaintenance
+    })
+  }
   return (
     <View style={styles.cardWrapper}>
       {/* // * Header and three dots (...) */}
@@ -28,10 +39,8 @@ export default function WorkOrderCard({ workOrder }: WorkOrderCardProps) {
           }}
           asChild
         >
-          <Pressable>
-            {({ pressed }) => (
-              <Feather name="more-horizontal" size={24} color="black" />
-            )}
+          <Pressable onPress={handleUpdateSeen}>
+            <Feather name="more-horizontal" size={24} color="black" />
           </Pressable>
         </Link>
       </View>
@@ -49,7 +58,14 @@ export default function WorkOrderCard({ workOrder }: WorkOrderCardProps) {
           <Text>{new Date(workOrder.dateSubmitted).toDateString()} -</Text>
           <Text>{getDateDifference(workOrder.dateSubmitted)} days ago</Text>
         </View>
-        <Text>{workOrder.status}</Text>
+        <View style={styles.seenAndStatus}>
+          <Text>{workOrder.status}</Text>
+          {workOrder.seenByMaintenance ? (
+            <Ionicons name="eye" size={16} color="green" />
+          ) : (
+            <Ionicons name="eye-off" size={16} color="red" />
+          )}
+        </View>
         {/* <Text>{employeeName}</Text> */}
       </View>
     </View>
@@ -84,5 +100,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 4,
     alignItems: "center"
+  },
+  seenAndStatus: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 4
   }
 })

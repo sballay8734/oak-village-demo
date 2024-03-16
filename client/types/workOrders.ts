@@ -28,4 +28,5 @@ export interface IWorkOrder_From {
     | "Completed"
     | "Could Not Complete"
   dateSubmitted: string
+  seenByMaintenance: boolean
 }

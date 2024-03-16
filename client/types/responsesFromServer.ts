@@ -91,6 +91,7 @@ export interface WorkOrderFrom {
     | "Completed"
     | "Could Not Complete"
   dateSubmitted: string // also NOT optional anymore because DB will add default value
+  seenByMaintenance: boolean
 }
 
 // * AUTH Shapes

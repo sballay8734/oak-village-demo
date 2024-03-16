@@ -1,9 +1,8 @@
-import { useState } from "react"
 import { View, Text, StyleSheet, Pressable } from "react-native"
+import { handleFilterLogic } from "./tabs"
 
 interface TabFilterProps {
   filterName: string
-  count: number
   active: boolean
   handleFilterChange: (filterName: string) => void
 }
@@ -13,10 +12,11 @@ interface TabFilterProps {
 
 export default function TabFilter({
   filterName,
-  count,
   active,
   handleFilterChange
 }: TabFilterProps) {
+  const workOrderLength = handleFilterLogic(filterName)
+
   return (
     <Pressable
       onPress={() => handleFilterChange(filterName)}
@@ -51,14 +51,16 @@ export default function TabFilter({
           width: 20
         }}
       >
-        <Text style={{ color: "white", fontWeight: "bold" }}>{count}</Text>
+        <Text style={{ color: "white", fontWeight: "bold" }}>
+          {workOrderLength}
+        </Text>
       </View>
     </Pressable>
   )
 }
 
 const styles = StyleSheet.create({
-  navWrapper: {
+  filterWrapper: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",

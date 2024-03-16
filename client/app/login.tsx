@@ -78,7 +78,7 @@ export default function Login() {
     <View style={styles.loginPage}>
       {/* <Text>LOGIN</Text> */}
       {/* <Button onPress={() => handleLogin("admin")} title="Admin"></Button> */}
-      <Button onPress={() => handleLogin(tempParent)} title="Teacher"></Button>
+      <Button onPress={() => handleLogin(tempTeacher)} title="Teacher"></Button>
       {/* <Button onPress={() => handleLogin("parent")} title="Parent"></Button> */}
       <Button
         onPress={() => handleLogin(tempMaintenance)}

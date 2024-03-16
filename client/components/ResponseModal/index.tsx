@@ -143,9 +143,9 @@ function ModalComponent({
   return (
     <Modal
       isVisible={localVisible}
-      animationIn={"slideInRight"}
+      animationIn={"fadeInDown"}
       animationInTiming={300}
-      animationOut={"slideOutRight"}
+      animationOut={"fadeOutUp"}
       animationOutTiming={300}
       // hasBackdrop={false}
       onBackdropPress={closeModal}

@@ -36,6 +36,7 @@ interface IWorkOrderDocument extends IWorkOrder_To, Document {
     | "Completed"
     | "Could Not Complete"
   dateSubmitted: string
+  seenByMaintenance: boolean
 }
 
 const workOrderSchema = new Schema({
@@ -50,7 +51,8 @@ const workOrderSchema = new Schema({
     type: String,
     required: true,
     default: new Date().toISOString()
-  }
+  },
+  seenByMaintenance: { type: Boolean, required: true, default: false }
 })
 
 // ARE WE SURE THE ISSUE ISN'T COMING FROM THIS LINE HERE?

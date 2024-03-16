@@ -1,7 +1,7 @@
 import { NextFunction, Response, Request } from "express"
 import { MongooseError } from "mongoose"
 
-import WorkOrder, { IWorkOrder_To } from "../models/WorkOrder"
+import WorkOrder from "../models/WorkOrder"
 import { errorHandler } from "../utils/errorHandler"
 import { fieldsAreNotValid } from "../helpers/authHelpers"
 import { successHandler } from "../utils/successHandler"
@@ -69,7 +69,8 @@ export const createWorkOrder = async (
       employeeName: newWorkOrder.employeeName,
       employeeId: newWorkOrder.employeeId,
       status: newWorkOrder.status,
-      dateSubmitted: newWorkOrder.dateSubmitted
+      dateSubmitted: newWorkOrder.dateSubmitted,
+      seenByMaintenance: newWorkOrder.seenByMaintenance
     }
 
     return successHandler<WorkOrderCreateResponse>(
@@ -134,4 +135,79 @@ export const getWorkOrdersOfEmployee = async (
 
   return successHandler(res, 200, "Work Orders Found!", workOrders)
   // TODO: Only get the work orders that are not completed maybe?
+}
+
+export const updateStatus = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { workOrderId, status } = req.body
+  const employeeId = req.employee
+
+  if (!employeeId)
+    return next(
+      errorHandler(400, "You must be logged in to do that!", "requestResult")
+    )
+
+  if (!workOrderId || !status)
+    return next(errorHandler(400, "Bad Request", "requestResult"))
+
+  try {
+    const workOrderToUpdate = await WorkOrder.findByIdAndUpdate(workOrderId, {
+      status: status
+    })
+
+    if (!workOrderToUpdate)
+      return next(
+        errorHandler(500, "Failed to update status.", "requestResult")
+      )
+
+    console.log("SUCCESSFULLY UPDATED STATUS")
+    return successHandler(
+      res,
+      200,
+      "Status updated successfully!",
+      workOrderToUpdate
+    )
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong.", "requestResult"))
+  }
+}
+
+export const updateSeen = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  console.log("HIT UPDATE SEEN")
+  const { workOrderId } = req.body
+  const employeeId = req.employee
+
+  if (!employeeId)
+    return next(
+      errorHandler(400, "You must be logged in to do that!", "requestResult")
+    )
+
+  if (!workOrderId)
+    return next(errorHandler(400, "Bad Request", "requestResult"))
+
+  try {
+    const workOrderToUpdate = await WorkOrder.findByIdAndUpdate(workOrderId, {
+      seenByMaintenance: true
+    })
+
+    if (!workOrderToUpdate)
+      return next(
+        errorHandler(500, "Failed to update seen status.", "requestResult")
+      )
+    return successHandler(
+      res,
+      200,
+      "Seen status updated successfully!",
+      workOrderToUpdate
+    )
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong.", "requestResult"))
+  }
 }

@@ -1,19 +1,18 @@
 import { StatusBar } from "expo-status-bar"
-import { Platform, StyleSheet } from "react-native"
-
-import { Text, View } from "@/components/Themed"
+import { StyleSheet } from "react-native"
+import { Text, View } from "react-native"
 import { useLocalSearchParams } from "expo-router"
-import {
-  useGetMWorkOrdersQuery,
-  workOrdersApi
-} from "@/redux/workOrdersSlice/workOrdersApi"
+
+import { useGetMWorkOrdersQuery } from "@/redux/workOrdersSlice/workOrdersApi"
 import { AntDesign } from "@expo/vector-icons"
 import { getDateDifference } from "@/helpers/dateFormatting"
+import { statuses } from "@/components/MaintenanceComponents/StatusChange/statuses"
+import StatusChangeButton from "@/components/MaintenanceComponents/StatusChange/StatusChangeButton"
 
 export default function WorkOrderInfo() {
   const params = useLocalSearchParams()
   const { workOrderId } = params
-  const { workOrder } = workOrdersApi.useGetMWorkOrdersQuery(undefined, {
+  const { workOrder } = useGetMWorkOrdersQuery(undefined, {
     selectFromResult: ({ data }) => ({
       workOrder: data?.payload.find(
         (workOrder) => workOrder._id === workOrderId
@@ -27,6 +26,10 @@ export default function WorkOrderInfo() {
         <Text>An error has occured!</Text>
       </View>
     )
+
+  function handleButtonPress() {
+    console.log("PRESSED")
+  }
 
   return (
     <View style={styles.container}>
@@ -55,6 +58,27 @@ export default function WorkOrderInfo() {
           {/* <Text>{employeeName}</Text> */}
         </View>
       </View>
+      <View style={styles.buttonWrapper}>
+        {statuses &&
+          statuses.map((status) => {
+            return (
+              <StatusChangeButton
+                key={status.status}
+                status={status.status}
+                borderColor={status.borderColor}
+                activeBgColor={
+                  status.status === workOrder.status
+                    ? status.activeBgColor
+                    : "white"
+                }
+                textColor={
+                  status.status === workOrder.status ? "white" : "black"
+                }
+                workOrderId={workOrder._id}
+              />
+            )
+          })}
+      </View>
     </View>
   )
 }
@@ -64,7 +88,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    padding: 20
+    padding: 20,
+    gap: 10
   },
   cardWrapper: {
     width: "100%",
@@ -93,5 +118,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 4,
     alignItems: "center"
+  },
+  buttonWrapper: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 5
   }
 })
