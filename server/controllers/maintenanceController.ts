@@ -95,7 +95,6 @@ export const getAllWorkOrders = async (
   next: NextFunction
 ) => {
   const employeeId = req.employee
-  console.log("Getting ALL Work orders")
   if (!employeeId)
     return next(
       errorHandler(400, "You must be logged in to do that!", "requestResult")
@@ -106,6 +105,8 @@ export const getAllWorkOrders = async (
   if (!workOrders || workOrders.length < 1) {
     return next(errorHandler(400, "No work orders found", "requestResult"))
   }
+
+  console.log("MAINTENANCE", workOrders)
 
   return successHandler(res, 200, "Work Orders Found!", workOrders)
   // TODO: Only get the work orders that are not completed maybe?
@@ -124,11 +125,12 @@ export const getWorkOrdersOfEmployee = async (
     )
 
   const workOrders = await WorkOrder.find({ employeeId: employeeId })
-  console.log(workOrders)
 
   if (!workOrders || workOrders.length < 1) {
     return next(errorHandler(400, "No work orders found", "requestResult"))
   }
+
+  console.log("TEACHERS", workOrders)
 
   return successHandler(res, 200, "Work Orders Found!", workOrders)
   // TODO: Only get the work orders that are not completed maybe?

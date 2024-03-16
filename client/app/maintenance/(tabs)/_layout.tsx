@@ -10,6 +10,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { MaterialIcons } from "@expo/vector-icons"
 import { FontAwesome5 } from "@expo/vector-icons"
 import { FontAwesome6 } from "@expo/vector-icons"
+import { AntDesign } from "@expo/vector-icons"
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -108,29 +109,39 @@ export default function TabLayout() {
         name="orders"
         options={{
           title: "Work Orders",
+          headerTitleAlign: "center",
+          headerTitleStyle: { fontSize: 20 },
+          headerLeft: () => (
+            <AntDesign
+              name="dingding"
+              size={24}
+              color="black"
+              style={{ marginLeft: 15 }}
+            />
+          ),
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="account-wrench"
               size={24}
               color={color}
             />
-          ),
-          headerRight: () => (
-            <Link href="/maintenance/work-order-form" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <>
-                    <FontAwesome6
-                      name="add"
-                      size={25}
-                      color={Colors[colorScheme ?? "light"].tabIconSelected}
-                      style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                    />
-                  </>
-                )}
-              </Pressable>
-            </Link>
           )
+          // headerRight: () => (
+          //   <Link href="/maintenance/work-order-form" asChild>
+          //     <Pressable>
+          //       {({ pressed }) => (
+          //         <>
+          //           <FontAwesome6
+          //             name="add"
+          //             size={25}
+          //             color={Colors[colorScheme ?? "light"].tabIconSelected}
+          //             style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+          //           />
+          //         </>
+          //       )}
+          //     </Pressable>
+          //   </Link>
+          // )
         }}
       />
       <Tabs.Screen
