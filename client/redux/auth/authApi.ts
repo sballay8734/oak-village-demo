@@ -31,16 +31,6 @@ export const authApi = createApi({
         method: "POST",
         body
       })
-      // async onQueryStarted(signinData, { dispatch, queryFulfilled }) {
-      //   // TODO: dispatch start message
-      //   try {
-      //     const { data } = await queryFulfilled
-      //     dispatch(setEmployee(data))
-      //   } catch (error) {
-      //     console.error(error)
-      //     // TODO: dispatch error
-      //   }
-      // }
     }),
     lazyStandardRegister: builder.mutation<IEmployee_From, IRegisterInfo>({
       query: (formData) => ({

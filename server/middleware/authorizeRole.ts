@@ -1,15 +1,31 @@
 import { Request, Response, NextFunction } from "express"
 import { errorHandler } from "../utils/errorHandler"
+import Employee from "../models/Employee"
 
-export const authorizeRole = (requiredRole: string) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    // NOTE: This is wrong. The role should not be available here. The ID should be used to fetch the user from the DB and THEN get the role from there. This is more secure as it would require someone to guess the ID of someone with the correct role. You could take this a step further by requiring a name match also.
-    const userRole = req.employee.role
+export const authorizeRole = (authorizedRoles: string[]) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    const employeeId = req.employee
 
-    if (userRole === requiredRole) {
+    if (!employeeId)
+      return next(errorHandler(400, "Unauthorized", "requestResult"))
+
+    try {
+      const employee = await Employee.findById(employeeId)
+
+      if (!employee)
+        return next(errorHandler(400, "Employee not found", "requestResult"))
+
+      console.log(
+        "EMPLOYEE MATCHES ROLE?",
+        authorizedRoles.includes(employee.role)
+      )
+
+      if (!authorizedRoles.includes(employee.role)) {
+        return next(errorHandler(400, "Unauthorized Role", "requestResult"))
+      }
       next()
-    } else {
-      return next(errorHandler(403, "Unauthorized"))
+    } catch (error) {
+      next(errorHandler(500, "Could not authorize role.", "requestResult"))
     }
   }
 }

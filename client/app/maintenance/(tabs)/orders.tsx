@@ -1,8 +1,16 @@
 import { StyleSheet } from "react-native"
+import { useSelector } from "react-redux"
 
 import { Text, View } from "@/components/Themed"
+import { RootState } from "@/redux/store"
+import { useFetchMaintenanceWorkOrdersQuery } from "@/redux/workOrdersSlice/workOrdersApi"
 
 export default function WorkOrdersScreen() {
+  const employee = useSelector(
+    (state: RootState) => state.employeeSlice.employee
+  )
+  const { data: workOrders, isLoading } = useFetchMaintenanceWorkOrdersQuery()
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>MAINTENANCE Work Orders</Text>

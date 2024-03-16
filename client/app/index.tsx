@@ -37,6 +37,7 @@ export default function Entry() {
           router.push("/parent/")
           break
         default:
+          // router.push("/login")
           console.log("NO MATCHING ROUTE")
       }
     }

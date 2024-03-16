@@ -15,6 +15,7 @@ import {
 
 import { authApi } from "./auth/authApi"
 import { rootReducer } from "./rootReducer"
+import { workOrdersApi } from "./workOrdersSlice/workOrdersApi"
 
 const persistConfig = {
   key: "root",
@@ -33,7 +34,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
       }
-    }).concat(authApi.middleware)
+    }).concat(authApi.middleware, workOrdersApi.middleware)
 })
 
 setupListeners(store.dispatch)

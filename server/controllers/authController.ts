@@ -61,7 +61,6 @@ export const signin = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(req.body)
   const { email, password } = req.body
 
   try {
@@ -77,7 +76,7 @@ export const signin = async (
         errorHandler(400, "Email or password is incorrect", "requestResult")
       )
 
-    const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET!)
+    const token = jwt.sign({ _id: validUser._id }, process.env.JWT_SECRET!)
 
     const userObject = validUser.toObject()
 

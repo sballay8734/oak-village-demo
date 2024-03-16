@@ -21,6 +21,14 @@ const tempTeacher = {
   email: "shawnballay1@gmail.com",
   password: "testpassword"
 }
+const tempTeacher2 = {
+  email: "Thisisatest@yahoo.com",
+  password: "testpassword"
+}
+const tempParent = {
+  email: "gkasljdglkaj@yahoo.com",
+  password: "testpassword"
+}
 const tempMaintenance = {
   email: "johnsmith@yahoo.com",
   password: "testpassword"
@@ -49,6 +57,7 @@ export default function Login() {
     }
 
     // * If successful signin
+    console.log(res.data.payload)
     dispatch(setEmployee(res.data.payload))
     dispatch(
       setResponseMessage({
@@ -75,7 +84,11 @@ export default function Login() {
         onPress={() => handleLogin(tempMaintenance)}
         title="Maintenance"
       ></Button>
-      <Button onPress={handleReduxPurge} title="Clear Redux State"></Button>
+      <Button
+        color={"red"}
+        onPress={handleReduxPurge}
+        title="Clear Redux State"
+      ></Button>
     </View>
   )
 }

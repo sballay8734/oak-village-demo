@@ -1,8 +1,20 @@
 import { StyleSheet } from "react-native"
+import { useSelector } from "react-redux"
+
+import { useFetchEmployeeWorkOrdersQuery } from "@/redux/workOrdersSlice/workOrdersApi"
 
 import { Text, View } from "@/components/Themed"
+import { RootState } from "@/redux/store"
+import { useEffect } from "react"
 
 export default function WorkOrdersScreen() {
+  const employee = useSelector(
+    (state: RootState) => state.employeeSlice.employee
+  )
+  const { data: workOrders, isLoading } = useFetchEmployeeWorkOrdersQuery()
+
+  if (employee === null) return null
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>TEACHER Work Orders</Text>

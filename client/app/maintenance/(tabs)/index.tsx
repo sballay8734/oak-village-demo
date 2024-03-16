@@ -29,7 +29,11 @@ export default function HomeScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <Button onPress={handleClearState} title={`Clear Local Storage`}></Button>
+      <Button
+        color={"red"}
+        onPress={handleClearState}
+        title={`Clear Local Storage`}
+      ></Button>
     </View>
   )
 }

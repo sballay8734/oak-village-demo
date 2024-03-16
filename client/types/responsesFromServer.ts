@@ -61,7 +61,7 @@ export type ModApiResponse<T> = ModErrorResponse | { data: SuccessResponse<T> }
 
 // * Work Order FROM Server SHAPE **********************************************
 // work order TO Server is just formData
-export interface WorkOrderCreateResponse {
+export interface WorkOrderFrom {
   _id: string
   classroom:
     | "Infant 1"

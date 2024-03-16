@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import jwt, { Secret } from "jsonwebtoken"
+import jwt, { Secret, VerifyErrors } from "jsonwebtoken"
 
 import { errorHandler } from "../utils/errorHandler"
 import Employee from "../models/Employee"
@@ -9,22 +9,22 @@ export const authenticateUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  const SECRET_KEY: Secret = process.env.JWT_SECRET!
-
   try {
-    // check for token
     const token = req.cookies.access_token
 
-    if (!token) return next(errorHandler(401, "Unauthorized"))
-    // verify user using jwt
-    const decoded = jwt.verify(token, SECRET_KEY) as { _id: string }
+    if (!token) return next(errorHandler(401, "Unauthorized", "requestResult"))
 
-    const employee = await Employee.findById(decoded._id)
+    jwt.verify(
+      token,
+      process.env.JWT_SECRET!,
+      (err: VerifyErrors | null, employee: any) => {
+        if (err) return next(errorHandler(403, "Forbidden", "requestResult"))
 
-    if (!employee) return next(errorHandler(401, "Unauthorized"))
-
-    req.employee = employee.toObject()
-    next()
+        console.log("AUTHENTICATED")
+        req.employee = employee._id
+        next()
+      }
+    )
   } catch (error) {
     next(error)
   }
