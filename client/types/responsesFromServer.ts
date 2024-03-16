@@ -72,7 +72,6 @@ export interface CreatedUser {
   lastName: string
   preferredName: string
   role: string
-  activeGameId: string
 }
 
 export interface AuthenticatedUser {
@@ -82,5 +81,4 @@ export interface AuthenticatedUser {
   lastName: string
   preferredName: string
   role: string
-  activeGameId: string
 }

@@ -7,11 +7,8 @@ import {
   SeenUpdateParams
 } from "@/types/requestsToServer"
 import { setResponseMessage } from "../serverResponseSlice/serverResponseSlice"
-import {
-  isApiErrorResponse,
-  isErrorWithMessage,
-  isFetchBaseQueryError
-} from "@/helpers/errorHandling"
+import { handleMutationErrors } from "@/helpers/errorHandling"
+import { handleMutationSuccess } from "@/helpers/successHandling"
 
 // ! TODO: Get RID OF SUCCESS, FAIL, etc... and use the custom error handler you made (Also try and move the error handler out of the components)
 interface Success {
@@ -98,47 +95,10 @@ export const workOrdersApi = createApi({
       invalidatesTags: ["EmployeeWorkOrders"],
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
-          const { data: newWorkOrder } = await queryFulfilled
-          dispatch(
-            setResponseMessage({
-              successResult: true,
-              message: "Successfully created work order!"
-            })
-          )
+          await queryFulfilled
+          handleMutationSuccess(dispatch, "Successfully created work order!")
         } catch (err) {
-          if (isApiErrorResponse(err)) {
-            console.log("TRUE!!")
-            dispatch(
-              setResponseMessage({
-                successResult: false,
-                message: err.error.data.message
-              })
-            )
-          } else if (isFetchBaseQueryError(err)) {
-            const errMsg = "error" in err ? err.error : JSON.stringify(err.data)
-            dispatch(
-              setResponseMessage({
-                successResult: false,
-                message: errMsg
-              })
-            )
-          } else if (isErrorWithMessage(err)) {
-            const errMsg = err.message
-            dispatch(
-              setResponseMessage({
-                successResult: false,
-                message: errMsg
-              })
-            )
-          } else {
-            console.log("FROM API", err)
-            dispatch(
-              setResponseMessage({
-                successResult: false,
-                message: "Something went very VERY wrong."
-              })
-            )
-          }
+          handleMutationErrors(err, dispatch)
         }
       }
     })

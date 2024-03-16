@@ -20,10 +20,7 @@ import { useDispatch } from "react-redux"
 
 import { Text, View } from "@/components/Themed"
 import { AntDesign } from "@expo/vector-icons"
-import {
-  hideResponseModal,
-  setResponseMessage
-} from "@/redux/serverResponseSlice/serverResponseSlice"
+import { hideResponseModal } from "@/redux/serverResponseSlice/serverResponseSlice"
 import { useCreateWorkOrderMutation } from "@/redux/workOrdersSlice/workOrdersApi"
 
 interface FormData {
@@ -70,8 +67,9 @@ export default function WorkOrderForm() {
     } catch (err) {
       console.log("CAUGHT ERROR", err)
     }
-    // reset()
-    // clearErrors()
+    reset()
+    clearErrors()
+    router.back()
   }
 
   function handleFocus() {

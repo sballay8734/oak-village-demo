@@ -5,15 +5,25 @@ import { MutationCacheLifecycleApi } from "@reduxjs/toolkit/dist/query/endpointD
 // TODO: ILoginInfo needs to replace "string". "string" is just for testing
 import { IEmployee_From, IRegisterInfo } from "./types"
 import { setEmployee } from "./employeeSlice"
-import {
-  ApiResponse,
-  AuthenticatedUser,
-  ModApiResponse
-} from "@/types/responsesFromServer"
+import { handleQuerySuccess } from "@/helpers/successHandling"
+import { handleQueryErrors } from "@/helpers/errorHandling"
 
 export interface SignInFormData {
   email: string
   password: string
+}
+
+interface SignedInUser {
+  message: string
+  payload: {
+    _id: string
+    email: string
+    firstName: string
+    lastName: string
+    preferredName: string
+    role: string
+  }
+  success: true
 }
 
 // Define a service using a base URL and expected endpoints
@@ -22,15 +32,20 @@ export const authApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3001/api/auth" }),
   endpoints: (builder) => ({
     // First is what we get back, second is what we send TODO: !!!
-    lazyStandardSignIn: builder.mutation<
-      ModApiResponse<AuthenticatedUser>,
-      SignInFormData
-    >({
+    lazyStandardSignIn: builder.mutation<SignedInUser, SignInFormData>({
       query: (body) => ({
         url: "/signin",
         method: "POST",
         body
-      })
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          await queryFulfilled
+          handleQuerySuccess(dispatch, "You are logged in!")
+        } catch (err) {
+          handleQueryErrors(err, dispatch)
+        }
+      }
     }),
     lazyStandardRegister: builder.mutation<IEmployee_From, IRegisterInfo>({
       query: (formData) => ({

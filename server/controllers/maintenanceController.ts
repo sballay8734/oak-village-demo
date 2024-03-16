@@ -55,7 +55,7 @@ export const createWorkOrder = async (
       areaInClassroom,
       taskNeeded,
       additionalDetails: additionalDetails || "",
-      // employeeName: employee.firstName,
+      employeeName: employee.firstName,
       employeeId
     })
 

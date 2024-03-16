@@ -3,18 +3,14 @@ import { StyleSheet, Button } from "react-native"
 import { useRouter } from "expo-router"
 import { useDispatch } from "react-redux"
 
-import { View, Text } from "@/components/Themed"
+import { View } from "@/components/Themed"
 import {
   SignInFormData,
   useLazyStandardSignInMutation
 } from "@/redux/auth/authApi"
-import { setEmployee } from "@/redux/auth/employeeSlice"
 import { persistor } from "@/redux/store"
-import { setResponseMessage } from "@/redux/serverResponseSlice/serverResponseSlice"
-import { IEmployee_From } from "@/redux/auth/types"
-import { AuthenticatedUser, ModApiResponse } from "@/types/responsesFromServer"
-import { isModErrorResponse } from "@/helpers/errorTypeCheck"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { setEmployee } from "@/redux/auth/employeeSlice"
 
 // TODO: Different logins should show different screens
 
@@ -35,38 +31,22 @@ const tempMaintenance = {
   password: "testpassword"
 }
 
+type role = "/teacher/" | "/admin/" | "/maintenance/" | "/parent/"
+
 export default function Login() {
   const router = useRouter()
   const dispatch = useDispatch()
-  const [trigger, { isLoading }] = useLazyStandardSignInMutation()
+  const [login, { isLoading }] = useLazyStandardSignInMutation()
 
   async function handleLogin(credentials: SignInFormData) {
-    // ! This is also correct I think. Not sure why TS is throwing an error
-    const res: ModApiResponse<AuthenticatedUser> = await trigger(credentials)
-
-    // * If failed signin
-    if (isModErrorResponse(res)) {
-      console.log("ERROR")
-      dispatch(
-        setResponseMessage({
-          successResult: res.error.data.success,
-          message: res.error.data.message
-        })
-      )
-      return
+    try {
+      const res = await login(credentials).unwrap()
+      const userRole = res.payload.role
+      dispatch(setEmployee(res.payload))
+      router.push(`/${userRole}/` as role)
+    } catch (err) {
+      console.log("CAUGHT ERROR", err)
     }
-
-    // * If successful signin
-    dispatch(setEmployee(res.data.payload))
-    dispatch(
-      setResponseMessage({
-        successResult: res.data.success,
-        message: res.data.message
-      })
-    )
-
-    // ! This TS Error is actually not breaking anything and not sure why it's happening
-    router.push(`/${res.data.payload.role}/`)
   }
 
   function handleReduxPurge() {
@@ -78,7 +58,10 @@ export default function Login() {
     <View style={styles.loginPage}>
       {/* <Text>LOGIN</Text> */}
       {/* <Button onPress={() => handleLogin("admin")} title="Admin"></Button> */}
-      <Button onPress={() => handleLogin(tempTeacher)} title="Teacher"></Button>
+      <Button
+        onPress={() => handleLogin(tempTeacher2)}
+        title="Teacher"
+      ></Button>
       {/* <Button onPress={() => handleLogin("parent")} title="Parent"></Button> */}
       <Button
         onPress={() => handleLogin(tempMaintenance)}
