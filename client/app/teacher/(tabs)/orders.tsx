@@ -1,28 +1,87 @@
-import { StyleSheet } from "react-native"
+import { FlatList, ScrollView, StyleSheet } from "react-native"
 import { useSelector } from "react-redux"
+import { useState } from "react"
 
-import { useGetEWorkOrdersQuery } from "@/redux/workOrdersSlice/workOrdersApi"
-
-import { Text, View } from "@/components/Themed"
+import { View, Text } from "@/components/Themed"
 import { RootState } from "@/redux/store"
-import { useEffect } from "react"
+import { useGetEWorkOrdersQuery } from "@/redux/workOrdersSlice/workOrdersApi"
+import { teacherFilters } from "@/components/TeacherComponents/TabFilter/teacherTabs"
+import TabFilter from "@/components/TeacherComponents/TabFilter/TeacherTabFilter"
+import { IWorkOrder_From } from "@/types/workOrders"
+import TeacherWorkOrderCard from "@/components/TeacherComponents/WorkOrderRequestCard/TeacherWorkOrderCard"
 
 export default function WorkOrdersScreen() {
   const employee = useSelector(
     (state: RootState) => state.employeeSlice.employee
   )
   const { data: workOrders, isLoading } = useGetEWorkOrdersQuery()
+  const [activeFilter, setActiveFilter] = useState<string>("All")
 
-  if (employee === null) return null
+  function handleFilterChange(filter: string) {
+    setActiveFilter(filter)
+  }
+
+  if (!employee || isLoading)
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    )
+
+  const filteredWorkOrders =
+    workOrders &&
+    workOrders.payload.filter((workOrder) => {
+      if (activeFilter === "All") {
+        return workOrders.payload
+      } else if (activeFilter === "New") {
+        return workOrder.seenByMaintenance === false
+      } else {
+        return workOrder.status === activeFilter
+      }
+    })
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>TEACHER Work Orders</Text>
+      {/* // * NAV/FILTER */}
+      <FlatList
+        data={teacherFilters}
+        renderItem={({ item }) => (
+          <TabFilter
+            filterName={item}
+            active={item === activeFilter}
+            handleFilterChange={handleFilterChange}
+          />
+        )}
+        showsHorizontalScrollIndicator={false}
+        horizontal
+        style={{
+          flexGrow: 0,
+          display: "flex"
+        }}
+      ></FlatList>
       <View
         style={styles.separator}
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
+
+      {/* // * WORK ORDER LIST */}
+      {filteredWorkOrders?.length ? (
+        <ScrollView
+          style={styles.workOrderList}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.workOrderList}>
+            {filteredWorkOrders.map((workOrder: IWorkOrder_From) => (
+              <TeacherWorkOrderCard key={workOrder._id} workOrder={workOrder} />
+            ))}
+          </View>
+        </ScrollView>
+      ) : (
+        <View>
+          <Text>0 {activeFilter} Work Orders</Text>
+        </View>
+      )}
     </View>
   )
 }
@@ -31,15 +90,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
+    // justifyContent: "center",
+    flexDirection: "column",
+    padding: 12,
+    gap: 10
   },
   title: {
     fontSize: 20,
     fontWeight: "bold"
   },
   separator: {
-    marginVertical: 30,
+    marginVertical: 0,
     height: 1,
     width: "80%"
+  },
+  workOrderList: {
+    flex: 1,
+    height: "100%",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    gap: 10
   }
 })

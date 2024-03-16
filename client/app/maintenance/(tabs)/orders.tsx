@@ -5,9 +5,9 @@ import { useState } from "react"
 import { View, Text } from "@/components/Themed"
 import { RootState } from "@/redux/store"
 import { useGetMWorkOrdersQuery } from "@/redux/workOrdersSlice/workOrdersApi"
-import { maintenanceFilters } from "@/components/MaintenanceComponents/TabFilter/tabs"
-import TabFilter from "@/components/MaintenanceComponents/TabFilter/TabFilter"
-import WorkOrderCard from "@/components/MaintenanceComponents/WorkOrderRequestCard/WorkOrderCard"
+import { maintenanceFilters } from "@/components/MaintenanceComponents/TabFilter/maintenanceTabs"
+import TabFilter from "@/components/MaintenanceComponents/TabFilter/MaintenanceTabFilter"
+import MaintenanceWorkOrderCard from "@/components/MaintenanceComponents/WorkOrderRequestCard/MaintenanceWorkOrderCard"
 import { IWorkOrder_From } from "@/types/workOrders"
 
 // ! GET TYPES CORRECT FROM API (IT IS NOT EXPECTING THE RIGHT FORMAT)
@@ -75,7 +75,10 @@ export default function WorkOrdersScreen() {
         >
           <View style={styles.workOrderList}>
             {filteredWorkOrders.map((workOrder: IWorkOrder_From) => (
-              <WorkOrderCard key={workOrder._id} workOrder={workOrder} />
+              <MaintenanceWorkOrderCard
+                key={workOrder._id}
+                workOrder={workOrder}
+              />
             ))}
           </View>
         </ScrollView>

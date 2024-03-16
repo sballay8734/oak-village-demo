@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Pressable } from "react-native"
-import { handleFilterLogic } from "./tabs"
+import { handleFilterLogic } from "./maintenanceTabs"
 
 interface TabFilterProps {
   filterName: string

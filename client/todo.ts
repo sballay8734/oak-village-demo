@@ -4,9 +4,9 @@
 // TODO: Get work order filters working
 // TODO: Style work order pages
 // TODO: Rewrite tabfilter logic it is messy
+// TODO: Initialize animation logic for hover, loading, active, error, etc..
 
 // TODO: Optimize the filtering used to determine the work order category count.
-// TODO: Initialize animation logic for hover, loading, active, etc..
 // TODO: Work order creation is not enforcing the classroom type
 // TODO: isLoading states for all pages
 // TODO: Wrap entire app in safearea view?

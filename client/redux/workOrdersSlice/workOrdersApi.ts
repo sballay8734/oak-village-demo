@@ -1,6 +1,7 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import { WorkOrderFrom } from "@/types/responsesFromServer"
+import { IWorkOrder_To } from "@/types/requestsToServer"
 
 interface StatusUpdateParams {
   workOrderId: string
@@ -67,7 +68,7 @@ export const workOrdersApi = createApi({
       ]
     }),
     // * Employee Work Orders (ALL by employeeId)
-    getEWorkOrders: builder.query<WorkOrderFrom[], void>({
+    getEWorkOrders: builder.query<Success | Fail, void>({
       query: () => `/employee-work-orders`,
       providesTags: (result) =>
         Array.isArray(result)
@@ -79,15 +80,15 @@ export const workOrdersApi = createApi({
               { type: "EmployeeWorkOrders", _id: "LIST" }
             ]
           : [{ type: "EmployeeWorkOrders", _id: "LIST" }]
+    }),
+    createWorkOrder: builder.mutation<WorkOrderFrom, IWorkOrder_To>({
+      query: (body) => ({
+        url: `/create-work-order`,
+        method: "POST",
+        body
+      }),
+      invalidatesTags: ["EmployeeWorkOrders"]
     })
-    // createWorkOrder: build.mutation<Post, Partial<Post>>({
-    //   query: (body) => ({
-    //     url: `posts`,
-    //     method: "POST",
-    //     body
-    //   }),
-    //   invalidatesTags: ["EmployeeWorkOrders"]
-    // })
   })
 })
 
@@ -95,7 +96,8 @@ export const {
   useGetMWorkOrdersQuery,
   useGetEWorkOrdersQuery,
   useUpdateStatusMutation,
-  useUpdateSeenMutation
+  useUpdateSeenMutation,
+  useCreateWorkOrderMutation
 } = workOrdersApi
 
 export const { endpoints } = workOrdersApi

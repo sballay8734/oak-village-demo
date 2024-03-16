@@ -24,10 +24,8 @@ import {
   hideResponseModal,
   setResponseMessage
 } from "@/redux/serverResponseSlice/serverResponseSlice"
-import {
-  ApiResponse,
-  WorkOrderCreateResponse
-} from "@/types/responsesFromServer"
+import { ApiResponse, WorkOrderFrom } from "@/types/responsesFromServer"
+import { useCreateWorkOrderMutation } from "@/redux/workOrdersSlice/workOrdersApi"
 
 interface FormData {
   classroom: string // dropdown
@@ -45,6 +43,7 @@ export default function WorkOrderForm() {
   const [showBoxShadow, setShowBoxShadow] = useState<boolean>(false)
   const [taskNeededError, setTaskNeededError] = useState<string | null>(null)
   const [responseError, setResponseError] = useState<string | null>(null)
+  const [createWorkOrder, { isLoading, isError }] = useCreateWorkOrderMutation()
 
   const initialValues: FormData = {
     classroom: "",
@@ -82,7 +81,7 @@ export default function WorkOrderForm() {
         }
       )
 
-      const data: ApiResponse<WorkOrderCreateResponse> = await res.json()
+      const data: ApiResponse<WorkOrderFrom> = await res.json()
 
       if (data.success === false) {
         // TODO: Hopefully can fix this eventually (react-hook-form limitation)

@@ -14,36 +14,6 @@ interface SuccessResponse<T> {
 
 export type ApiResponse<T> = { data: ErrorResponse | SuccessResponse<T> }
 
-// * SUCCESS
-// const res = {
-//   data: {
-//     message: "Sign in successful!",
-//     payload: {
-//       __v: 0,
-//       _id: "65f4bd13cab34b06f8e578fe",
-//       email: "shawnballay1@gmail.com",
-//       firstName: "Shawn",
-//       lastName: "Ballay",
-//       preferredName: "Shawn",
-//       role: "teacher"
-//     },
-//     success: true
-//   }
-// }
-
-// ! FAIL
-// const res = {
-//   error: {
-//     data: {
-//       message: "Email or password is incorrect",
-//       statusCode: 400,
-//       success: false,
-//       type: "requestResult"
-//     },
-//     status: 400
-//   }
-// }
-
 // * Modified Responses due to Redux-Toolkit modifying the response object
 
 export interface ModErrorResponse {

@@ -6,24 +6,16 @@ import { getDateDifference } from "@/helpers/dateFormatting"
 import { Link } from "expo-router"
 import { IWorkOrder_From } from "@/types/workOrders"
 import { Ionicons } from "@expo/vector-icons"
-import { useUpdateSeenMutation } from "@/redux/workOrdersSlice/workOrdersApi"
 
-interface WorkOrderCardProps {
+interface TeacherWorkOrderCardProps {
   workOrder: IWorkOrder_From
 }
 
 // TODO: FADE OUT TEXT (2 lines max, 2nd line faded)
 
-export default function WorkOrderCard({ workOrder }: WorkOrderCardProps) {
-  const [updateSeen, { isLoading, isError }] = useUpdateSeenMutation()
-
-  function handleUpdateSeen() {
-    if (workOrder.seenByMaintenance === true) return
-    updateSeen({
-      workOrderId: workOrder._id,
-      seenStatus: workOrder.seenByMaintenance
-    })
-  }
+export default function TeacherWorkOrderCard({
+  workOrder
+}: TeacherWorkOrderCardProps) {
   return (
     <View style={styles.cardWrapper}>
       {/* // * Header and three dots (...) */}
@@ -33,13 +25,13 @@ export default function WorkOrderCard({ workOrder }: WorkOrderCardProps) {
         </Text>
         <Link
           href={{
-            pathname: "/maintenance/work-order-info",
+            pathname: "/teacher/work-order-info",
             // /* 1. Navigate to the details route with query params */
             params: { workOrderId: workOrder._id }
           }}
           asChild
         >
-          <Pressable onPress={handleUpdateSeen}>
+          <Pressable>
             <Feather name="more-horizontal" size={24} color="black" />
           </Pressable>
         </Link>
