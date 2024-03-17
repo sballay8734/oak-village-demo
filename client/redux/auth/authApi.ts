@@ -29,7 +29,7 @@ interface SignedInUser {
 // Define a service using a base URL and expected endpoints
 export const authApi = createApi({
   reducerPath: "auth",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3001/api/auth" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "http://192.168.0.116:3001/api/auth" }),
   endpoints: (builder) => ({
     // First is what we get back, second is what we send TODO: !!!
     lazyStandardSignIn: builder.mutation<SignedInUser, SignInFormData>({

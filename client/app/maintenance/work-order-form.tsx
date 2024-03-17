@@ -50,7 +50,7 @@ export default function WorkOrderForm() {
     setSuccess(null)
     try {
       const res = await fetch(
-        "http://localhost:3001/api/maintenance/create-work-order",
+        "http://192.168.0.116:3001/api/maintenance/create-work-order",
         {
           method: "POST",
           headers: {

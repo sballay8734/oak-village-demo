@@ -1,4 +1,4 @@
-import { StyleSheet, Pressable, Text } from "react-native"
+import { StyleSheet, Pressable, Text, ActivityIndicator } from "react-native"
 import { useRouter } from "expo-router"
 import { useDispatch } from "react-redux"
 import { BtnStyles } from "@/constants/Buttons"
@@ -57,20 +57,47 @@ export default function Login() {
   return (
     <View style={styles.loginPage}>
       <Pressable
-        style={BtnStyles.actionBtn}
+        style={({ pressed }) => [
+          {
+            ...BtnStyles.actionBtn,
+            backgroundColor: pressed
+              ? BtnStyles.actionBtnActive.backgroundColor
+              : BtnStyles.actionBtn.backgroundColor
+          }
+        ]}
         onPress={() => handleLogin(tempTeacher2)}
       >
-        <Text style={BtnStyles.actionText}>Teacher</Text>
+        <Text style={BtnStyles.btnText}>Teacher</Text>
       </Pressable>
       <Pressable
-        style={BtnStyles.actionBtn}
+        style={({ pressed }) => [
+          {
+            ...BtnStyles.actionBtn,
+            backgroundColor: pressed
+              ? BtnStyles.actionBtnActive.backgroundColor
+              : BtnStyles.actionBtn.backgroundColor
+          }
+        ]}
         onPress={() => handleLogin(tempMaintenance)}
       >
-        <Text style={BtnStyles.actionText}>Maintenance</Text>
+        <Text style={BtnStyles.btnText}>Maintenance</Text>
       </Pressable>
-      <Pressable style={BtnStyles.errorBtn} onPress={handleReduxPurge}>
-        <Text style={BtnStyles.actionText}>Clear State</Text>
+      <Pressable
+        style={({ pressed }) => [
+          {
+            ...BtnStyles.errorBtn,
+            backgroundColor: pressed
+              ? BtnStyles.errBtnActive.backgroundColor
+              : BtnStyles.errorBtn.backgroundColor
+          }
+        ]}
+        onPress={handleReduxPurge}
+      >
+        <Text style={BtnStyles.btnText}>Clear State</Text>
       </Pressable>
+      <View style={{ height: 20 }}>
+        {isLoading ? <ActivityIndicator /> : null}
+      </View>
     </View>
   )
 }

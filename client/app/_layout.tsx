@@ -6,10 +6,9 @@ import {
 import { useFonts } from "expo-font"
 import * as SplashScreen from "expo-splash-screen"
 import { useEffect } from "react"
-import { Provider, useDispatch } from "react-redux"
+import { Provider } from "react-redux"
 import { store, persistor } from "@/redux/store"
 import { PersistGate } from "redux-persist/integration/react"
-import { Slot } from "expo-router"
 
 import { useColorScheme } from "@/components/useColorScheme"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
@@ -31,6 +30,7 @@ SplashScreen.preventAutoHideAsync()
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     RobotoMono: require("../assets/fonts/RobotoMono-VariableFont_wght.ttf"),
+    Mooli: require("../assets/fonts/Mooli-Regular.ttf"),
     ...FontAwesome.font
   })
 
@@ -59,7 +59,9 @@ function RootLayoutNav() {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+          // TODO: Replace this eventually (just using light for testing)
+          value={DefaultTheme}
+          // value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
           <Entry />
           {/* <Slot /> */}

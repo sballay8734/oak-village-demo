@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -16,13 +16,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "userInterfaceStyle": "light"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "userInterfaceStyle": "light"
     },
     "web": {
       "bundler": "metro",
@@ -31,7 +33,7 @@
     },
     "plugins": [
       "expo-router", [
-        "expo-font", {"fonts": ["./assets/fonts/Poppins-Regular.ttf", "./assets/fonts/RobotoMono-VariableFont_wght.ttf"]}
+        "expo-font", {"fonts": ["./assets/fonts/Poppins-Regular.ttf", "./assets/fonts/RobotoMono-VariableFont_wght.ttf", "./assets/fonts/Mooli-Regular.ttf"]}
       ]
     ],
     "experiments": {

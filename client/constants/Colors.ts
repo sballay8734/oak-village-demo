@@ -12,8 +12,10 @@ export default {
     primaryDarker: "#588442",
     action: "#845fbd",
     actionDarker: "#5c4284",
+    actionLighter: "#ac89e0",
     changeUp: "#bd8b5f",
-    errorRed: "#e34f4f"
+    errorRed: "#e34f4f",
+    errorLighter: "#eb7878"
   },
   dark: {
     text: "#fff",
