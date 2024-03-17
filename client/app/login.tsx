@@ -1,7 +1,7 @@
-import { PURGE } from "redux-persist"
-import { StyleSheet, Button } from "react-native"
+import { StyleSheet, Pressable, Text } from "react-native"
 import { useRouter } from "expo-router"
 import { useDispatch } from "react-redux"
+import { BtnStyles } from "@/constants/Buttons"
 
 import { View } from "@/components/Themed"
 import {
@@ -56,22 +56,21 @@ export default function Login() {
 
   return (
     <View style={styles.loginPage}>
-      {/* <Text>LOGIN</Text> */}
-      {/* <Button onPress={() => handleLogin("admin")} title="Admin"></Button> */}
-      <Button
+      <Pressable
+        style={BtnStyles.actionBtn}
         onPress={() => handleLogin(tempTeacher2)}
-        title="Teacher"
-      ></Button>
-      {/* <Button onPress={() => handleLogin("parent")} title="Parent"></Button> */}
-      <Button
+      >
+        <Text style={BtnStyles.actionText}>Teacher</Text>
+      </Pressable>
+      <Pressable
+        style={BtnStyles.actionBtn}
         onPress={() => handleLogin(tempMaintenance)}
-        title="Maintenance"
-      ></Button>
-      <Button
-        color={"red"}
-        onPress={handleReduxPurge}
-        title="Clear Redux State"
-      ></Button>
+      >
+        <Text style={BtnStyles.actionText}>Maintenance</Text>
+      </Pressable>
+      <Pressable style={BtnStyles.errorBtn} onPress={handleReduxPurge}>
+        <Text style={BtnStyles.actionText}>Clear State</Text>
+      </Pressable>
     </View>
   )
 }

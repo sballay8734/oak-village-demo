@@ -31,8 +31,14 @@ export default function TeacherWorkOrderCard({
           }}
           asChild
         >
-          <Pressable>
-            <Feather name="more-horizontal" size={24} color="black" />
+          <Pressable
+            style={{
+              backgroundColor: "#a26ee6",
+              borderRadius: 100,
+              padding: 2
+            }}
+          >
+            <Feather name="more-horizontal" size={20} color="white" />
           </Pressable>
         </Link>
       </View>
@@ -46,16 +52,43 @@ export default function TeacherWorkOrderCard({
       {/* // * Date and how many days ago it was submitted, status on bottom right */}
       <View style={styles.cardFooterWrapper}>
         <View style={styles.dateWrapper}>
-          <AntDesign name="calendar" size={16} color="black" />
-          <Text>{new Date(workOrder.dateSubmitted).toDateString()} -</Text>
-          <Text>{getDateDifference(workOrder.dateSubmitted)} days ago</Text>
+          <AntDesign name="calendar" size={14} color="black" />
+          <Text style={{ fontSize: 12 }}>
+            {new Date(workOrder.dateSubmitted).toDateString()} -
+          </Text>
+          <Text style={{ fontSize: 12, color: "red" }}>
+            {getDateDifference(workOrder.dateSubmitted)} days ago
+          </Text>
         </View>
         <View style={styles.seenAndStatus}>
-          <Text>{workOrder.status}</Text>
+          <View
+            style={{
+              backgroundColor:
+                workOrder.status === "Pending"
+                  ? "#8ebfe8"
+                  : workOrder.status === "In Progress"
+                  ? "#e0e677"
+                  : workOrder.status === "Completed"
+                  ? "#91e88e"
+                  : "gray",
+              padding: 2,
+              borderRadius: 100
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 12,
+                paddingVertical: 4,
+                paddingHorizontal: 8
+              }}
+            >
+              {workOrder.status}
+            </Text>
+          </View>
           {workOrder.seenByMaintenance ? (
-            <Ionicons name="eye" size={16} color="green" />
+            <Ionicons name="eye" size={18} color="green" />
           ) : (
-            <Ionicons name="eye-off" size={16} color="red" />
+            <Ionicons name="eye-off" size={18} color="red" />
           )}
         </View>
         {/* <Text>{employeeName}</Text> */}
@@ -70,7 +103,7 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderWidth: 2,
     borderRadius: 10,
-    padding: 10,
+    padding: 14,
     display: "flex",
     flexDirection: "column",
     gap: 10
