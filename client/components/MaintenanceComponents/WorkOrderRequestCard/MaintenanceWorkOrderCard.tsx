@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet } from "react-native"
+import { Pressable, StyleSheet } from "react-native"
 
 import { Feather } from "@expo/vector-icons"
 import { AntDesign } from "@expo/vector-icons"
@@ -7,6 +7,8 @@ import { Link } from "expo-router"
 import { IWorkOrder_From } from "@/types/workOrders"
 import { Ionicons } from "@expo/vector-icons"
 import { useUpdateSeenMutation } from "@/redux/workOrdersSlice/workOrdersApi"
+import { Text, View } from "@/components/Themed"
+import Colors from "@/constants/Colors"
 
 interface MaintenanceWorkOrderCardProps {
   workOrder: IWorkOrder_From
@@ -63,9 +65,9 @@ export default function MaintenanceWorkOrderCard({
         <View style={styles.seenAndStatus}>
           <Text>{workOrder.status}</Text>
           {workOrder.seenByMaintenance ? (
-            <Ionicons name="eye" size={16} color="green" />
+            <Ionicons name="eye" size={18} color={Colors.light.statusOk} />
           ) : (
-            <Ionicons name="eye-off" size={16} color="red" />
+            <Ionicons name="eye-off" size={18} color={Colors.light.lightGray} />
           )}
         </View>
         {/* <Text>{employeeName}</Text> */}

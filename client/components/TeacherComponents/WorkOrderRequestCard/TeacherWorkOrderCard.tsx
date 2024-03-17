@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet } from "react-native"
+import { Pressable, StyleSheet } from "react-native"
 
 import { Feather } from "@expo/vector-icons"
 import { AntDesign } from "@expo/vector-icons"
@@ -6,6 +6,8 @@ import { getDateDifference } from "@/helpers/dateFormatting"
 import { Link } from "expo-router"
 import { IWorkOrder_From } from "@/types/workOrders"
 import { Ionicons } from "@expo/vector-icons"
+import Colors from "@/constants/Colors"
+import { View, Text } from "@/components/Themed"
 
 interface TeacherWorkOrderCardProps {
   workOrder: IWorkOrder_From
@@ -20,9 +22,18 @@ export default function TeacherWorkOrderCard({
     <View style={styles.cardWrapper}>
       {/* // * Header and three dots (...) */}
       <View style={styles.cardHeaderWrapper}>
-        <Text style={styles.cardHeaderText}>
-          {workOrder.classroom} - {workOrder.areaInClassroom}
-        </Text>
+        <View style={styles.headerLeftWrapper}>
+          <Text style={styles.cardHeaderText}>{workOrder.classroom}</Text>
+          <View style={styles.dateWrapper}>
+            <AntDesign name="calendar" size={14} color="black" />
+            <Text style={{ fontSize: 12 }}>
+              {new Date(workOrder.dateSubmitted).toDateString()} -
+            </Text>
+            <Text style={{ fontSize: 12, color: "red" }}>
+              {getDateDifference(workOrder.dateSubmitted)} days ago
+            </Text>
+          </View>
+        </View>
         <Link
           href={{
             pathname: "/teacher/work-order-info",
@@ -30,6 +41,7 @@ export default function TeacherWorkOrderCard({
             params: { workOrderId: workOrder._id }
           }}
           asChild
+          style={{ alignSelf: "flex-start" }}
         >
           <Pressable
             style={{
@@ -42,56 +54,38 @@ export default function TeacherWorkOrderCard({
           </Pressable>
         </Link>
       </View>
-      {/* // * Description */}
-      <View>
-        <Text>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aspernatur
-          nemo esse amet nobis error veritatis dolor mollitia...
-        </Text>
-      </View>
-      {/* // * Date and how many days ago it was submitted, status on bottom right */}
-      <View style={styles.cardFooterWrapper}>
-        <View style={styles.dateWrapper}>
-          <AntDesign name="calendar" size={14} color="black" />
-          <Text style={{ fontSize: 12 }}>
-            {new Date(workOrder.dateSubmitted).toDateString()} -
-          </Text>
-          <Text style={{ fontSize: 12, color: "red" }}>
-            {getDateDifference(workOrder.dateSubmitted)} days ago
-          </Text>
-        </View>
-        <View style={styles.seenAndStatus}>
-          <View
+      {/* // * Date Wrapper */}
+      <View style={styles.cardMiddleWrapper}></View>
+      <View style={styles.seenAndStatus}>
+        {workOrder.seenByMaintenance ? (
+          <Ionicons name="eye" size={18} color={Colors.light.statusOk} />
+        ) : (
+          <Ionicons name="eye-off" size={18} color={Colors.light.lightGray} />
+        )}
+        <View
+          style={{
+            backgroundColor:
+              workOrder.status === "Pending"
+                ? "#8ebfe8"
+                : workOrder.status === "In Progress"
+                ? "#e0e677"
+                : workOrder.status === "Completed"
+                ? "#91e88e"
+                : "gray",
+            padding: 2,
+            borderRadius: 100
+          }}
+        >
+          <Text
             style={{
-              backgroundColor:
-                workOrder.status === "Pending"
-                  ? "#8ebfe8"
-                  : workOrder.status === "In Progress"
-                  ? "#e0e677"
-                  : workOrder.status === "Completed"
-                  ? "#91e88e"
-                  : "gray",
-              padding: 2,
-              borderRadius: 100
+              fontSize: 12,
+              paddingVertical: 4,
+              paddingHorizontal: 8
             }}
           >
-            <Text
-              style={{
-                fontSize: 12,
-                paddingVertical: 4,
-                paddingHorizontal: 8
-              }}
-            >
-              {workOrder.status}
-            </Text>
-          </View>
-          {workOrder.seenByMaintenance ? (
-            <Ionicons name="eye" size={18} color="green" />
-          ) : (
-            <Ionicons name="eye-off" size={18} color="red" />
-          )}
+            {workOrder.status}
+          </Text>
         </View>
-        {/* <Text>{employeeName}</Text> */}
       </View>
     </View>
   )
@@ -100,13 +94,23 @@ export default function TeacherWorkOrderCard({
 const styles = StyleSheet.create({
   cardWrapper: {
     width: "100%",
-    borderColor: "black",
-    borderWidth: 2,
+    // borderColor: "black",
+    // borderWidth: 2,
     borderRadius: 10,
     padding: 14,
     display: "flex",
     flexDirection: "column",
-    gap: 10
+    gap: 10,
+    backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5
   },
   cardHeaderWrapper: {
     display: "flex",
@@ -114,11 +118,25 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between"
   },
+  headerLeftWrapper: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 2
+  },
   cardHeaderText: { fontSize: 16, fontWeight: "bold" },
   cardFooterWrapper: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+    height: 30
+  },
+  cardMiddleWrapper: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    height: 30
   },
   dateWrapper: {
     display: "flex",
@@ -129,8 +147,8 @@ const styles = StyleSheet.create({
   seenAndStatus: {
     display: "flex",
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: "flex-end",
+    justifyContent: "space-between",
     gap: 4
   }
 })

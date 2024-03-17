@@ -19,9 +19,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
-        {employee?.role.toLocaleUpperCase() + " Home" ?? "Error"}
-      </Text>
+      <Text style={styles.title}>{"MAINTENANCE Home" ?? "Error"}</Text>
       <View
         style={styles.separator}
         lightColor="#eee"

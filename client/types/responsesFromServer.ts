@@ -64,6 +64,10 @@ export interface WorkOrderFrom {
   seenByMaintenance: boolean
 }
 
+export interface ModifiedWorkOrderFrom {
+  payload: WorkOrderFrom[] | []
+}
+
 // * AUTH Shapes
 export interface CreatedUser {
   _id: string
@@ -71,7 +75,7 @@ export interface CreatedUser {
   firstName: string
   lastName: string
   preferredName: string
-  role: string
+  roleId: string
 }
 
 export interface AuthenticatedUser {
@@ -80,5 +84,5 @@ export interface AuthenticatedUser {
   firstName: string
   lastName: string
   preferredName: string
-  role: string
+  roleId: string
 }

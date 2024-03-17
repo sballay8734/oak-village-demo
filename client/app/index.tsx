@@ -20,17 +20,17 @@ export default function Entry() {
 
   useEffect(() => {
     if (isReady && employee !== null) {
-      switch (employee.role) {
-        case "teacher":
+      switch (employee.roleId) {
+        case process.env.EXPO_PUBLIC_ROLE_PAST_ID:
           router.push("/teacher/")
           break
-        case "admin":
+        case process.env.EXPO_PUBLIC_ROLE_KING_ID:
           router.push("/admin/")
           break
-        case "maintenance":
+        case process.env.EXPO_PUBLIC_ROLE_JOHN_ID:
           router.push("/maintenance/")
           break
-        case "parent":
+        case process.env.EXPO_PUBLIC_ROLE_DAD_ID:
           router.push("/parent/")
           break
         default:

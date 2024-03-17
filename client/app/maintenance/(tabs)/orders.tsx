@@ -23,24 +23,35 @@ export default function WorkOrdersScreen() {
     setActiveFilter(filter)
   }
 
-  if (!employee || isLoading)
+  if (!employee || isLoading) {
     return (
-      <View>
+      <View style={styles.loading}>
         <Text>Loading...</Text>
       </View>
     )
+  }
+
+  if (!isLoading && (!workOrders || workOrders.payload.length === 0)) {
+    console.log("CATCH CASE", workOrders)
+    return (
+      <View style={styles.loading}>
+        <Text>No work orders found</Text>
+      </View>
+    )
+  }
 
   const filteredWorkOrders =
-    workOrders &&
-    workOrders.payload.filter((workOrder) => {
-      if (activeFilter === "All") {
-        return workOrders.payload
-      } else if (activeFilter === "New") {
-        return workOrder.seenByMaintenance === false
-      } else {
-        return workOrder.status === activeFilter
-      }
-    })
+    workOrders && workOrders.payload.length > 0
+      ? workOrders.payload.filter((workOrder) => {
+          if (activeFilter === "All") {
+            return workOrders.payload
+          } else if (activeFilter === "New") {
+            return workOrder.seenByMaintenance === false
+          } else {
+            return workOrder.status === activeFilter
+          }
+        })
+      : []
 
   return (
     <View style={styles.container}>
@@ -68,7 +79,7 @@ export default function WorkOrdersScreen() {
       />
 
       {/* // * WORK ORDER LIST */}
-      {filteredWorkOrders?.length ? (
+      {filteredWorkOrders?.length > 0 && (
         <ScrollView
           style={styles.workOrderList}
           showsVerticalScrollIndicator={false}
@@ -82,10 +93,6 @@ export default function WorkOrdersScreen() {
             ))}
           </View>
         </ScrollView>
-      ) : (
-        <View>
-          <Text>0 {activeFilter} Work Orders</Text>
-        </View>
       )}
     </View>
   )
@@ -116,5 +123,12 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     gap: 10
+  },
+  loading: {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
   }
 })

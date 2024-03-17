@@ -21,7 +21,7 @@ interface SignedInUser {
     firstName: string
     lastName: string
     preferredName: string
-    role: string
+    roleId: string
   }
   success: true
 }

@@ -6,6 +6,7 @@ import { whitelistedEmails } from "../utils/tempEmailWhitelist"
 import { errorHandler } from "../utils/errorHandler"
 import Employee from "../models/Employee"
 import { successHandler } from "../utils/successHandler"
+import { roleIsValid } from "../helpers/authHelpers"
 
 export const signup = async (
   req: Request,
@@ -33,11 +34,10 @@ export const signup = async (
     )
   }
 
-  // TODO: Move salt value to .env
-  const hashedPassword = bcrypt.hashSync(password, 14)
-
-  // TODO: Add name formatting and validation here
-
+  const hashedPassword = bcrypt.hashSync(
+    password,
+    parseInt(process.env.SALT_ROUNDS!)
+  )
   try {
     const newEmployee = await Employee.create({
       email,
@@ -48,7 +48,7 @@ export const signup = async (
     })
 
     const newEmployeeObject = newEmployee.toObject()
-    const { password, ...rest } = newEmployeeObject
+    const { password, role, ...rest } = newEmployeeObject
 
     res.status(200).json(rest)
   } catch (error) {
@@ -80,7 +80,18 @@ export const signin = async (
 
     const userObject = validUser.toObject()
 
-    const { password: pass, ...rest } = userObject
+    // TODO: Validate that role matches role.id
+    if (!roleIsValid(userObject.roleId, userObject.role)) {
+      return next(
+        errorHandler(
+          400,
+          "Weird. The role doesn't match the role id.",
+          "requestResult"
+        )
+      )
+    }
+
+    const { password: pass, role, ...rest } = userObject
 
     res.cookie("access_token", token, { httpOnly: true })
     return successHandler(res, 200, "Sign in successful!", rest)

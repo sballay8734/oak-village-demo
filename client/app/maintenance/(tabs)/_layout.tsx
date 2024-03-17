@@ -1,7 +1,7 @@
 import React from "react"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
 import { Link, Tabs } from "expo-router"
-import { Pressable, Text } from "react-native"
+import { Pressable } from "react-native"
 
 import Colors from "@/constants/Colors"
 import { useColorScheme } from "@/components/useColorScheme"
@@ -11,6 +11,7 @@ import { MaterialIcons } from "@expo/vector-icons"
 import { FontAwesome5 } from "@expo/vector-icons"
 import { FontAwesome6 } from "@expo/vector-icons"
 import { AntDesign } from "@expo/vector-icons"
+import { Text } from "@/components/Themed"
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -26,7 +27,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tabIconDefault,
         // Disable the static render of the header on web
         // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true)

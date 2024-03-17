@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from "react"
 // ! React Native Modal is sort of an old library. Be aware.
 import Modal from "react-native-modal"
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView
-} from "react-native"
+import { TouchableOpacity, StyleSheet, SafeAreaView } from "react-native"
 import { useDispatch, useSelector } from "react-redux"
 import { AntDesign } from "@expo/vector-icons"
+import { Text, View } from "../Themed"
 
 import { hideResponseModal } from "@/redux/serverResponseSlice/serverResponseSlice"
 import { RootState } from "@/redux/store"

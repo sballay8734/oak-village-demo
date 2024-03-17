@@ -1,6 +1,6 @@
 import { FlatList, ScrollView, StyleSheet } from "react-native"
 import { useSelector } from "react-redux"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { View, Text } from "@/components/Themed"
 import { RootState } from "@/redux/store"
@@ -21,32 +21,35 @@ export default function WorkOrdersScreen() {
     setActiveFilter(filter)
   }
 
-  if (!employee || isLoading)
+  if (isLoading) {
     return (
-      <View
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center"
-        }}
-      >
+      <View style={styles.loading}>
         <Text>Loading...</Text>
       </View>
     )
+  }
+
+  if (!isLoading && (!workOrders || workOrders.payload.length === 0)) {
+    console.log("CATCH CASE", workOrders)
+    return (
+      <View style={styles.loading}>
+        <Text>No work orders found</Text>
+      </View>
+    )
+  }
 
   const filteredWorkOrders =
-    workOrders &&
-    workOrders.payload.filter((workOrder) => {
-      if (activeFilter === "All") {
-        return workOrders.payload
-      } else if (activeFilter === "New") {
-        return workOrder.seenByMaintenance === false
-      } else {
-        return workOrder.status === activeFilter
-      }
-    })
+    workOrders && workOrders.payload.length > 0
+      ? workOrders.payload.filter((workOrder) => {
+          if (activeFilter === "All") {
+            return true
+          } else {
+            return workOrder.status === activeFilter
+          }
+        })
+      : []
+
+  console.log("FWO", filteredWorkOrders)
 
   return (
     <View style={styles.container}>
@@ -74,7 +77,7 @@ export default function WorkOrdersScreen() {
       />
 
       {/* // * WORK ORDER LIST */}
-      {filteredWorkOrders?.length ? (
+      {filteredWorkOrders?.length > 0 && (
         <ScrollView
           style={styles.workOrderList}
           showsVerticalScrollIndicator={false}
@@ -85,10 +88,6 @@ export default function WorkOrdersScreen() {
             ))}
           </View>
         </ScrollView>
-      ) : (
-        <View>
-          <Text>0 {activeFilter} Work Orders</Text>
-        </View>
       )}
     </View>
   )
@@ -98,26 +97,35 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    // justifyContent: "center",
+    justifyContent: "center",
     flexDirection: "column",
-    padding: 12,
-    gap: 10
+    paddingVertical: 12
+    // gap: 10
   },
   title: {
     fontSize: 20,
     fontWeight: "bold"
   },
   separator: {
-    marginVertical: 0,
+    marginTop: 12,
     height: 1,
     width: "80%"
   },
   workOrderList: {
+    marginTop: 6,
     flex: 1,
     height: "100%",
-    width: "100%",
+    width: "98%",
     display: "flex",
     flexDirection: "column",
+    alignSelf: "center",
     gap: 10
+  },
+  loading: {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
   }
 })

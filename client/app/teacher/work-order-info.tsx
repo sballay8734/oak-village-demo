@@ -1,13 +1,11 @@
 import { StatusBar } from "expo-status-bar"
 import { StyleSheet } from "react-native"
-import { Text, View } from "react-native"
 import { useLocalSearchParams } from "expo-router"
 
 import { useGetEWorkOrdersQuery } from "@/redux/workOrdersSlice/workOrdersApi"
 import { AntDesign } from "@expo/vector-icons"
 import { getDateDifference } from "@/helpers/dateFormatting"
-import { statuses } from "@/components/MaintenanceComponents/StatusChange/statuses"
-import StatusChangeButton from "@/components/MaintenanceComponents/StatusChange/StatusChangeButton"
+import { Text, View } from "@/components/Themed"
 
 export default function WorkOrderInfo() {
   const params = useLocalSearchParams()

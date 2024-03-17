@@ -15,7 +15,6 @@ interface ApiErrorResponse {
 }
 
 export function isApiErrorResponse(error: unknown): error is ApiErrorResponse {
-  console.log("CHECKING IF API ERROR")
   return (
     typeof error === "object" &&
     error !== null &&
@@ -49,7 +48,6 @@ export function isErrorWithMessage(
 
 export function handleMutationErrors(err: unknown, dispatch: Dispatch) {
   if (isApiErrorResponse(err)) {
-    console.log("TRUE!!")
     dispatch(
       setResponseMessage({
         successResult: false,
@@ -73,7 +71,7 @@ export function handleMutationErrors(err: unknown, dispatch: Dispatch) {
       })
     )
   } else {
-    console.log("FROM API", err)
+    console.log("CATCH CASE", err)
     dispatch(
       setResponseMessage({
         successResult: false,
@@ -85,7 +83,6 @@ export function handleMutationErrors(err: unknown, dispatch: Dispatch) {
 
 export function handleQueryErrors(err: unknown, dispatch: Dispatch) {
   if (isApiErrorResponse(err)) {
-    console.log("TRUE!!")
     dispatch(
       setResponseMessage({
         successResult: false,
@@ -109,7 +106,7 @@ export function handleQueryErrors(err: unknown, dispatch: Dispatch) {
       })
     )
   } else {
-    console.log("FROM API", err)
+    console.log("CATCH CASE", err)
     dispatch(
       setResponseMessage({
         successResult: false,

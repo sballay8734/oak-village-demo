@@ -4,10 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Text, View } from "@/components/Themed"
 import { RootState } from "@/redux/store"
 import { setEmployee } from "@/redux/auth/employeeSlice"
-import {
-  hideResponseModal,
-  setResponseMessage
-} from "@/redux/serverResponseSlice/serverResponseSlice"
+import { hideResponseModal } from "@/redux/serverResponseSlice/serverResponseSlice"
 
 export default function HomeScreen() {
   const dispatch = useDispatch()
@@ -22,9 +19,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
-        {employee?.role.toLocaleUpperCase() + " Home" ?? "Error"}
-      </Text>
+      <Text style={styles.title}>{"TEACHER Home" ?? "Error"}</Text>
       <View
         style={styles.separator}
         lightColor="#eee"
@@ -34,28 +29,6 @@ export default function HomeScreen() {
         color={"red"}
         onPress={handleClearState}
         title={`Clear Local Storage`}
-      ></Button>
-      <Button
-        onPress={() =>
-          dispatch(
-            setResponseMessage({
-              successResult: true,
-              message: "Account has been created successfully!"
-            })
-          )
-        }
-        title={`Show SUCCESS Modal`}
-      ></Button>
-      <Button
-        onPress={() =>
-          dispatch(
-            setResponseMessage({
-              successResult: false,
-              message: "That user already exists!"
-            })
-          )
-        }
-        title={`Show FAIL Modal`}
       ></Button>
     </View>
   )

@@ -1,9 +1,9 @@
 import { StatusBar } from "expo-status-bar"
-import { StyleSheet } from "react-native"
-import { Text, View } from "react-native"
+import { View, StyleSheet } from "react-native"
 import { useLocalSearchParams } from "expo-router"
 
 import { useGetMWorkOrdersQuery } from "@/redux/workOrdersSlice/workOrdersApi"
+import { Text } from "@/components/Themed"
 import { AntDesign } from "@expo/vector-icons"
 import { getDateDifference } from "@/helpers/dateFormatting"
 import { statuses } from "@/components/MaintenanceComponents/StatusChange/statuses"

@@ -132,8 +132,10 @@ export const getWorkOrdersOfEmployee = async (
 
   const workOrders = await WorkOrder.find({ employeeId: employeeId })
 
-  if (!workOrders || workOrders.length < 1) {
-    return next(errorHandler(400, "No work orders found", "requestResult"))
+  console.log(workOrders)
+
+  if (workOrders.length === 0) {
+    return successHandler(res, 200, "No work orders found", workOrders)
   }
 
   return successHandler(res, 200, "Work Orders Found!", workOrders)

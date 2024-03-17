@@ -1,16 +1,14 @@
-// TODO: Add authenticateUser back to middleware flow (before mRouter)
-
 import express, { Request, Response, NextFunction } from "express"
 import dotenv from "dotenv"
 import mongoose, { ConnectOptions } from "mongoose"
 import cookieParser from "cookie-parser"
 import { Err } from "./types/error"
 
+dotenv.config({ path: "./config/.env" })
+
 import authRouter from "./routes/authRoute"
 import { authenticateUser } from "./middleware/authenticateUser"
 import maintenanceRouter from "./routes/maintenanceRoute"
-
-dotenv.config({ path: "./config/.env" })
 
 const clientOptions: ConnectOptions = {
   serverApi: { version: "1", strict: true, deprecationErrors: true }

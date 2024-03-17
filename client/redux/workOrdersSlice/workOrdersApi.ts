@@ -1,6 +1,9 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import { WorkOrderFrom } from "@/types/responsesFromServer"
+import {
+  ModifiedWorkOrderFrom,
+  WorkOrderFrom
+} from "@/types/responsesFromServer"
 import {
   CreateUserFormData,
   StatusUpdateParams,
@@ -49,6 +52,7 @@ export const workOrdersApi = createApi({
               { type: "MaintenanceWorkOrders", _id: "LIST" }
             ]
           : [{ type: "MaintenanceWorkOrders", _id: "LIST" }]
+      // ! TODO: Add ERROR HANLDING
     }),
     updateStatus: builder.mutation<WorkOrderFrom, StatusUpdateParams>({
       query: (body) => ({
@@ -84,7 +88,15 @@ export const workOrdersApi = createApi({
               })),
               { type: "EmployeeWorkOrders", _id: "LIST" }
             ]
-          : [{ type: "EmployeeWorkOrders", _id: "LIST" }]
+          : [{ type: "EmployeeWorkOrders", _id: "LIST" }],
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          await queryFulfilled
+          // handleMutationSuccess(dispatch, "Found work orders!")
+        } catch (err) {
+          handleMutationErrors(err, dispatch)
+        }
+      }
     }),
     createWorkOrder: builder.mutation<CreateSuccess, CreateUserFormData>({
       query: (body) => ({

@@ -7,6 +7,7 @@ export interface IEmployee_To {
   lastName: string
   preferredName: string
   role: string
+  roleId: string
 }
 
 const employeeSchema = new Schema({
@@ -15,7 +16,8 @@ const employeeSchema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   preferredName: { type: String, required: true },
-  role: { type: String, required: true, default: "employee" }
+  role: { type: String, required: true, default: "employee" },
+  roleId: { type: String, required: true, default: process.env.ROLE_BASIC_ID }
 })
 
 const Employee = mongoose.model<IEmployee_To>("Employee", employeeSchema)

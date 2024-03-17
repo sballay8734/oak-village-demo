@@ -1,9 +1,9 @@
-import { StyleSheet, Pressable, Text, ActivityIndicator } from "react-native"
+import { StyleSheet, Pressable, ActivityIndicator } from "react-native"
 import { useRouter } from "expo-router"
 import { useDispatch } from "react-redux"
 import { BtnStyles } from "@/constants/Buttons"
 
-import { View } from "@/components/Themed"
+import { View, Text } from "@/components/Themed"
 import {
   SignInFormData,
   useLazyStandardSignInMutation
@@ -11,6 +11,7 @@ import {
 import { persistor } from "@/redux/store"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { setEmployee } from "@/redux/auth/employeeSlice"
+import { getRole } from "@/helpers/getRole"
 
 // TODO: Different logins should show different screens
 
@@ -22,12 +23,16 @@ const tempTeacher2 = {
   email: "Thisisatest@yahoo.com",
   password: "testpassword"
 }
-const tempParent = {
+const tempAdmin = {
   email: "gkasljdglkaj@yahoo.com",
   password: "testpassword"
 }
+const tempParent = {
+  email: "sdg398unkalsdg@yahoo.com",
+  password: "testpassword"
+}
 const tempMaintenance = {
-  email: "johnsmith@yahoo.com",
+  email: "johnTest@gmail.com",
   password: "testpassword"
 }
 
@@ -41,7 +46,7 @@ export default function Login() {
   async function handleLogin(credentials: SignInFormData) {
     try {
       const res = await login(credentials).unwrap()
-      const userRole = res.payload.role
+      const userRole = getRole(res.payload.roleId)
       dispatch(setEmployee(res.payload))
       router.push(`/${userRole}/` as role)
     } catch (err) {
@@ -65,10 +70,23 @@ export default function Login() {
               : BtnStyles.actionBtn.backgroundColor
           }
         ]}
-        onPress={() => handleLogin(tempTeacher2)}
+        onPress={() => handleLogin(tempTeacher)}
       >
         <Text style={BtnStyles.btnText}>Teacher</Text>
       </Pressable>
+      {/* <Pressable
+        style={({ pressed }) => [
+          {
+            ...BtnStyles.actionBtn,
+            backgroundColor: pressed
+              ? BtnStyles.actionBtnActive.backgroundColor
+              : BtnStyles.actionBtn.backgroundColor
+          }
+        ]}
+        onPress={() => handleLogin(tempParent)}
+      >
+        <Text style={BtnStyles.btnText}>Parent</Text>
+      </Pressable> */}
       <Pressable
         style={({ pressed }) => [
           {
@@ -82,6 +100,19 @@ export default function Login() {
       >
         <Text style={BtnStyles.btnText}>Maintenance</Text>
       </Pressable>
+      {/* <Pressable
+        style={({ pressed }) => [
+          {
+            ...BtnStyles.actionBtn,
+            backgroundColor: pressed
+              ? BtnStyles.actionBtnActive.backgroundColor
+              : BtnStyles.actionBtn.backgroundColor
+          }
+        ]}
+        onPress={() => handleLogin(tempAdmin)}
+      >
+        <Text style={BtnStyles.btnText}>Admin</Text>
+      </Pressable> */}
       <Pressable
         style={({ pressed }) => [
           {

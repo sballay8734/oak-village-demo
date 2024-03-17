@@ -15,7 +15,9 @@ export default {
     actionLighter: "#ac89e0",
     changeUp: "#bd8b5f",
     errorRed: "#e34f4f",
-    errorLighter: "#eb7878"
+    errorLighter: "#eb7878",
+    lightGray: "#b3b3b3",
+    statusOk: "#03C03C"
   },
   dark: {
     text: "#fff",
