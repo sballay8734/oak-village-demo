@@ -136,9 +136,9 @@ export default function TeacherWorkOrderCard({
 const styles = StyleSheet.create({
   cardWrapper: {
     width: "100%",
-    // borderColor: "black",
-    // borderWidth: 2,
-    borderRadius: 10,
+    borderColor: Colors.light.lightGray,
+    borderWidth: 1,
+    borderRadius: 20,
     padding: 14,
     display: "flex",
     flexDirection: "column",

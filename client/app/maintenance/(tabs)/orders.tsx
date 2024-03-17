@@ -66,7 +66,8 @@ export default function WorkOrdersScreen() {
         paddingTop: insets.top,
         // paddingBottom: insets.bottom,
         paddingLeft: insets.left,
-        paddingRight: insets.right
+        paddingRight: insets.right,
+        backgroundColor: "#f0f0f0"
       }}
     >
       {/* // * NAV/FILTER */}
@@ -127,17 +128,20 @@ const styles = StyleSheet.create({
     width: "80%"
   },
   workOrderList: {
-    marginTop: 6,
+    marginTop: 4,
+    marginBottom: 4,
     flex: 1,
     height: "100%",
     width: "98%",
     display: "flex",
     flexDirection: "column",
     alignSelf: "center",
-    gap: 10
+    gap: 10,
+    backgroundColor: "#f0f0f0"
   },
   emptyList: {
-    marginTop: 6,
+    marginTop: 4,
+    marginBottom: 4,
     flex: 1,
     height: "100%",
     width: "98%",

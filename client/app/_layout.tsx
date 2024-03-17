@@ -36,6 +36,8 @@ export default function RootLayout() {
   const [loaded, error] = useFonts({
     RobotoMono: require("../assets/fonts/RobotoMono-VariableFont_wght.ttf"),
     Mooli: require("../assets/fonts/Mooli-Regular.ttf"),
+    Poppins: require("../assets/fonts/Poppins-Bold.ttf"),
+    PoppinsMed: require("../assets/fonts/Poppins-Medium.ttf"),
     ...FontAwesome.font
   })
 

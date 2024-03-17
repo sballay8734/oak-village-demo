@@ -1,4 +1,4 @@
-import { FlatList, ScrollView, StyleSheet } from "react-native"
+import { FlatList, Pressable, ScrollView, StyleSheet } from "react-native"
 import { useSelector } from "react-redux"
 import { useState } from "react"
 
@@ -10,6 +10,10 @@ import TabFilter from "@/components/TeacherComponents/TabFilter/TeacherTabFilter
 import { IWorkOrder_From } from "@/types/workOrders"
 import TeacherWorkOrderCard from "@/components/TeacherComponents/WorkOrderRequestCard/TeacherWorkOrderCard"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import Colors from "@/constants/Colors"
+import { Link } from "expo-router"
+import { FontAwesome6 } from "@expo/vector-icons"
+import { Ionicons } from "@expo/vector-icons"
 
 export default function WorkOrdersScreen() {
   const insets = useSafeAreaInsets()
@@ -68,7 +72,8 @@ export default function WorkOrdersScreen() {
         paddingTop: insets.top,
         // paddingBottom: insets.bottom,
         paddingLeft: insets.left,
-        paddingRight: insets.right
+        paddingRight: insets.right,
+        backgroundColor: "#f0f0f0"
       }}
     >
       {/* // * NAV/FILTER */}
@@ -111,6 +116,15 @@ export default function WorkOrdersScreen() {
           <Text>No {activeFilter.toLocaleLowerCase()} work orders</Text>
         </View>
       )}
+      <Link style={styles.link} href="/teacher/work-order-form" asChild>
+        <Pressable>
+          {({ pressed }) => (
+            <View style={{ backgroundColor: Colors.light.actionDarker }}>
+              <Ionicons name="add" size={30} color="white" />
+            </View>
+          )}
+        </Pressable>
+      </Link>
     </View>
   )
 }
@@ -126,17 +140,20 @@ const styles = StyleSheet.create({
     width: "80%"
   },
   workOrderList: {
-    marginTop: 6,
+    marginTop: 4,
+    marginBottom: 4,
     flex: 1,
     height: "100%",
     width: "98%",
     display: "flex",
     flexDirection: "column",
     alignSelf: "center",
-    gap: 10
+    gap: 10,
+    backgroundColor: "#f0f0f0"
   },
   emptyList: {
-    marginTop: 6,
+    marginTop: 4,
+    marginBottom: 4,
     flex: 1,
     height: "100%",
     width: "98%",
@@ -153,5 +170,27 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center"
+  },
+  link: {
+    position: "absolute",
+    width: 60,
+    height: 60,
+    backgroundColor: Colors.light.actionDarker,
+    borderRadius: 100,
+    // borderWidth: 1,
+    // borderColor: "#a482b5",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#260038",
+    shadowOffset: {
+      width: 0,
+      height: 3
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+    elevation: 7,
+    bottom: 30,
+    right: 30
   }
 })

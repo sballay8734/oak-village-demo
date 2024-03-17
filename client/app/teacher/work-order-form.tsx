@@ -17,11 +17,14 @@ import { useState } from "react"
 import { StyleSheet, Button, TextInput, Pressable } from "react-native"
 import { Link, router } from "expo-router"
 import { useDispatch } from "react-redux"
+import { SafeAreaView } from "react-native-safe-area-context"
 
 import { Text, View } from "@/components/Themed"
 import { AntDesign } from "@expo/vector-icons"
 import { hideResponseModal } from "@/redux/serverResponseSlice/serverResponseSlice"
 import { useCreateWorkOrderMutation } from "@/redux/workOrdersSlice/workOrdersApi"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
+import Colors from "@/constants/Colors"
 
 interface FormData {
   classroom: string // dropdown
@@ -34,6 +37,7 @@ const primaryColor = "#e8dff5"
 const darkPrimaryColor = "#2e0666"
 
 export default function WorkOrderForm() {
+  const insets = useSafeAreaInsets()
   const dispatch = useDispatch()
   const [borderColor, setBorderColor] = useState<string>("black")
   const [showBoxShadow, setShowBoxShadow] = useState<boolean>(false)
@@ -88,9 +92,21 @@ export default function WorkOrderForm() {
   }
 
   return (
-    <View style={styles.page}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+
+        // Paddings to handle safe area
+        // paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+        paddingLeft: insets.left,
+        paddingRight: insets.right
+      }}
+    >
       {/* HEADER */}
-      <View style={styles.containerHeader}>
+      <SafeAreaView style={styles.containerHeader}>
         {/* TODO: STYLE THIS HEADER BETTER */}
         <Link href="/teacher/(tabs)/orders" asChild>
           <Pressable>
@@ -111,7 +127,7 @@ export default function WorkOrderForm() {
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </Text>
-      </View>
+      </SafeAreaView>
       {/* INPUT CONTAINER */}
       <View style={styles.container}>
         {/* CLASSROOM */}
@@ -128,11 +144,7 @@ export default function WorkOrderForm() {
                 onFocus={() => console.log("Need to handle FOCUS individually")}
                 onChangeText={onChange}
                 value={value}
-                style={{
-                  ...styles.input,
-                  borderColor,
-                  ...(showBoxShadow ? styles.focused : {})
-                }}
+                style={styles.input}
               />
             )}
           />
@@ -259,7 +271,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     height: "100%",
-    // paddingBottom: 30,
+    paddingBottom: 30,
     gap: 20
   },
   container: {
@@ -268,7 +280,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     // gap: 20,
-    width: "100%"
+    width: "100%",
+    marginTop: 30
   },
   containerHeader: {
     display: "flex",
@@ -298,7 +311,8 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 15,
     color: "black",
-    borderColor: "black",
+    borderColor: "#b891cc",
+    // backgroundColor: "#f2defc",
     borderWidth: 1,
     width: "100%",
     height: 50,
@@ -308,7 +322,7 @@ const styles = StyleSheet.create({
   inputLarger: {
     fontSize: 15,
     color: "black",
-    borderColor: "black",
+    borderColor: "#b891cc",
     borderWidth: 1,
     width: "100%",
     height: 150,
@@ -320,7 +334,7 @@ const styles = StyleSheet.create({
   inputLarger2: {
     fontSize: 15,
     color: "black",
-    borderColor: "black",
+    borderColor: "#b891cc",
     borderWidth: 1,
     width: "100%",
     height: 100,
@@ -333,12 +347,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // flexGrow: 1
     width: "90%",
-    marginBottom: 12
+    marginBottom: 8
   },
   label: {
     alignSelf: "flex-start",
     marginBottom: 6,
-    fontWeight: "bold"
+    fontFamily: "PoppinsMed"
   },
   info: {
     fontSize: 12,
