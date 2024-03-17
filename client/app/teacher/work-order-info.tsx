@@ -1,13 +1,13 @@
-import { StatusBar } from "expo-status-bar"
-import { StyleSheet } from "react-native"
-import { useLocalSearchParams } from "expo-router"
+import { Pressable, StyleSheet } from "react-native"
+import { Link, useLocalSearchParams } from "expo-router"
+import { useRouter } from "expo-router"
 
 import { useGetEWorkOrdersQuery } from "@/redux/workOrdersSlice/workOrdersApi"
-import { AntDesign } from "@expo/vector-icons"
-import { getDateDifference } from "@/helpers/dateFormatting"
 import { Text, View } from "@/components/Themed"
+import Colors from "@/constants/Colors"
 
 export default function WorkOrderInfo() {
+  const router = useRouter()
   const params = useLocalSearchParams()
   const { workOrderId } = params
   const { workOrder } = useGetEWorkOrdersQuery(undefined, {
@@ -27,30 +27,20 @@ export default function WorkOrderInfo() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.cardWrapper}>
-        {/* // * Header and three dots (...) */}
-        <View style={styles.cardHeaderWrapper}>
-          <Text style={styles.cardHeaderText}>
-            {workOrder.classroom} - {workOrder.areaInClassroom}
+      {/* // * Cancel "Edit Work Order" Save */}
+      <View style={styles.modalTop}>
+        <Pressable onPress={() => router.back()} style={{}}>
+          <Text style={{ fontSize: 16 }}>Cancel</Text>
+        </Pressable>
+        <Text style={{ fontFamily: "Poppins", fontSize: 18 }}>
+          Edit Work Order
+        </Text>
+        <Pressable onPress={() => router.back()} style={{}}>
+          {/* // TODO: Save Button needs to do something */}
+          <Text style={{ fontSize: 16, color: Colors.light.neonAction }}>
+            Save
           </Text>
-        </View>
-        {/* // * Description */}
-        <View>
-          <Text>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aspernatur
-            nemo esse amet nobis error veritatis dolor mollitia...
-          </Text>
-        </View>
-        {/* // * Date and how many days ago it was submitted, status on bottom right */}
-        <View style={styles.cardFooterWrapper}>
-          <View style={styles.dateWrapper}>
-            <AntDesign name="calendar" size={16} color="black" />
-            <Text>{new Date(workOrder.dateSubmitted).toDateString()} -</Text>
-            <Text>{getDateDifference(workOrder.dateSubmitted)} days ago</Text>
-          </View>
-          <Text>{workOrder.status}</Text>
-          {/* <Text>{employeeName}</Text> */}
-        </View>
+        </Pressable>
       </View>
     </View>
   )
@@ -60,41 +50,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     padding: 20,
     gap: 10
   },
-  cardWrapper: {
+  modalTop: {
+    display: "flex",
+    flexDirection: "row",
     width: "100%",
-    borderColor: "black",
-    borderWidth: 2,
-    borderRadius: 10,
-    padding: 10,
-    display: "flex",
-    flexDirection: "column",
-    gap: 10
-  },
-  cardHeaderWrapper: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between"
-  },
-  cardHeaderText: { fontSize: 16, fontWeight: "bold" },
-  cardFooterWrapper: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between"
-  },
-  dateWrapper: {
-    display: "flex",
-    flexDirection: "row",
-    gap: 4,
+    justifyContent: "space-between",
     alignItems: "center"
-  },
-  buttonWrapper: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 5
   }
 })

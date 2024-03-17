@@ -29,7 +29,8 @@ export default {
     completedText: "#240059",
     cantCompleteBg: "#f9dfe3",
     cantCompleteText: "#850417",
-    offBlack: "#1a1a1a"
+    offBlack: "#1a1a1a",
+    neonAction: "#bb0fff"
   },
   dark: {
     text: "#fff",

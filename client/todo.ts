@@ -1,3 +1,10 @@
+// IN ORDER
+//! Style work order submission form
+//! Style Maintenance edit status form
+//! Style Teacher View/Edit Work orders
+//! Add teacher that submitted work order to card
+//! Add back button in top left of create WO screen
+
 // ! TODO: FIX MAINTENENCE ZERO WORK ORDERS ERROR
 // ! TODO: YOU STILL NEED TO REMOVE THE ROLE FROM BEING SENT BACK BUT YOU AREN'T SURE HOW ELSE YOU WILL NAVIGATE
 // ! TODO: CAN'T ESCAPE KEYBOARD ON FORM!
@@ -5,6 +12,7 @@
 // ! TODO: SHOULD NOT BE USING LAZY QUERIES TO LOGIN I DON'T THINK (LAZY ARE FOR BACKGROUND LOADING)
 // ! TODO: Include a payload for failed responses from server to handle empty arrays
 // ! APPLY SAVE AREA STYLES TO ALL SCREENS IN PARENTS AND ADMIN (You already did maintenance and teacher)
+// TODO: Add teacher the submitted Work
 // TODO: Probably need a slight margin bottom on all pages (See Work orders, they have no space at bottom)
 // TODO: Create work order button should hover in bottom right
 // TODO: Fade inactive buttons
