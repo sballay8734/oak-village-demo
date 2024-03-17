@@ -61,6 +61,7 @@ export const signin = async (
   res: Response,
   next: NextFunction
 ) => {
+  console.log("HIT LOGIN")
   const { email, password } = req.body
 
   try {

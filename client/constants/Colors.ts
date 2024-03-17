@@ -17,7 +17,19 @@ export default {
     errorRed: "#e34f4f",
     errorLighter: "#eb7878",
     lightGray: "#b3b3b3",
-    statusOk: "#03C03C"
+    textFaded: "#a1a1a1",
+    statusOk: "#03C03C",
+    pendingBg: "#d8e6f5",
+    pendingText: "#01418f",
+    pausedText: "#784601",
+    pausedBg: "#fef4e7",
+    activeBg: "#ddf2da",
+    activeText: "#0a4d00",
+    completedBg: "#d2c3e8",
+    completedText: "#240059",
+    cantCompleteBg: "#f9dfe3",
+    cantCompleteText: "#850417",
+    offBlack: "#1a1a1a"
   },
   dark: {
     text: "#fff",
@@ -27,3 +39,9 @@ export default {
     tabIconSelected: tintColorDark
   }
 }
+
+// Pending (Not yet started)
+// Active
+// Active - Paused
+// Completed
+// Could Not Complete

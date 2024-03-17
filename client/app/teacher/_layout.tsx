@@ -1,13 +1,16 @@
-import ErrorModal from "@/components/ResponseModal"
-import { setEmployee } from "@/redux/auth/employeeSlice"
-import { setResponseMessage } from "@/redux/serverResponseSlice/serverResponseSlice"
-import { RootState } from "@/redux/store"
 import { Stack, useRouter } from "expo-router"
 import { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { useDispatch } from "react-redux"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
+
+import { setEmployee } from "@/redux/auth/employeeSlice"
+import { setResponseMessage } from "@/redux/serverResponseSlice/serverResponseSlice"
+import { RootState } from "@/redux/store"
+import { View } from "@/components/Themed"
 
 export default function TeacherLayout() {
+  const insets = useSafeAreaInsets()
   const dispatch = useDispatch()
   const router = useRouter()
   const employee = useSelector(

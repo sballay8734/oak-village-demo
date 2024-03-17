@@ -1,11 +1,24 @@
 import { StyleSheet } from "react-native"
 
-import EditScreenInfo from "@/components/EditScreenInfo"
 import { Text, View } from "@/components/Themed"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export default function MessagesScreen() {
+  const insets = useSafeAreaInsets()
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+
+        // Paddings to handle safe area
+        paddingTop: insets.top,
+        // paddingBottom: insets.bottom,
+        paddingLeft: insets.left,
+        paddingRight: insets.right
+      }}
+    >
       <Text style={styles.title}>MAINTENANCE Messages</Text>
       <View
         style={styles.separator}

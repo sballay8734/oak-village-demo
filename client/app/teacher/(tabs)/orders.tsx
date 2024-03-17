@@ -1,6 +1,6 @@
 import { FlatList, ScrollView, StyleSheet } from "react-native"
 import { useSelector } from "react-redux"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 import { View, Text } from "@/components/Themed"
 import { RootState } from "@/redux/store"
@@ -9,8 +9,10 @@ import { teacherFilters } from "@/components/TeacherComponents/TabFilter/teacher
 import TabFilter from "@/components/TeacherComponents/TabFilter/TeacherTabFilter"
 import { IWorkOrder_From } from "@/types/workOrders"
 import TeacherWorkOrderCard from "@/components/TeacherComponents/WorkOrderRequestCard/TeacherWorkOrderCard"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export default function WorkOrdersScreen() {
+  const insets = useSafeAreaInsets()
   const employee = useSelector(
     (state: RootState) => state.employeeSlice.employee
   )
@@ -30,7 +32,6 @@ export default function WorkOrdersScreen() {
   }
 
   if (!isLoading && (!workOrders || workOrders.payload.length === 0)) {
-    console.log("CATCH CASE", workOrders)
     return (
       <View style={styles.loading}>
         <Text>No work orders found</Text>
@@ -38,21 +39,38 @@ export default function WorkOrdersScreen() {
     )
   }
 
+  // * Teachers see less info than Maintenance so this helps reduce clutter
+  const activeStatuses = ["Received", "Documented", "In Progress"]
+
   const filteredWorkOrders =
     workOrders && workOrders.payload.length > 0
       ? workOrders.payload.filter((workOrder) => {
           if (activeFilter === "All") {
             return true
+          } else if (activeFilter === "Active") {
+            return activeStatuses.includes(workOrder.status)
+          } else if (activeFilter === "Paused") {
+            return workOrder.status === "Awaiting Materials"
           } else {
             return workOrder.status === activeFilter
           }
         })
       : []
 
-  console.log("FWO", filteredWorkOrders)
-
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+
+        // Paddings to handle safe area
+        paddingTop: insets.top,
+        // paddingBottom: insets.bottom,
+        paddingLeft: insets.left,
+        paddingRight: insets.right
+      }}
+    >
       {/* // * NAV/FILTER */}
       <FlatList
         data={teacherFilters}
@@ -77,7 +95,7 @@ export default function WorkOrdersScreen() {
       />
 
       {/* // * WORK ORDER LIST */}
-      {filteredWorkOrders?.length > 0 && (
+      {filteredWorkOrders?.length > 0 ? (
         <ScrollView
           style={styles.workOrderList}
           showsVerticalScrollIndicator={false}
@@ -88,20 +106,16 @@ export default function WorkOrdersScreen() {
             ))}
           </View>
         </ScrollView>
+      ) : (
+        <View style={styles.emptyList}>
+          <Text>No {activeFilter.toLocaleLowerCase()} work orders</Text>
+        </View>
       )}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "column",
-    paddingVertical: 12
-    // gap: 10
-  },
   title: {
     fontSize: 20,
     fontWeight: "bold"
@@ -119,6 +133,18 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     alignSelf: "center",
+    gap: 10
+  },
+  emptyList: {
+    marginTop: 6,
+    flex: 1,
+    height: "100%",
+    width: "98%",
+    display: "flex",
+    flexDirection: "column",
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
     gap: 10
   },
   loading: {

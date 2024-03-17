@@ -4,6 +4,9 @@
 // ! TODO: HOLDING DOWN CLOSE BUTTON ON RESPONSE MODAL CAUSES SCREEN TO FLICKER WHEN YOU LET GO
 // ! TODO: SHOULD NOT BE USING LAZY QUERIES TO LOGIN I DON'T THINK (LAZY ARE FOR BACKGROUND LOADING)
 // ! TODO: Include a payload for failed responses from server to handle empty arrays
+// ! APPLY SAVE AREA STYLES TO ALL SCREENS IN PARENTS AND ADMIN (You already did maintenance and teacher)
+// TODO: Create work order button should hover in bottom right
+// TODO: Fade inactive buttons
 // TODO: Allow John to apply private priority to work orders
 // TODO: Teacher work orders UI
 // TODO: Sort by date for Work Orders

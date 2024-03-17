@@ -1,9 +1,5 @@
 import { Slot } from "expo-router"
 import { StyleSheet, View } from "react-native"
-import { useSelector } from "react-redux"
-import { useState, useEffect } from "react"
-
-import { RootState } from "@/redux/store"
 import ResponseModal from "@/components/ResponseModal"
 // This component exists simply to be able to access the error state and render a modal in the root of the project, rather than copying the error modal to all Stacks
 export default function Entry() {

@@ -9,10 +9,12 @@ import { maintenanceFilters } from "@/components/MaintenanceComponents/TabFilter
 import TabFilter from "@/components/MaintenanceComponents/TabFilter/MaintenanceTabFilter"
 import MaintenanceWorkOrderCard from "@/components/MaintenanceComponents/WorkOrderRequestCard/MaintenanceWorkOrderCard"
 import { IWorkOrder_From } from "@/types/workOrders"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 // ! GET TYPES CORRECT FROM API (IT IS NOT EXPECTING THE RIGHT FORMAT)
 
 export default function WorkOrdersScreen() {
+  const insets = useSafeAreaInsets()
   const employee = useSelector(
     (state: RootState) => state.employeeSlice.employee
   )
@@ -54,7 +56,19 @@ export default function WorkOrdersScreen() {
       : []
 
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+
+        // Paddings to handle safe area
+        paddingTop: insets.top,
+        // paddingBottom: insets.bottom,
+        paddingLeft: insets.left,
+        paddingRight: insets.right
+      }}
+    >
       {/* // * NAV/FILTER */}
       <FlatList
         data={maintenanceFilters}
@@ -79,7 +93,7 @@ export default function WorkOrdersScreen() {
       />
 
       {/* // * WORK ORDER LIST */}
-      {filteredWorkOrders?.length > 0 && (
+      {filteredWorkOrders?.length > 0 ? (
         <ScrollView
           style={styles.workOrderList}
           showsVerticalScrollIndicator={false}
@@ -93,35 +107,45 @@ export default function WorkOrdersScreen() {
             ))}
           </View>
         </ScrollView>
+      ) : (
+        <View style={styles.emptyList}>
+          <Text>No {activeFilter.toLocaleLowerCase()} work orders</Text>
+        </View>
       )}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    // justifyContent: "center",
-    flexDirection: "column",
-    padding: 12,
-    gap: 10
-  },
   title: {
     fontSize: 20,
     fontWeight: "bold"
   },
   separator: {
-    marginVertical: 0,
+    marginTop: 12,
     height: 1,
     width: "80%"
   },
   workOrderList: {
+    marginTop: 6,
     flex: 1,
     height: "100%",
-    width: "100%",
+    width: "98%",
     display: "flex",
     flexDirection: "column",
+    alignSelf: "center",
+    gap: 10
+  },
+  emptyList: {
+    marginTop: 6,
+    flex: 1,
+    height: "100%",
+    width: "98%",
+    display: "flex",
+    flexDirection: "column",
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
     gap: 10
   },
   loading: {

@@ -13,6 +13,11 @@ import { PersistGate } from "redux-persist/integration/react"
 import { useColorScheme } from "@/components/useColorScheme"
 import FontAwesome from "@expo/vector-icons/FontAwesome"
 import Entry from "./entry"
+import { SafeAreaView, StyleSheet } from "react-native"
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets
+} from "react-native-safe-area-context"
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -54,6 +59,7 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme()
+  const insets = useSafeAreaInsets()
 
   return (
     <Provider store={store}>
@@ -63,10 +69,20 @@ function RootLayoutNav() {
           value={DefaultTheme}
           // value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
-          <Entry />
+          <SafeAreaProvider>
+            <Entry />
+          </SafeAreaProvider>
           {/* <Slot /> */}
         </ThemeProvider>
       </PersistGate>
     </Provider>
   )
 }
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    justifyContent: "space-between",
+    alignItems: "center"
+  }
+})
