@@ -6,8 +6,8 @@ export const maintenanceFilters = [
   "Pending",
   "Received",
   "Documented",
-  "Awaiting Materials",
   "In Progress",
+  "Awaiting Materials",
   "Completed",
   "Could Not Complete"
 ]

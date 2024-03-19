@@ -28,12 +28,69 @@ export default function TabFilter({
         alignItems: "center",
         paddingVertical: 10,
         paddingHorizontal: 12,
-        borderColor: "black",
         borderWidth: 1,
         gap: 5,
         borderRadius: 100,
         marginHorizontal: 3,
-        backgroundColor: active ? Colors.light.offBlack : "white"
+        marginVertical: 10,
+        marginBottom: 5,
+        backgroundColor:
+          !active && filterName === "All"
+            ? "#f0d1ee"
+            : !active && filterName === "Pending"
+            ? Colors.light.pendingBg
+            : !active && filterName === "New"
+            ? Colors.light.pendingBg
+            : !active && filterName === "Active"
+            ? Colors.light.activeBg
+            : !active && filterName === "Received"
+            ? Colors.light.activeBg
+            : !active && filterName === "Documented"
+            ? Colors.light.activeBg
+            : !active && filterName === "Awaiting Materials"
+            ? Colors.light.pausedBg
+            : !active && filterName === "Completed"
+            ? Colors.light.completedBg
+            : !active && filterName === "Paused"
+            ? Colors.light.pausedBg
+            : !active && filterName === "In Progress"
+            ? Colors.light.activeBg
+            : !active && filterName === "Could Not Complete"
+            ? Colors.light.cantCompleteBg
+            : "black",
+        borderColor:
+          !active && filterName === "All"
+            ? "#40003c"
+            : !active && filterName === "Pending"
+            ? Colors.light.pendingOL
+            : !active && filterName === "New"
+            ? Colors.light.pendingOL
+            : !active && filterName === "Active"
+            ? Colors.light.activeOL
+            : !active && filterName === "Received"
+            ? Colors.light.activeOL
+            : !active && filterName === "Documented"
+            ? Colors.light.activeOL
+            : !active && filterName === "Awaiting Materials"
+            ? Colors.light.pausedOL
+            : !active && filterName === "Completed"
+            ? Colors.light.completedOL
+            : !active && filterName === "Paused"
+            ? Colors.light.pausedOL
+            : !active && filterName === "In Progress"
+            ? Colors.light.activeOL
+            : !active && filterName === "Could Not Complete"
+            ? Colors.light.cantCompleteOL
+            : "black",
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+
+        elevation: 4
       }}
     >
       <Text
@@ -69,13 +126,22 @@ export default function TabFilter({
               ? Colors.light.activeBg
               : active && filterName === "Could Not Complete"
               ? Colors.light.cantCompleteBg
-              : "#cccccc",
+              : "white",
           borderRadius: 100,
           height: 22,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          width: 22
+          width: 22,
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2
+          },
+          shadowOpacity: 0.23,
+          shadowRadius: 2.62,
+
+          elevation: 4
         }}
       >
         <Text
@@ -104,8 +170,9 @@ export default function TabFilter({
                 : active && filterName === "Could Not Complete"
                 ? Colors.light.cantCompleteText
                 : "#2e2e2e",
+            fontFamily: "Poppins",
             fontWeight: "bold",
-            fontSize: 12
+            fontSize: 11
           }}
         >
           {workOrderLength}

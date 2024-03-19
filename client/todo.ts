@@ -4,6 +4,9 @@
 //! Style Teacher View/Edit Work orders
 //! Add teacher that submitted work order to card
 //! Add back button in top left of create WO screen
+//! Create WO Modal should have dropdown for Classroom and auto populate based on teachers classroom
+//! Animations for input outlines and bgs
+//! Loading spinner in middle of page about 50x50 with dark bg when anything is loading
 
 // ! TODO: FIX MAINTENENCE ZERO WORK ORDERS ERROR
 // ! TODO: YOU STILL NEED TO REMOVE THE ROLE FROM BEING SENT BACK BUT YOU AREN'T SURE HOW ELSE YOU WILL NAVIGATE
