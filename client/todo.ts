@@ -1,14 +1,12 @@
 // IN ORDER
-//! FIX M and E Work order types (REMOVE Success | Fail and replace to get refresh working properly)
-//! Style work order submission form
+//! FIX M and E Work order types (REMOVE Success | Fail and replace to get refresh working properly) YOU ALREADY DID THIS FOR TEACHER
 //! Style Maintenance edit status form
 //! Style Teacher View/Edit Work orders
 //! Add teacher that submitted work order to card
-//! Add back button in top left of create WO screen
 //! Create WO Modal should have dropdown for Classroom and auto populate based on teachers classroom
-//! Animations for input outlines and bgs
 //! Loading spinner in middle of page about 50x50 with dark bg when anything is loading
-//! Set "seen" status not working!
+//! Add "pull down to refresh to teacher tab"
+//! Prettify refresh spinnger
 
 // ! TODO: FIX MAINTENENCE ZERO WORK ORDERS ERROR
 // ! TODO: YOU STILL NEED TO REMOVE THE ROLE FROM BEING SENT BACK BUT YOU AREN'T SURE HOW ELSE YOU WILL NAVIGATE
