@@ -77,7 +77,7 @@ export const workOrdersApi = createApi({
       ]
     }),
     // * Employee Work Orders (ALL by employeeId)
-    getEWorkOrders: builder.query<Success | Fail, void>({
+    getEWorkOrders: builder.query<WorkOrderFrom[], void>({
       query: () => `/employee-work-orders`,
       providesTags: (result) =>
         Array.isArray(result)

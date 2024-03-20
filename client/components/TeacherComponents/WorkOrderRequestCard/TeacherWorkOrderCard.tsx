@@ -75,7 +75,19 @@ export default function TeacherWorkOrderCard({
         {/* // * Eye & Status */}
         <View style={styles.seenAndStatus}>
           {workOrder.seenByMaintenance ? (
-            <Ionicons name="eye" size={18} color={Colors.light.action} />
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                gap: 3,
+                alignItems: "center"
+              }}
+            >
+              <Ionicons name="eye" size={18} color={Colors.light.action} />
+              <Text style={{ color: Colors.light.actionLighter, fontSize: 8 }}>
+                John saw this
+              </Text>
+            </View>
           ) : (
             <Ionicons name="eye-off" size={18} color={Colors.light.lightGray} />
           )}

@@ -12,9 +12,7 @@ export default function WorkOrderInfo() {
   const { workOrderId } = params
   const { workOrder } = useGetEWorkOrdersQuery(undefined, {
     selectFromResult: ({ data }) => ({
-      workOrder: data?.payload.find(
-        (workOrder) => workOrder._id === workOrderId
-      )
+      workOrder: data?.find((workOrder) => workOrder._id === workOrderId)
     })
   })
 

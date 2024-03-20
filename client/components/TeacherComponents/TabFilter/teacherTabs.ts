@@ -12,13 +12,13 @@ export const teacherFilters = [
 export function handleFilterLogic(filterName: string) {
   // * Return All work orders
   if (filterName === "All") {
-    return useGetEWorkOrdersQuery().data?.payload.length
+    return useGetEWorkOrdersQuery().data?.length
     // * Return New work orders (Work orders not seen by Maintenance)
   } else if (filterName === "Pending") {
     const workOrders = useGetEWorkOrdersQuery(undefined, {
       selectFromResult: ({ data }) => ({
-        workOrdersLength: data?.payload.filter(
-          (workOrder) => workOrder.seenByMaintenance === false
+        workOrdersLength: data?.filter(
+          (workOrder) => workOrder.status === "Pending"
         )
       })
     })
@@ -26,7 +26,7 @@ export function handleFilterLogic(filterName: string) {
   } else if (filterName === "Active") {
     const workOrders = useGetEWorkOrdersQuery(undefined, {
       selectFromResult: ({ data }) => ({
-        workOrdersLength: data?.payload.filter((workOrder) =>
+        workOrdersLength: data?.filter((workOrder) =>
           ["Received", "Documented", "In Progress"].includes(workOrder.status)
         )
       })
@@ -35,7 +35,7 @@ export function handleFilterLogic(filterName: string) {
   } else if (filterName === "Paused") {
     const workOrders = useGetEWorkOrdersQuery(undefined, {
       selectFromResult: ({ data }) => ({
-        workOrdersLength: data?.payload.filter(
+        workOrdersLength: data?.filter(
           (workOrder) => workOrder.status === "Awaiting Materials"
         )
       })
@@ -45,7 +45,7 @@ export function handleFilterLogic(filterName: string) {
   // * Return work orders the match category
   const workOrders = useGetEWorkOrdersQuery(undefined, {
     selectFromResult: ({ data }) => ({
-      workOrdersLength: data?.payload.filter(
+      workOrdersLength: data?.filter(
         (workOrder) => workOrder.status === filterName
       )
     })

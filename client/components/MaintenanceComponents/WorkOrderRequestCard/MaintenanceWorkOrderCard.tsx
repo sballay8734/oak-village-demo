@@ -63,6 +63,7 @@ export default function MaintenanceWorkOrderCard({
           style={{ alignSelf: "flex-start", width: "10%" }}
         >
           <Pressable
+            onPress={handleUpdateSeen}
             style={{
               // backgroundColor: Colors.light.action,
               // borderRadius: 100,

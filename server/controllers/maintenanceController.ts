@@ -135,10 +135,10 @@ export const getWorkOrdersOfEmployee = async (
   console.log(workOrders)
 
   if (workOrders.length === 0) {
-    return successHandler(res, 200, "No work orders found", workOrders)
+    return res.status(200).json(workOrders)
   }
 
-  return successHandler(res, 200, "Work Orders Found!", workOrders)
+  return res.status(200).json(workOrders)
   // TODO: Only get the work orders that are not completed maybe?
 }
 

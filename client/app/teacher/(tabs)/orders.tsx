@@ -1,4 +1,10 @@
-import { FlatList, Pressable, ScrollView, StyleSheet } from "react-native"
+import {
+  FlatList,
+  Pressable,
+  RefreshControl,
+  ScrollView,
+  StyleSheet
+} from "react-native"
 import { useSelector } from "react-redux"
 import { useState } from "react"
 
@@ -16,16 +22,23 @@ import { FontAwesome6 } from "@expo/vector-icons"
 import { Ionicons } from "@expo/vector-icons"
 
 export default function WorkOrdersScreen() {
+  const [refreshing, setRefreshing] = useState<boolean>(false)
   const insets = useSafeAreaInsets()
   const employee = useSelector(
     (state: RootState) => state.employeeSlice.employee
   )
-  const { data: workOrders, isLoading } = useGetEWorkOrdersQuery()
+  const { refetch, data: workOrders, isLoading } = useGetEWorkOrdersQuery()
   const [activeFilter, setActiveFilter] = useState<string>("All")
 
   function handleFilterChange(filter: string) {
     setActiveFilter(filter)
   }
+
+  function handleRefresh() {
+    refetch()
+  }
+
+  console.log(workOrders)
 
   if (isLoading) {
     return (
@@ -35,7 +48,7 @@ export default function WorkOrdersScreen() {
     )
   }
 
-  if (!isLoading && (!workOrders || workOrders.payload.length === 0)) {
+  if (!isLoading && (!workOrders || workOrders.length === 0)) {
     return (
       <View style={styles.loading}>
         <Text>No work orders found</Text>
@@ -47,8 +60,8 @@ export default function WorkOrdersScreen() {
   const activeStatuses = ["Received", "Documented", "In Progress"]
 
   const filteredWorkOrders =
-    workOrders && workOrders.payload.length > 0
-      ? workOrders.payload.filter((workOrder) => {
+    workOrders && workOrders.length > 0
+      ? workOrders.filter((workOrder) => {
           if (activeFilter === "All") {
             return true
           } else if (activeFilter === "Active") {
@@ -104,6 +117,9 @@ export default function WorkOrdersScreen() {
         <ScrollView
           style={styles.workOrderList}
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+          }
         >
           <View style={styles.workOrderList}>
             {filteredWorkOrders.map((workOrder: IWorkOrder_From) => (
@@ -141,7 +157,7 @@ const styles = StyleSheet.create({
   },
   workOrderList: {
     marginTop: 0,
-    marginBottom: 4,
+    marginBottom: 0,
     flex: 1,
     height: "100%",
     width: "98%",
@@ -149,7 +165,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignSelf: "center",
     gap: 10,
-    backgroundColor: "white"
+    backgroundColor: "white",
+    paddingBottom: 20
   },
   emptyList: {
     marginTop: 4,
