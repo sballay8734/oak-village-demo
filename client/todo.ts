@@ -1,4 +1,6 @@
 // IN ORDER
+//! Additional details is hidden under keyboard
+
 //! Back button should not clear form
 //! Add full name to employee model
 //! Loading spinner in middle of page about 50x50 with dark bg when anything is loading
