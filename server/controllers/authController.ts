@@ -8,6 +8,7 @@ import Employee from "../models/Employee"
 import { successHandler } from "../utils/successHandler"
 import { roleIsValid } from "../helpers/authHelpers"
 
+// ! Realistically, employees will NOT sign up. Their account will be created by an admin and they will simply login with the supplied details and change their password
 export const signup = async (
   req: Request,
   res: Response,

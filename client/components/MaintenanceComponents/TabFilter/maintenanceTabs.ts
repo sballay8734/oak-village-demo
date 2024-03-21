@@ -15,12 +15,12 @@ export const maintenanceFilters = [
 export function handleFilterLogic(filterName: string) {
   // * Return All work orders
   if (filterName === "All") {
-    return useGetMWorkOrdersQuery().data?.payload.length
+    return useGetMWorkOrdersQuery().data?.length
     // * Return New work orders (Work orders not seen by Maintenance)
   } else if (filterName === "New") {
     const workOrders = useGetMWorkOrdersQuery(undefined, {
       selectFromResult: ({ data }) => ({
-        workOrdersLength: data?.payload.filter(
+        workOrdersLength: data?.filter(
           (workOrder) => workOrder.seenByMaintenance === false
         )
       })
@@ -30,7 +30,7 @@ export function handleFilterLogic(filterName: string) {
   // * Return work orders the match category
   const workOrders = useGetMWorkOrdersQuery(undefined, {
     selectFromResult: ({ data }) => ({
-      workOrdersLength: data?.payload.filter(
+      workOrdersLength: data?.filter(
         (workOrder) => workOrder.status === filterName
       )
     })

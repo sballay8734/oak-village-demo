@@ -30,6 +30,7 @@ export interface WorkOrderCreateResponse {
     | "Preschool 3"
     | "Pre-K 1"
     | "Pre-K 2"
+    | ""
   areaInClassroom: string
   taskNeeded: string
   additionalDetails: string // NOT optional because it should be an empty str

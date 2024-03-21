@@ -70,7 +70,11 @@ export default function TeacherWorkOrderCard({
       {/* // * BOTTOM */}
       <View style={styles.cardBottom}>
         <View style={styles.cardMiddleWrapper}>
-          <Text style={styles.cardMiddleText}>{workOrder.taskNeeded}</Text>
+          <Text style={styles.cardMiddleText}>
+            {workOrder.taskNeeded.length > 190
+              ? workOrder.taskNeeded.slice(0, 191) + " ..."
+              : workOrder.taskNeeded}
+          </Text>
         </View>
         {/* // * Eye & Status */}
         <View style={styles.seenAndStatus}>
@@ -162,7 +166,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2
     },
-    height: 150,
+    height: 165,
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5
@@ -189,7 +193,9 @@ const styles = StyleSheet.create({
   },
   cardMiddleWrapper: {
     display: "flex",
-    alignItems: "flex-start"
+    alignItems: "flex-start",
+    overflow: "hidden",
+    height: 50
   },
   cardMiddleText: {
     fontSize: 12

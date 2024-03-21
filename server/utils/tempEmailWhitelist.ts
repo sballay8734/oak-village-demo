@@ -6,5 +6,6 @@ export const whitelistedEmails = [
   "Thisisatest@yahoo.com",
   "agdasdgasdg@yahoo.com",
   "sdg398unkalsdg@yahoo.com",
-  "johnTest@gmail.com"
+  "johnTest@gmail.com",
+  "testingclassroom@gmail.com"
 ]

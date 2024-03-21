@@ -14,6 +14,7 @@ type ClassroomType =
   | "Preschool 3"
   | "Pre-K 1"
   | "Pre-K 2"
+  | ""
 
 // Structure provided by user
 export interface IWorkOrder_To {

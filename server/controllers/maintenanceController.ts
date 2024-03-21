@@ -13,15 +13,9 @@ export const createWorkOrder = async (
   res: Response,
   next: NextFunction
 ) => {
-  const {
-    classroom,
-    areaInClassroom,
-    taskNeeded,
-    additionalDetails // OPTIONAL
-  } = req.body
-  console.log("HIT CREATE WORK ORDER")
+  const { classroom, areaInClassroom, taskNeeded, additionalDetails } = req.body
+  console.log(req.body)
 
-  // TODO: Add this back after adding auth
   const employeeId = req.employee
   if (!employeeId)
     return next(
@@ -108,13 +102,11 @@ export const getAllWorkOrders = async (
 
   const workOrders = await WorkOrder.find()
 
-  if (!workOrders || workOrders.length < 1) {
-    return next(errorHandler(400, "No work orders found", "requestResult"))
+  if (workOrders.length === 0) {
+    return res.status(200).json(workOrders)
   }
 
-  console.log("MAINTENANCE", workOrders)
-
-  return successHandler(res, 200, "Work Orders Found!", workOrders)
+  return res.status(200).json(workOrders)
   // TODO: Only get the work orders that are not completed maybe?
 }
 
@@ -131,8 +123,6 @@ export const getWorkOrdersOfEmployee = async (
     )
 
   const workOrders = await WorkOrder.find({ employeeId: employeeId })
-
-  console.log(workOrders)
 
   if (workOrders.length === 0) {
     return res.status(200).json(workOrders)

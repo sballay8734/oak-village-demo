@@ -1,12 +1,12 @@
 // IN ORDER
-//! FIX M and E Work order types (REMOVE Success | Fail and replace to get refresh working properly) YOU ALREADY DID THIS FOR TEACHER
 //! Style Maintenance edit status form
 //! Style Teacher View/Edit Work orders
 //! Add teacher that submitted work order to card
 //! Create WO Modal should have dropdown for Classroom and auto populate based on teachers classroom
 //! Loading spinner in middle of page about 50x50 with dark bg when anything is loading
 //! Add "pull down to refresh to teacher tab"
-//! Prettify refresh spinnger
+//! Prettify refresh spinner
+//! I think all Work order filter tabs are rerendering anytime one is selected
 
 // ! TODO: FIX MAINTENENCE ZERO WORK ORDERS ERROR
 // ! TODO: YOU STILL NEED TO REMOVE THE ROLE FROM BEING SENT BACK BUT YOU AREN'T SURE HOW ELSE YOU WILL NAVIGATE

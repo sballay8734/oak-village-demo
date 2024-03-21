@@ -115,32 +115,6 @@ export default function TabLayout() {
               size={24}
               color={color}
             />
-          ),
-          headerRight: () => (
-            <Link href="/teacher/work-order-form" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <View style={styles.buttonWrapper}>
-                    <Text
-                      style={{
-                        color: Colors[colorScheme ?? "light"].tabIconSelected,
-                        fontSize: 11,
-                        fontWeight: "bold"
-                      }}
-                    >
-                      Create Work Order
-                    </Text>
-                    <FontAwesome6
-                      name="add"
-                      size={11}
-                      color={Colors[colorScheme ?? "light"].tabIconSelected}
-                      style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                      solid
-                    />
-                  </View>
-                )}
-              </Pressable>
-            </Link>
           )
         }}
       />
@@ -171,13 +145,3 @@ export default function TabLayout() {
     </Tabs>
   )
 }
-
-const styles = StyleSheet.create({
-  buttonWrapper: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 3,
-    color: "blue"
-  }
-})

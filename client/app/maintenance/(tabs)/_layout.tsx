@@ -110,16 +110,6 @@ export default function TabLayout() {
         name="orders"
         options={{
           title: "Work Orders",
-          headerTitleAlign: "center",
-          headerTitleStyle: { fontSize: 20 },
-          headerLeft: () => (
-            <AntDesign
-              name="dingding"
-              size={24}
-              color="black"
-              style={{ marginLeft: 15 }}
-            />
-          ),
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="account-wrench"
@@ -127,22 +117,6 @@ export default function TabLayout() {
               color={color}
             />
           )
-          // headerRight: () => (
-          //   <Link href="/maintenance/work-order-form" asChild>
-          //     <Pressable>
-          //       {({ pressed }) => (
-          //         <>
-          //           <FontAwesome6
-          //             name="add"
-          //             size={25}
-          //             color={Colors[colorScheme ?? "light"].tabIconSelected}
-          //             style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-          //           />
-          //         </>
-          //       )}
-          //     </Pressable>
-          //   </Link>
-          // )
         }}
       />
       <Tabs.Screen

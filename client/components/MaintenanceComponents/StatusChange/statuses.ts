@@ -1,38 +1,64 @@
+import Colors from "@/constants/Colors"
+
 export const statuses = [
   {
     status: "Received",
-    borderColor: "#fc8c03",
-    icon: "",
-    activeBgColor: "#fc8c03"
+    borderColor: Colors.light.activeOL,
+    activeBC: Colors.light.offBlack,
+    bgColor: Colors.light.activeBg,
+    activeBgColor: Colors.light.offBlack,
+    textColor: Colors.light.activeText,
+    activeTextColor: "white",
+    icon: ""
   },
   {
     status: "Documented",
-    borderColor: "#fcf403",
-    icon: "",
-    activeBgColor: "#fcf403"
-  },
-  {
-    status: "Awaiting Materials",
-    borderColor: "#03fcce",
-    icon: "",
-    activeBgColor: "#03fcce"
+    borderColor: Colors.light.activeOL,
+    activeBC: Colors.light.offBlack,
+    bgColor: Colors.light.activeBg,
+    activeBgColor: Colors.light.offBlack,
+    textColor: Colors.light.activeText,
+    activeTextColor: "white",
+    icon: ""
   },
   {
     status: "In Progress",
-    borderColor: "#03a5fc",
-    icon: "",
-    activeBgColor: "#03a5fc"
+    borderColor: Colors.light.activeOL,
+    activeBC: Colors.light.offBlack,
+    bgColor: Colors.light.activeBg,
+    activeBgColor: Colors.light.offBlack,
+    textColor: Colors.light.activeText,
+    activeTextColor: "white",
+    icon: ""
+  },
+  {
+    status: "Awaiting Materials",
+    borderColor: Colors.light.pausedOL,
+    activeBC: Colors.light.offBlack,
+    bgColor: Colors.light.pausedBg,
+    activeBgColor: Colors.light.offBlack,
+    textColor: Colors.light.pausedText,
+    activeTextColor: "white",
+    icon: ""
   },
   {
     status: "Completed",
-    borderColor: "#98fc03",
-    icon: "check",
-    activeBgColor: "#98fc03"
+    borderColor: Colors.light.completedOL,
+    activeBC: Colors.light.offBlack,
+    bgColor: Colors.light.completedBg,
+    activeBgColor: Colors.light.offBlack,
+    textColor: Colors.light.completedText,
+    activeTextColor: "white",
+    icon: ""
   },
   {
     status: "Could Not Complete",
-    borderColor: "#7703fc",
-    icon: "",
-    activeBgColor: "#7703fc"
+    borderColor: Colors.light.cantCompleteOL,
+    activeBC: Colors.light.offBlack,
+    bgColor: Colors.light.cantCompleteBg,
+    activeBgColor: Colors.light.offBlack,
+    textColor: Colors.light.cantCompleteText,
+    activeTextColor: "white",
+    icon: ""
   }
 ]

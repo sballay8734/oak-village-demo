@@ -85,4 +85,5 @@ export interface AuthenticatedUser {
   lastName: string
   preferredName: string
   roleId: string
+  classroom: string
 }

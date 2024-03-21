@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar"
-import { View, StyleSheet } from "react-native"
-import { useLocalSearchParams } from "expo-router"
+import { View, StyleSheet, Pressable } from "react-native"
+import { useLocalSearchParams, useRouter } from "expo-router"
 
 import { useGetMWorkOrdersQuery } from "@/redux/workOrdersSlice/workOrdersApi"
 import { Text } from "@/components/Themed"
@@ -8,15 +8,15 @@ import { AntDesign } from "@expo/vector-icons"
 import { getDateDifference } from "@/helpers/dateFormatting"
 import { statuses } from "@/components/MaintenanceComponents/StatusChange/statuses"
 import StatusChangeButton from "@/components/MaintenanceComponents/StatusChange/StatusChangeButton"
+import Colors from "@/constants/Colors"
 
 export default function WorkOrderInfo() {
+  const router = useRouter()
   const params = useLocalSearchParams()
   const { workOrderId } = params
   const { workOrder } = useGetMWorkOrdersQuery(undefined, {
     selectFromResult: ({ data }) => ({
-      workOrder: data?.payload.find(
-        (workOrder) => workOrder._id === workOrderId
-      )
+      workOrder: data?.find((workOrder) => workOrder._id === workOrderId)
     })
   })
 
@@ -33,51 +33,149 @@ export default function WorkOrderInfo() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.cardWrapper}>
-        {/* // * Header and three dots (...) */}
-        <View style={styles.cardHeaderWrapper}>
-          <Text style={styles.cardHeaderText}>
-            {workOrder.classroom} - {workOrder.areaInClassroom}
+      <View style={styles.modalTop}>
+        <Pressable onPress={() => router.back()} style={{}}>
+          <Text style={{ fontSize: 16, color: Colors.light.neonAction }}>
+            Close
           </Text>
-        </View>
-        {/* // * Description */}
-        <View>
-          <Text>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aspernatur
-            nemo esse amet nobis error veritatis dolor mollitia...
+        </Pressable>
+      </View>
+      {/* //* Work order info */}
+      <View style={{ flexGrow: 1, flexDirection: "column", width: "100%" }}>
+        <View style={styles.workOrderInfo}>
+          <Text
+            style={{
+              fontFamily: "Poppins",
+              alignSelf: "center",
+              fontSize: 26,
+              paddingTop: 10,
+              paddingBottom: 30
+            }}
+          >
+            Work Order Info
           </Text>
-        </View>
-        {/* // * Date and how many days ago it was submitted, status on bottom right */}
-        <View style={styles.cardFooterWrapper}>
-          <View style={styles.dateWrapper}>
-            <AntDesign name="calendar" size={16} color="black" />
-            <Text>{new Date(workOrder.dateSubmitted).toDateString()} -</Text>
-            <Text>{getDateDifference(workOrder.dateSubmitted)} days ago</Text>
+          <View
+            style={{
+              ...styles.mainInfoWrapper,
+              paddingBottom: 10,
+              borderBottomWidth: 2,
+              borderBottomColor: "black"
+            }}
+          >
+            <Text style={{ fontSize: 24 }}>{workOrder.classroom}</Text>
+            <View style={{ flexDirection: "row", gap: 2 }}>
+              <Text style={{}}>Submitted by:</Text>
+              <Text style={{ color: Colors.light.primaryDarker }}>
+                {workOrder.employeeName}
+              </Text>
+            </View>
+            <View style={styles.dateWrapper}>
+              <AntDesign
+                name="calendar"
+                size={14}
+                color={Colors.light.primaryDarker}
+              />
+              <Text style={{ fontSize: 12, color: Colors.light.textFaded }}>
+                {new Date(workOrder.dateSubmitted).toDateString()} -
+              </Text>
+              <Text style={{ fontSize: 12, color: Colors.light.primaryDarker }}>
+                {getDateDifference(workOrder.dateSubmitted)} days ago
+              </Text>
+            </View>
           </View>
-          <Text>{workOrder.status}</Text>
-          {/* <Text>{employeeName}</Text> */}
+        </View>
+        {/* //* Work order details */}
+        <View style={styles.workOrderDetails}>
+          <Text
+            style={{
+              fontFamily: "Poppins",
+              alignSelf: "flex-start",
+              fontSize: 20,
+              color: Colors.light.primaryDarker
+            }}
+          >
+            Where
+          </Text>
+          <View style={styles.detailsWrapper}>
+            <Text>{workOrder.areaInClassroom}</Text>
+          </View>
+        </View>
+        {/* //* Work order details */}
+        <View style={styles.workOrderDetails}>
+          <Text
+            style={{
+              fontFamily: "Poppins",
+              alignSelf: "flex-start",
+              fontSize: 20,
+              color: Colors.light.primaryDarker
+            }}
+          >
+            Task Needed
+          </Text>
+          <View style={styles.detailsWrapper}>
+            <Text>{workOrder.taskNeeded}</Text>
+          </View>
+        </View>
+        {/* //* Work order ADDITIONAL details */}
+        <View style={styles.workOrderDetails}>
+          <Text
+            style={{
+              fontFamily: "Poppins",
+              alignSelf: "flex-start",
+              fontSize: 20,
+              color: Colors.light.primaryDarker
+            }}
+          >
+            Additional Details
+          </Text>
+          <View style={styles.detailsWrapper}>
+            <Text>{workOrder.additionalDetails}</Text>
+          </View>
         </View>
       </View>
-      <View style={styles.buttonWrapper}>
-        {statuses &&
-          statuses.map((status) => {
-            return (
-              <StatusChangeButton
-                key={status.status}
-                status={status.status}
-                borderColor={status.borderColor}
-                activeBgColor={
-                  status.status === workOrder.status
-                    ? status.activeBgColor
-                    : "white"
-                }
-                textColor={
-                  status.status === workOrder.status ? "white" : "black"
-                }
-                workOrderId={workOrder._id}
-              />
-            )
-          })}
+      {/* //* Change status */}
+      <View style={styles.updateButtons}>
+        <Text
+          style={{
+            fontFamily: "Poppins",
+            alignSelf: "center",
+            fontSize: 22,
+            paddingBottom: 20,
+            // textDecorationLine: "underline",
+            color: Colors.light.neonAction
+          }}
+        >
+          Update Status
+        </Text>
+        <View style={styles.buttonWrapper}>
+          {statuses &&
+            statuses.map((status) => {
+              return (
+                <StatusChangeButton
+                  key={status.status}
+                  status={status.status}
+                  borderColor={
+                    status.status === workOrder.status
+                      ? status.borderColor
+                      : status.activeBC
+                  }
+                  bgColor={
+                    status.status === workOrder.status
+                      ? status.bgColor
+                      : status.activeBgColor
+                  }
+                  textColor={
+                    status.status === workOrder.status
+                      ? status.textColor
+                      : status.activeTextColor
+                  }
+                  opacity={status.status === workOrder.status ? 1 : 0.8}
+                  shadow={status.status === workOrder.status ? true : false}
+                  workOrderId={workOrder._id}
+                />
+              )
+            })}
+        </View>
       </View>
     </View>
   )
@@ -87,31 +185,39 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
-    padding: 20,
-    gap: 10
+    justifyContent: "flex-start",
+    padding: 20
+    // gap: 10
   },
-  cardWrapper: {
+  modalTop: {
+    display: "flex",
+    flexDirection: "row",
     width: "100%",
-    borderColor: "black",
-    borderWidth: 2,
-    borderRadius: 10,
-    padding: 10,
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  workOrderInfo: {
+    borderBottomColor: "black",
+    width: "100%"
+  },
+  mainInfoWrapper: {
     display: "flex",
     flexDirection: "column",
-    gap: 10
+    gap: 5
   },
-  cardHeaderWrapper: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between"
+  workOrderDetails: {
+    borderBottomWidth: 1,
+    paddingTop: 6,
+    paddingBottom: 10,
+    borderBottomColor: Colors.light.textFaded,
+    width: "100%"
   },
-  cardHeaderText: { fontSize: 16, fontWeight: "bold" },
-  cardFooterWrapper: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between"
+  additionalDetails: {
+    width: "100%"
+  },
+  detailsWrapper: {
+    borderBottomColor: "black",
+    width: "100%"
   },
   dateWrapper: {
     display: "flex",
@@ -119,9 +225,16 @@ const styles = StyleSheet.create({
     gap: 4,
     alignItems: "center"
   },
-  buttonWrapper: {
+  updateButtons: {
     display: "flex",
-    flexDirection: "column",
-    gap: 5
+    alignSelf: "baseline",
+    paddingBottom: 20
+  },
+  buttonWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    flexWrap: "wrap",
+    gap: 10
   }
 })

@@ -1,5 +1,6 @@
 export interface IWorkOrder_From {
   _id: string
+  // TODO: Classroom should be set by admin when employee is hired
   classroom:
     | "Infant 1"
     | "Infant 2"
@@ -14,6 +15,7 @@ export interface IWorkOrder_From {
     | "Preschool 3"
     | "Pre-K 1"
     | "Pre-K 2"
+    | ""
   areaInClassroom: string
   taskNeeded: string
   additionalDetails?: string

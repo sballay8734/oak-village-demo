@@ -40,7 +40,7 @@ export const workOrdersApi = createApi({
   endpoints: (builder) => ({
     // First is what we get back, second is what we send TODO: !!!
     // * Maintenance Work Orders (ALL)
-    getMWorkOrders: builder.query<Success | Fail, void>({
+    getMWorkOrders: builder.query<WorkOrderFrom[], void>({
       query: () => `/maintenance-work-orders`,
       providesTags: (result) =>
         Array.isArray(result)
@@ -51,8 +51,15 @@ export const workOrdersApi = createApi({
               })),
               { type: "MaintenanceWorkOrders", _id: "LIST" }
             ]
-          : [{ type: "MaintenanceWorkOrders", _id: "LIST" }]
-      // ! TODO: Add ERROR HANLDING
+          : [{ type: "MaintenanceWorkOrders", _id: "LIST" }],
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          await queryFulfilled
+          // handleMutationSuccess(dispatch, "Found work orders!")
+        } catch (err) {
+          handleMutationErrors(err, dispatch)
+        }
+      }
     }),
     updateStatus: builder.mutation<WorkOrderFrom, StatusUpdateParams>({
       query: (body) => ({

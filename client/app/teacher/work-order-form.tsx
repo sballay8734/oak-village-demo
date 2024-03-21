@@ -1,16 +1,9 @@
-// TODO: DARK MODE LOOK TERRIBLE
 // TODO: Validation with schema (This should also fix error with taskNeeded)
-// TODO: classroom should be a dropdown
-// TODO: Dropdowns should also have text input that filters classes
-// TODO: Classroom should be autopopulated with employee classroom
 // TODO: LOADING STATES for requests
-// TODO: STYLE FORM, ADD BACK BUTTON
-// TODO: Need to use different Icons as expo/vector-icons don't have a "solid" or "bold options"
 
 // TODO: FINISH STYLING REQUEST MODAL (9 is too small for font size!)
-// TODO: Modal disappears automatically?
-// ! TODO: DEFINE COLORS FOR THEME!!!!
-// FIXME: NATIVE modals should ONLY be used for displaying information. They should NOT be able to trigger things that might cause errors.
+// TODO: Cant see "Additional Details" text while typing
+// TODO: If work order submission fails, form should not be cleared
 
 import { useForm, Controller } from "react-hook-form"
 import { useState, useRef } from "react"
@@ -23,17 +16,19 @@ import {
   TouchableWithoutFeedback
 } from "react-native"
 import { Link, router } from "expo-router"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { Ionicons } from "@expo/vector-icons"
-import { FontAwesome6 } from "@expo/vector-icons"
-import { MaterialCommunityIcons } from "@expo/vector-icons"
+import { Dropdown } from "react-native-element-dropdown"
 
+import { Ionicons } from "@expo/vector-icons"
+import { MaterialCommunityIcons } from "@expo/vector-icons"
+import { schoolClassrooms } from "@/constants/schoolClassrooms"
 import { Text, View } from "@/components/Themed"
 import { hideResponseModal } from "@/redux/serverResponseSlice/serverResponseSlice"
 import { useCreateWorkOrderMutation } from "@/redux/workOrdersSlice/workOrdersApi"
 import Colors from "@/constants/Colors"
+import { RootState } from "@/redux/store"
 
 interface FormData {
   classroom: string // dropdown
@@ -53,6 +48,9 @@ const primaryColor = "#e8dff5"
 const darkPrimaryColor = "#2e0666"
 
 export default function WorkOrderForm() {
+  const employee = useSelector(
+    (state: RootState) => state.employeeSlice.employee
+  )
   const insets = useSafeAreaInsets()
   const dispatch = useDispatch()
   const [taskNeededError, setTaskNeededError] = useState<string | null>(null)
@@ -65,8 +63,10 @@ export default function WorkOrderForm() {
     details: false
   })
 
+  console.log(employee)
+
   const initialValues: FormData = {
-    classroom: "",
+    classroom: employee !== null ? employee.classroom : "Toddler 5",
     areaInClassroom: "",
     taskNeeded: "",
     additionalDetails: ""
@@ -176,7 +176,7 @@ export default function WorkOrderForm() {
         </SafeAreaView>
         {/* INPUT CONTAINER */}
         <View style={styles.container}>
-          {/* CLASSROOM */}
+          {/* //* CLASSROOM */}
           <View style={styles.inputWrapper}>
             <Text style={styles.label}>Classroom of desired task*</Text>
             <Controller
@@ -184,16 +184,7 @@ export default function WorkOrderForm() {
               name="classroom"
               rules={{ required: true }}
               render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  placeholder="Toddler"
-                  onChangeText={onChange}
-                  value={value}
-                  onBlur={() =>
-                    setStyleState({ ...styleState, classroom: false })
-                  }
-                  onFocus={() =>
-                    setStyleState({ ...styleState, classroom: true })
-                  }
+                <Dropdown
                   style={{
                     ...styles.input,
                     borderColor: styleState.classroom
@@ -201,7 +192,22 @@ export default function WorkOrderForm() {
                       : "black",
                     backgroundColor: styleState.classroom ? "#faf7ff" : "white"
                   }}
-                  onSubmitEditing={Keyboard.dismiss}
+                  containerStyle={styles.dropdown}
+                  itemContainerStyle={styles.dropdownItem}
+                  activeColor={primaryColor}
+                  data={schoolClassrooms}
+                  labelField="label"
+                  valueField="label"
+                  onChange={(item) => onChange(item.label)}
+                  value={value}
+                  maxHeight={250}
+                  autoScroll={false}
+                  onBlur={() =>
+                    setStyleState({ ...styleState, classroom: false })
+                  }
+                  onFocus={() =>
+                    setStyleState({ ...styleState, classroom: true })
+                  }
                 />
               )}
             />
@@ -211,7 +217,7 @@ export default function WorkOrderForm() {
               <Text style={styles.error}></Text>
             )}
           </View>
-          {/* AREA IN CLASSROOM */}
+          {/* //* AREA IN CLASSROOM */}
           <View style={styles.inputWrapper}>
             <Text style={styles.label}>Specific classroom area*</Text>
             <Controller
@@ -241,11 +247,11 @@ export default function WorkOrderForm() {
               <Text style={styles.error}></Text>
             )}
           </View>
-          {/* Task Needed */}
+          {/* //* Task Needed */}
           {/* // TODO: When form is submitted, error still appears */}
           {/* // TODO: Pressing "return" does not exit field */}
           <View style={styles.inputWrapper}>
-            <Text style={styles.label}>Please describe the task needed*</Text>
+            <Text style={styles.label}>Please describe the problem*</Text>
             <Controller
               control={control}
               // !FIXME: Remove required for now
@@ -277,7 +283,7 @@ export default function WorkOrderForm() {
               <Text style={styles.error}></Text>
             )}
           </View>
-          {/* Additional Details */}
+          {/* //* Additional Details */}
           <View style={styles.inputWrapper}>
             <Text style={styles.label}>Additional details</Text>
             <Controller
@@ -403,6 +409,20 @@ const styles = StyleSheet.create({
     height: 50,
     padding: 8,
     borderRadius: 8
+  },
+  dropdown: {
+    fontSize: 15,
+    color: "black",
+    borderWidth: 1,
+    width: "91%",
+    borderRadius: 6,
+    borderColor: Colors.light.action,
+    overflow: "hidden"
+  },
+  dropdownItem: {
+    // borderRadius: 6,
+    borderBottomWidth: 1,
+    borderBottomColor: primaryColor
   },
   inputLarger: {
     fontSize: 15,

@@ -5,16 +5,20 @@ import { Text } from "@/components/Themed"
 interface StatusChangeBtnProps {
   status: string
   borderColor: string
-  activeBgColor: string
+  bgColor: string
   textColor: string
+  opacity: number
+  shadow: boolean
   workOrderId: string
 }
 
 export default function StatusChangeButton({
   status,
   borderColor,
-  activeBgColor,
+  bgColor,
   textColor,
+  opacity,
+  shadow,
   workOrderId
 }: StatusChangeBtnProps) {
   const [updatePost, { isLoading, isError }] = useUpdateStatusMutation()
@@ -30,7 +34,17 @@ export default function StatusChangeButton({
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 100,
-        backgroundColor: activeBgColor
+        backgroundColor: bgColor,
+        opacity: opacity,
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+
+        elevation: 5
       }}
     >
       <Text style={{ fontSize: 16, color: textColor, fontWeight: "500" }}>

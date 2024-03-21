@@ -181,26 +181,3 @@ export default function TabFilter({
     </Pressable>
   )
 }
-
-const styles = StyleSheet.create({
-  filterWrapper: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 10,
-    borderColor: "black",
-    borderWidth: 1,
-    gap: 3,
-    borderRadius: 100,
-    marginHorizontal: 3
-  },
-  textWrapper: {
-    backgroundColor: "blue",
-    borderRadius: 100,
-    height: 20,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 20
-  }
-})

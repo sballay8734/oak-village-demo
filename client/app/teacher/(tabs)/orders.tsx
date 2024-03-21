@@ -38,8 +38,6 @@ export default function WorkOrdersScreen() {
     refetch()
   }
 
-  console.log(workOrders)
-
   if (isLoading) {
     return (
       <View style={styles.loading}>
@@ -48,13 +46,64 @@ export default function WorkOrdersScreen() {
     )
   }
 
-  if (!isLoading && (!workOrders || workOrders.length === 0)) {
-    return (
-      <View style={styles.loading}>
-        <Text>No work orders found</Text>
-      </View>
-    )
-  }
+  // if (!isLoading && (!workOrders || workOrders.length === 0)) {
+  //   return (
+  //     <View
+  //       style={{
+  //         flex: 1,
+  //         justifyContent: "center",
+  //         alignItems: "center",
+
+  //         paddingTop: insets.top,
+  //         // paddingBottom: insets.bottom,
+  //         paddingLeft: insets.left,
+  //         paddingRight: insets.right,
+  //         backgroundColor: "white"
+  //       }}
+  //     >
+  //       <FlatList
+  //         data={teacherFilters}
+  //         renderItem={({ item }) => (
+  //           <TabFilter
+  //             filterName={item}
+  //             active={item === activeFilter}
+  //             handleFilterChange={handleFilterChange}
+  //           />
+  //         )}
+  //         showsHorizontalScrollIndicator={false}
+  //         horizontal
+  //         style={{
+  //           flexGrow: 0,
+  //           display: "flex"
+  //         }}
+  //       ></FlatList>
+  //       <View
+  //         style={styles.separator}
+  //         lightColor="#eee"
+  //         darkColor="rgba(255,255,255,0.1)"
+  //       />
+  //       <View
+  //         style={{
+  //           flexGrow: 1,
+  //           display: "flex",
+  //           alignItems: "center",
+  //           justifyContent: "center"
+  //         }}
+  //       >
+  //         <Text>No work orders found</Text>
+  //       </View>
+  //       <Link style={styles.link} href="/teacher/work-order-form" asChild>
+  //         <Pressable>
+  //           {({ pressed }) => (
+  //             <View style={{ backgroundColor: Colors.light.actionDarker }}>
+  //               <Ionicons name="add" size={30} color="white" />
+  //             </View>
+  //           )}
+  //         </Pressable>
+  //       </Link>
+  //     </View>
+  //   )
+  // }
 
   // * Teachers see less info than Maintenance so this helps reduce clutter
   const activeStatuses = ["Received", "Documented", "In Progress"]
@@ -113,23 +162,52 @@ export default function WorkOrdersScreen() {
       />
 
       {/* // * WORK ORDER LIST */}
-      {filteredWorkOrders?.length > 0 ? (
+      {filteredWorkOrders ? (
         <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
           style={styles.workOrderList}
           showsVerticalScrollIndicator={false}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+            <RefreshControl
+              progressViewOffset={2}
+              tintColor={Colors.light.actionLighter}
+              size={2}
+              title="Pull down to refresh"
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
+            />
           }
         >
-          <View style={styles.workOrderList}>
-            {filteredWorkOrders.map((workOrder: IWorkOrder_From) => (
-              <TeacherWorkOrderCard key={workOrder._id} workOrder={workOrder} />
-            ))}
-          </View>
+          {!isLoading && (!workOrders || workOrders.length === 0) ? (
+            <View
+              style={{
+                flexGrow: 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >
+              <Text style={{ fontSize: 20, marginBottom: 2 }}>
+                No work orders found
+              </Text>
+              <Text style={{ fontSize: 10, color: Colors.light.textFaded }}>
+                (Pull down to refresh)
+              </Text>
+            </View>
+          ) : (
+            <View style={styles.workOrderList}>
+              {filteredWorkOrders.map((workOrder: IWorkOrder_From) => (
+                <TeacherWorkOrderCard
+                  key={workOrder._id}
+                  workOrder={workOrder}
+                />
+              ))}
+            </View>
+          )}
         </ScrollView>
       ) : (
         <View style={styles.emptyList}>
-          <Text>No {activeFilter.toLocaleLowerCase()} work orders</Text>
+          <Text>No "{activeFilter.toLocaleLowerCase()}" work orders</Text>
         </View>
       )}
       <Link style={styles.link} href="/teacher/work-order-form" asChild>

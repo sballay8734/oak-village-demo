@@ -1,4 +1,4 @@
-import { FlatList, ScrollView, StyleSheet } from "react-native"
+import { FlatList, RefreshControl, ScrollView, StyleSheet } from "react-native"
 import { useSelector } from "react-redux"
 import { useState } from "react"
 
@@ -10,19 +10,25 @@ import TabFilter from "@/components/MaintenanceComponents/TabFilter/MaintenanceT
 import MaintenanceWorkOrderCard from "@/components/MaintenanceComponents/WorkOrderRequestCard/MaintenanceWorkOrderCard"
 import { IWorkOrder_From } from "@/types/workOrders"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import Colors from "@/constants/Colors"
 
 // ! GET TYPES CORRECT FROM API (IT IS NOT EXPECTING THE RIGHT FORMAT)
 
 export default function WorkOrdersScreen() {
+  const [refreshing, setRefreshing] = useState<boolean>(false)
   const insets = useSafeAreaInsets()
   const employee = useSelector(
     (state: RootState) => state.employeeSlice.employee
   )
-  const { data: workOrders, isLoading } = useGetMWorkOrdersQuery()
+  const { refetch, data: workOrders, isLoading } = useGetMWorkOrdersQuery()
   const [activeFilter, setActiveFilter] = useState<string>("All")
 
   function handleFilterChange(filter: string) {
     setActiveFilter(filter)
+  }
+
+  function handleRefresh() {
+    refetch()
   }
 
   if (!employee || isLoading) {
@@ -33,20 +39,11 @@ export default function WorkOrdersScreen() {
     )
   }
 
-  if (!isLoading && (!workOrders || workOrders.payload.length === 0)) {
-    console.log("CATCH CASE", workOrders)
-    return (
-      <View style={styles.loading}>
-        <Text>No work orders found</Text>
-      </View>
-    )
-  }
-
   const filteredWorkOrders =
-    workOrders && workOrders.payload.length > 0
-      ? workOrders.payload.filter((workOrder) => {
+    workOrders && workOrders.length > 0
+      ? workOrders.filter((workOrder) => {
           if (activeFilter === "All") {
-            return workOrders.payload
+            return workOrders
           } else if (activeFilter === "New") {
             return workOrder.seenByMaintenance === false
           } else {
@@ -94,19 +91,48 @@ export default function WorkOrdersScreen() {
       />
 
       {/* // * WORK ORDER LIST */}
-      {filteredWorkOrders?.length > 0 ? (
+      {filteredWorkOrders ? (
         <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
           style={styles.workOrderList}
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              progressViewOffset={2}
+              tintColor={Colors.light.actionLighter}
+              size={2}
+              title="Pull down to refresh"
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
+            />
+          }
         >
-          <View style={styles.workOrderList}>
-            {filteredWorkOrders.map((workOrder: IWorkOrder_From) => (
-              <MaintenanceWorkOrderCard
-                key={workOrder._id}
-                workOrder={workOrder}
-              />
-            ))}
-          </View>
+          {!isLoading && (!workOrders || workOrders.length === 0) ? (
+            <View
+              style={{
+                flexGrow: 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >
+              <Text style={{ fontSize: 20, marginBottom: 2 }}>
+                No work orders found
+              </Text>
+              <Text style={{ fontSize: 10, color: Colors.light.textFaded }}>
+                (Pull down to refresh)
+              </Text>
+            </View>
+          ) : (
+            <View style={styles.workOrderList}>
+              {filteredWorkOrders.map((workOrder: IWorkOrder_From) => (
+                <MaintenanceWorkOrderCard
+                  key={workOrder._id}
+                  workOrder={workOrder}
+                />
+              ))}
+            </View>
+          )}
         </ScrollView>
       ) : (
         <View style={styles.emptyList}>
@@ -129,7 +155,7 @@ const styles = StyleSheet.create({
   },
   workOrderList: {
     marginTop: 0,
-    marginBottom: 4,
+    marginBottom: 0,
     flex: 1,
     height: "100%",
     width: "98%",
@@ -137,7 +163,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignSelf: "center",
     gap: 10,
-    backgroundColor: "white"
+    backgroundColor: "white",
+    paddingBottom: 20
   },
   emptyList: {
     marginTop: 4,
