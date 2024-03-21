@@ -1,6 +1,6 @@
 import { useUpdateStatusMutation } from "@/redux/workOrdersSlice/workOrdersApi"
-import { Pressable, StyleSheet } from "react-native"
-import { Text } from "@/components/Themed"
+import { ActivityIndicator, Pressable, StyleSheet } from "react-native"
+import { Text, View } from "@/components/Themed"
 
 interface StatusChangeBtnProps {
   status: string
@@ -43,7 +43,6 @@ export default function StatusChangeButton({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-
         elevation: 5
       }}
     >

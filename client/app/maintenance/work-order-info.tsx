@@ -48,8 +48,8 @@ export default function WorkOrderInfo() {
               fontFamily: "Poppins",
               alignSelf: "center",
               fontSize: 26,
-              paddingTop: 10,
-              paddingBottom: 30
+              paddingTop: 0,
+              paddingBottom: 10
             }}
           >
             Work Order Info
@@ -63,7 +63,9 @@ export default function WorkOrderInfo() {
             }}
           >
             <Text style={{ fontSize: 24 }}>{workOrder.classroom}</Text>
-            <View style={{ flexDirection: "row", gap: 2 }}>
+            <View
+              style={{ flexDirection: "row", gap: 2, alignItems: "center" }}
+            >
               <Text style={{}}>Submitted by:</Text>
               <Text style={{ color: Colors.light.primaryDarker }}>
                 {workOrder.employeeName}
@@ -80,6 +82,30 @@ export default function WorkOrderInfo() {
               </Text>
               <Text style={{ fontSize: 12, color: Colors.light.primaryDarker }}>
                 {getDateDifference(workOrder.dateSubmitted)} days ago
+              </Text>
+            </View>
+            <View
+              style={{ flexDirection: "row", gap: 2, alignItems: "center" }}
+            >
+              <Text style={{}}>Status:</Text>
+              <Text
+                style={{
+                  fontFamily: "Poppins",
+                  color:
+                    workOrder.status === "Pending"
+                      ? Colors.light.pendingText
+                      : ["Received", "Documented", "In Progress"].includes(
+                          workOrder.status
+                        )
+                      ? "#3ecf00"
+                      : workOrder.status === "Awaiting Materials"
+                      ? "#ccc500"
+                      : workOrder.status === "Completed"
+                      ? "#9700e8"
+                      : "#ff0000"
+                }}
+              >
+                {workOrder.status}
               </Text>
             </View>
           </View>
@@ -140,7 +166,7 @@ export default function WorkOrderInfo() {
             fontFamily: "Poppins",
             alignSelf: "center",
             fontSize: 22,
-            paddingBottom: 20,
+            paddingBottom: 10,
             // textDecorationLine: "underline",
             color: Colors.light.neonAction
           }}
@@ -227,8 +253,7 @@ const styles = StyleSheet.create({
   },
   updateButtons: {
     display: "flex",
-    alignSelf: "baseline",
-    paddingBottom: 20
+    paddingVertical: 10
   },
   buttonWrapper: {
     flexDirection: "row",

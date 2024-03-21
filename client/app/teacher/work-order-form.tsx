@@ -200,7 +200,7 @@ export default function WorkOrderForm() {
                   valueField="label"
                   onChange={(item) => onChange(item.label)}
                   value={value}
-                  maxHeight={250}
+                  maxHeight={350}
                   autoScroll={false}
                   onBlur={() =>
                     setStyleState({ ...styleState, classroom: false })
@@ -231,6 +231,7 @@ export default function WorkOrderForm() {
                   value={value}
                   onBlur={() => setStyleState({ ...styleState, area: false })}
                   onFocus={() => setStyleState({ ...styleState, area: true })}
+                  maxLength={75}
                   style={{
                     ...styles.input,
                     borderColor: styleState.area
@@ -256,11 +257,12 @@ export default function WorkOrderForm() {
               control={control}
               // !FIXME: Remove required for now
               // TODO: Add error message for minLength of 10
-              rules={{ maxLength: 500 }}
+              rules={{ maxLength: 350 }}
               name="taskNeeded"
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
                   scrollEnabled={false}
+                  maxLength={350}
                   onBlur={() => setStyleState({ ...styleState, task: false })}
                   onFocus={() => setStyleState({ ...styleState, task: true })}
                   style={{
@@ -289,6 +291,7 @@ export default function WorkOrderForm() {
             <Controller
               control={control}
               name="additionalDetails"
+              rules={{ maxLength: 350 }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
                   onBlur={() =>
@@ -307,7 +310,7 @@ export default function WorkOrderForm() {
                   onChangeText={onChange}
                   value={value}
                   multiline
-                  maxLength={500}
+                  maxLength={350}
                 />
               )}
             />
