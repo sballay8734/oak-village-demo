@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar"
 import { View, StyleSheet, Pressable } from "react-native"
 import { useLocalSearchParams, useRouter } from "expo-router"
 
@@ -39,21 +38,24 @@ export default function WorkOrderInfo() {
             Close
           </Text>
         </Pressable>
+        <Text
+          style={{
+            fontFamily: "Poppins",
+            alignSelf: "center",
+            fontSize: 20
+          }}
+        >
+          Work Order Info
+        </Text>
+        <Text
+          style={{ fontSize: 16, color: Colors.light.neonAction, opacity: 0 }}
+        >
+          Close
+        </Text>
       </View>
       {/* //* Work order info */}
       <View style={{ flexGrow: 1, flexDirection: "column", width: "100%" }}>
         <View style={styles.workOrderInfo}>
-          <Text
-            style={{
-              fontFamily: "Poppins",
-              alignSelf: "center",
-              fontSize: 26,
-              paddingTop: 0,
-              paddingBottom: 10
-            }}
-          >
-            Work Order Info
-          </Text>
           <View
             style={{
               ...styles.mainInfoWrapper,
@@ -220,9 +222,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
+    paddingBottom: 5,
+    borderBottomColor: "#ebebeb",
+    borderBottomWidth: 2
   },
   workOrderInfo: {
+    paddingTop: 10,
     borderBottomColor: "black",
     width: "100%"
   },
