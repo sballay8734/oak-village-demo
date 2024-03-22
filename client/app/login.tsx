@@ -44,7 +44,10 @@ export default function Login() {
   const [login, { isLoading }] = useLazyStandardSignInMutation()
 
   async function handleLogin(credentials: SignInFormData) {
+    console.log(credentials)
+    return
     try {
+      // ! FIX THIS FIRST
       const res = await login(credentials).unwrap()
       const userRole = getRole(res.payload.roleId)
       dispatch(setEmployee(res.payload))
