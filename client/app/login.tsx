@@ -45,7 +45,6 @@ export default function Login() {
 
   async function handleLogin(credentials: SignInFormData) {
     console.log(credentials)
-    return
     try {
       // ! FIX THIS FIRST
       const res = await login(credentials).unwrap()

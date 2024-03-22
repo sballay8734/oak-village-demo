@@ -1,4 +1,11 @@
+// NOTES FROM JOHN
+// META CATEGORIES FOR CLASSROOMS (Need list of meta categories)
+// BLACKLIST - DON'T BRING BACK (Parents & employees)
+// WHITELIST - opposite
+
 // IN ORDER
+// ! NO MESSAGE IN MAINTENANCE EMPTY WORK ORDERS
+// ! DON'T DEFAULT TO TAB IF IT HAS ZERO WORK ORDERS
 //! Additional details is hidden under keyboard
 
 //! Back button should not clear form
@@ -27,3 +34,8 @@
 // TODO: Have a screen for the default "employee" in case admin has not set permissions
 // TODO: State is not clearing properly
 // ! .find() will always return and array in mongoose
+
+// UI DESIGNER
+// SYSTEMS ENGINEER
+// DEVELOPER
+// PROJECT MANAGER
