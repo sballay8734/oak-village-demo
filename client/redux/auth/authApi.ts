@@ -7,7 +7,7 @@ import { IEmployee_From, IRegisterInfo } from "./types"
 import { setEmployee } from "./employeeSlice"
 import { handleQuerySuccess } from "@/helpers/successHandling"
 import { handleQueryErrors } from "@/helpers/errorHandling"
-import { LAPTOP_HOME_IP } from "@/constants/ipConfig"
+import { DESKTOP_IP } from "@/constants/ipConfig"
 
 export interface SignInFormData {
   email: string
@@ -31,7 +31,7 @@ interface SignedInUser {
 export const authApi = createApi({
   reducerPath: "auth",
   baseQuery: fetchBaseQuery({
-    baseUrl: `http://${LAPTOP_HOME_IP}:3001/api/auth`
+    baseUrl: `http://${DESKTOP_IP}:3001/api/auth`
   }),
   endpoints: (builder) => ({
     // First is what we get back, second is what we send TODO: !!!

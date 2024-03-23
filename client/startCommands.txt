@@ -6,6 +6,9 @@ npm run start
 
 clear expo cache - npx expo start --clear
 
+shift + i (TO CHOOSE DEVICE)
+   - can't do this from root. Need to be in client
+
 // OTHER NOTES
 - If android emulator is not auto refreshing, type r in terminal to refresh app
 - m (to bring up dev tools and inspection)
