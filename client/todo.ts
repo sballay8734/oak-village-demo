@@ -4,9 +4,9 @@
 // WHITELIST - opposite
 
 // IN ORDER
+//! Additional details is hidden under keyboard
 // ! NO MESSAGE IN MAINTENANCE EMPTY WORK ORDERS
 // ! DON'T DEFAULT TO TAB IF IT HAS ZERO WORK ORDERS
-//! Additional details is hidden under keyboard
 
 //! Back button should not clear form
 //! Add full name to employee model
