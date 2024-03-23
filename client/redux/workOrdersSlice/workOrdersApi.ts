@@ -12,6 +12,7 @@ import {
 import { setResponseMessage } from "../serverResponseSlice/serverResponseSlice"
 import { handleMutationErrors } from "@/helpers/errorHandling"
 import { handleMutationSuccess } from "@/helpers/successHandling"
+import { LAPTOP_HOME_IP } from "@/constants/ipConfig"
 
 // ! TODO: Get RID OF SUCCESS, FAIL, etc... and use the custom error handler you made (Also try and move the error handler out of the components)
 interface Success {
@@ -34,7 +35,7 @@ interface CreateSuccess {
 export const workOrdersApi = createApi({
   reducerPath: "workOrders",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://192.168.0.116:3001/api/maintenance"
+    baseUrl: `http://${LAPTOP_HOME_IP}:3001/api/maintenance`
   }),
   tagTypes: ["MaintenanceWorkOrders", "EmployeeWorkOrders"],
   endpoints: (builder) => ({

@@ -7,6 +7,7 @@ import { IEmployee_From, IRegisterInfo } from "./types"
 import { setEmployee } from "./employeeSlice"
 import { handleQuerySuccess } from "@/helpers/successHandling"
 import { handleQueryErrors } from "@/helpers/errorHandling"
+import { LAPTOP_HOME_IP } from "@/constants/ipConfig"
 
 export interface SignInFormData {
   email: string
@@ -29,7 +30,9 @@ interface SignedInUser {
 // Define a service using a base URL and expected endpoints
 export const authApi = createApi({
   reducerPath: "auth",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://192.168.0.116:3001/api/auth" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: `http://${LAPTOP_HOME_IP}:3001/api/auth`
+  }),
   endpoints: (builder) => ({
     // First is what we get back, second is what we send TODO: !!!
     lazyStandardSignIn: builder.mutation<SignedInUser, SignInFormData>({
