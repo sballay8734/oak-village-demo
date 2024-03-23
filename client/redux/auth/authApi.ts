@@ -23,6 +23,7 @@ interface SignedInUser {
     lastName: string
     preferredName: string
     roleId: string
+    classroom: string
   }
   success: true
 }
@@ -35,7 +36,7 @@ export const authApi = createApi({
   }),
   endpoints: (builder) => ({
     // First is what we get back, second is what we send TODO: !!!
-    lazyStandardSignIn: builder.mutation<SignedInUser, SignInFormData>({
+    signIn: builder.mutation<SignedInUser, SignInFormData>({
       query: (body) => ({
         url: "/signin",
         method: "POST",
@@ -50,9 +51,9 @@ export const authApi = createApi({
         }
       }
     }),
-    lazyStandardRegister: builder.mutation<IEmployee_From, IRegisterInfo>({
+    signup: builder.mutation<IEmployee_From, IRegisterInfo>({
       query: (formData) => ({
-        url: "/auth/register",
+        url: "/auth/signup",
         method: "POST",
         body: JSON.stringify(formData),
         headers: {
@@ -65,7 +66,4 @@ export const authApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const {
-  useLazyStandardSignInMutation,
-  useLazyStandardRegisterMutation
-} = authApi
+export const { useSignInMutation, useSignupMutation } = authApi
