@@ -1,3 +1,5 @@
+// ! "Not enough information" clears form and navigates. It should stay on form and not clear inputs
+
 // TODO: Validation with schema (This should also fix error with taskNeeded)
 // TODO: LOADING STATES for requests
 
