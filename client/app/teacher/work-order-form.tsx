@@ -16,7 +16,6 @@ import {
   TouchableWithoutFeedback,
   ScrollView
 } from "react-native"
-import KeyboardAvoidingContainer from "@/components/KeyboardAvoidingContainer/KeyboardAvoidingContainer"
 import { Link, router } from "expo-router"
 import { useDispatch, useSelector } from "react-redux"
 import { SafeAreaView } from "react-native-safe-area-context"
@@ -385,7 +384,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     // gap: 20,
     width: "100%",
-    marginTop: 30
+    marginTop: 20
   },
   containerHeader: {
     display: "flex",
@@ -402,7 +401,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowColor: "black",
     shadowOffset: { width: 0, height: 3 },
-    position: "relative"
+    position: "relative",
+    minHeight: 200
   },
   title: {
     fontSize: 24,
@@ -465,7 +465,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // flexGrow: 1
     width: "90%",
-    marginBottom: 8
+    marginBottom: 0
   },
   label: {
     alignSelf: "flex-start",
