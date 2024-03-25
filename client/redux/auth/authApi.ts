@@ -7,7 +7,7 @@ import { IEmployee_From, IRegisterInfo } from "./types"
 import { setEmployee } from "./employeeSlice"
 import { handleQuerySuccess } from "@/helpers/successHandling"
 import { handleQueryErrors } from "@/helpers/errorHandling"
-import { LAPTOP_HOME_IP } from "@/constants/ipConfig"
+import { DESKTOP_IP } from "@/constants/ipConfig"
 
 export interface SignInFormData {
   email: string
@@ -23,6 +23,7 @@ interface SignedInUser {
     lastName: string
     preferredName: string
     roleId: string
+    classroom: string
   }
   success: true
 }
@@ -31,11 +32,11 @@ interface SignedInUser {
 export const authApi = createApi({
   reducerPath: "auth",
   baseQuery: fetchBaseQuery({
-    baseUrl: `http://${LAPTOP_HOME_IP}:3001/api/auth`
+    baseUrl: `http://${DESKTOP_IP}:3001/api/auth`
   }),
   endpoints: (builder) => ({
     // First is what we get back, second is what we send TODO: !!!
-    lazyStandardSignIn: builder.mutation<SignedInUser, SignInFormData>({
+    signIn: builder.mutation<SignedInUser, SignInFormData>({
       query: (body) => ({
         url: "/signin",
         method: "POST",
@@ -50,9 +51,9 @@ export const authApi = createApi({
         }
       }
     }),
-    lazyStandardRegister: builder.mutation<IEmployee_From, IRegisterInfo>({
+    signup: builder.mutation<IEmployee_From, IRegisterInfo>({
       query: (formData) => ({
-        url: "/auth/register",
+        url: "/auth/signup",
         method: "POST",
         body: JSON.stringify(formData),
         headers: {
@@ -65,7 +66,4 @@ export const authApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const {
-  useLazyStandardSignInMutation,
-  useLazyStandardRegisterMutation
-} = authApi
+export const { useSignInMutation, useSignupMutation } = authApi

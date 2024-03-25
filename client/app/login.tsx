@@ -4,10 +4,7 @@ import { useDispatch } from "react-redux"
 import { BtnStyles } from "@/constants/Buttons"
 
 import { View, Text } from "@/components/Themed"
-import {
-  SignInFormData,
-  useLazyStandardSignInMutation
-} from "@/redux/auth/authApi"
+import { SignInFormData, useSignInMutation } from "@/redux/auth/authApi"
 import { persistor } from "@/redux/store"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { setEmployee } from "@/redux/auth/employeeSlice"
@@ -41,12 +38,11 @@ type role = "/teacher/" | "/admin/" | "/maintenance/" | "/parent/"
 export default function Login() {
   const router = useRouter()
   const dispatch = useDispatch()
-  const [login, { isLoading }] = useLazyStandardSignInMutation()
+  const [login, { isLoading }] = useSignInMutation()
 
   async function handleLogin(credentials: SignInFormData) {
     console.log(credentials)
     try {
-      // ! FIX THIS FIRST
       const res = await login(credentials).unwrap()
       const userRole = getRole(res.payload.roleId)
       dispatch(setEmployee(res.payload))
