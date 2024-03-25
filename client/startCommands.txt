@@ -1,13 +1,10 @@
-npm run ios
-npm run android
-npm run web
-
-npm run start
-
-clear expo cache - npx expo start --clear
+npm run dev
 
 shift + i (TO CHOOSE DEVICE)
    - can't do this from root. Need to be in client
+
+ipconfig getifaddr en0 (to get ip)
+ipconfig getifaddr en1 (only if computer has ethernet port)
 
 // OTHER NOTES
 - If android emulator is not auto refreshing, type r in terminal to refresh app

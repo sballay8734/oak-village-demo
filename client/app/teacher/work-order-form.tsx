@@ -6,15 +6,17 @@
 // TODO: If work order submission fails, form should not be cleared
 
 import { useForm, Controller } from "react-hook-form"
-import { useState, useRef } from "react"
+import { useState } from "react"
 import {
   StyleSheet,
   Button,
   TextInput,
   Pressable,
   Keyboard,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  ScrollView
 } from "react-native"
+import KeyboardAvoidingContainer from "@/components/KeyboardAvoidingContainer/KeyboardAvoidingContainer"
 import { Link, router } from "expo-router"
 import { useDispatch, useSelector } from "react-redux"
 import { SafeAreaView } from "react-native-safe-area-context"
@@ -62,8 +64,6 @@ export default function WorkOrderForm() {
     task: false,
     details: false
   })
-
-  console.log(employee)
 
   const initialValues: FormData = {
     classroom: employee !== null ? employee.classroom : "Toddler 5",
@@ -177,157 +177,167 @@ export default function WorkOrderForm() {
         {/* INPUT CONTAINER */}
         <View style={styles.container}>
           {/* //* CLASSROOM */}
-          <View style={styles.inputWrapper}>
-            <Text style={styles.label}>Classroom of desired task*</Text>
-            <Controller
-              control={control}
-              name="classroom"
-              rules={{ required: true }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <Dropdown
-                  style={{
-                    ...styles.input,
-                    borderColor: styleState.classroom
-                      ? Colors.light.action
-                      : "black",
-                    backgroundColor: styleState.classroom ? "#faf7ff" : "white"
-                  }}
-                  containerStyle={styles.dropdown}
-                  itemContainerStyle={styles.dropdownItem}
-                  activeColor={primaryColor}
-                  data={schoolClassrooms}
-                  labelField="label"
-                  valueField="label"
-                  onChange={(item) => onChange(item.label)}
-                  value={value}
-                  maxHeight={350}
-                  autoScroll={false}
-                  onBlur={() =>
-                    setStyleState({ ...styleState, classroom: false })
-                  }
-                  onFocus={() =>
-                    setStyleState({ ...styleState, classroom: true })
-                  }
-                />
+          <ScrollView
+            style={{ width: "100%" }}
+            contentContainerStyle={{
+              flexDirection: "column",
+              alignItems: "center"
+            }}
+          >
+            <View style={styles.inputWrapper}>
+              <Text style={styles.label}>Classroom of desired task*</Text>
+              <Controller
+                control={control}
+                name="classroom"
+                rules={{ required: true }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <Dropdown
+                    style={{
+                      ...styles.input,
+                      borderColor: styleState.classroom
+                        ? Colors.light.action
+                        : "black",
+                      backgroundColor: styleState.classroom
+                        ? "#faf7ff"
+                        : "white"
+                    }}
+                    containerStyle={styles.dropdown}
+                    itemContainerStyle={styles.dropdownItem}
+                    activeColor={primaryColor}
+                    data={schoolClassrooms}
+                    labelField="label"
+                    valueField="label"
+                    onChange={(item) => onChange(item.label)}
+                    value={value}
+                    maxHeight={350}
+                    autoScroll={false}
+                    onBlur={() =>
+                      setStyleState({ ...styleState, classroom: false })
+                    }
+                    onFocus={() =>
+                      setStyleState({ ...styleState, classroom: true })
+                    }
+                  />
+                )}
+              />
+              {errors.classroom ? (
+                <Text style={styles.error}>This field is required</Text>
+              ) : (
+                <Text style={styles.error}></Text>
               )}
-            />
-            {errors.classroom ? (
-              <Text style={styles.error}>This field is required</Text>
-            ) : (
-              <Text style={styles.error}></Text>
-            )}
-          </View>
-          {/* //* AREA IN CLASSROOM */}
-          <View style={styles.inputWrapper}>
-            <Text style={styles.label}>Specific classroom area*</Text>
-            <Controller
-              control={control}
-              name="areaInClassroom"
-              rules={{ required: true }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  placeholder="e.g. Back of room by the art center"
-                  onChangeText={onChange}
-                  value={value}
-                  onBlur={() => setStyleState({ ...styleState, area: false })}
-                  onFocus={() => setStyleState({ ...styleState, area: true })}
-                  maxLength={75}
-                  style={{
-                    ...styles.input,
-                    borderColor: styleState.area
-                      ? Colors.light.action
-                      : "black",
-                    backgroundColor: styleState.area ? "#faf7ff" : "white"
-                  }}
-                />
+            </View>
+            {/* //* AREA IN CLASSROOM */}
+            <View style={styles.inputWrapper}>
+              <Text style={styles.label}>Specific classroom area*</Text>
+              <Controller
+                control={control}
+                name="areaInClassroom"
+                rules={{ required: true }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    placeholder="e.g. Back of room by the art center"
+                    onChangeText={onChange}
+                    value={value}
+                    onBlur={() => setStyleState({ ...styleState, area: false })}
+                    onFocus={() => setStyleState({ ...styleState, area: true })}
+                    maxLength={75}
+                    style={{
+                      ...styles.input,
+                      borderColor: styleState.area
+                        ? Colors.light.action
+                        : "black",
+                      backgroundColor: styleState.area ? "#faf7ff" : "white"
+                    }}
+                  />
+                )}
+              />
+              {errors.areaInClassroom ? (
+                <Text style={styles.error}>This field is required</Text>
+              ) : (
+                <Text style={styles.error}></Text>
               )}
-            />
-            {errors.areaInClassroom ? (
-              <Text style={styles.error}>This field is required</Text>
-            ) : (
-              <Text style={styles.error}></Text>
-            )}
-          </View>
-          {/* //* Task Needed */}
-          {/* // TODO: When form is submitted, error still appears */}
-          {/* // TODO: Pressing "return" does not exit field */}
-          <View style={styles.inputWrapper}>
-            <Text style={styles.label}>Please describe the problem*</Text>
-            <Controller
-              control={control}
-              // !FIXME: Remove required for now
-              // TODO: Add error message for minLength of 10
-              rules={{ maxLength: 350 }}
-              name="taskNeeded"
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  scrollEnabled={false}
-                  maxLength={350}
-                  onBlur={() => setStyleState({ ...styleState, task: false })}
-                  onFocus={() => setStyleState({ ...styleState, task: true })}
-                  style={{
-                    ...styles.inputLarger,
-                    borderColor: styleState.task
-                      ? Colors.light.action
-                      : "black",
-                    backgroundColor: styleState.task ? "#faf7ff" : "white"
-                  }}
-                  onChangeText={onChange}
-                  value={value}
-                  multiline
-                />
+            </View>
+            {/* //* Task Needed */}
+            {/* // TODO: When form is submitted, error still appears */}
+            {/* // TODO: Pressing "return" does not exit field */}
+            <View style={styles.inputWrapper}>
+              <Text style={styles.label}>Please describe the problem*</Text>
+              <Controller
+                control={control}
+                // !FIXME: Remove required for now
+                // TODO: Add error message for minLength of 10
+                rules={{ maxLength: 350 }}
+                name="taskNeeded"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    scrollEnabled={false}
+                    maxLength={350}
+                    onBlur={() => setStyleState({ ...styleState, task: false })}
+                    onFocus={() => setStyleState({ ...styleState, task: true })}
+                    style={{
+                      ...styles.inputLarger,
+                      borderColor: styleState.task
+                        ? Colors.light.action
+                        : "black",
+                      backgroundColor: styleState.task ? "#faf7ff" : "white"
+                    }}
+                    onChangeText={onChange}
+                    value={value}
+                    multiline
+                  />
+                )}
+              />
+              {/* FIXME: This error persists even when form is reset and errors are cleared. Removing "multiline" fixes the error but screws with the TextBox format. This is your current work-around (using the server response to render the error) */}
+              {taskNeededError ? (
+                <Text style={styles.error}>{taskNeededError}</Text>
+              ) : (
+                <Text style={styles.error}></Text>
               )}
-            />
-            {/* FIXME: This error persists even when form is reset and errors are cleared. Removing "multiline" fixes the error but screws with the TextBox format. This is your current work-around (using the server response to render the error) */}
-            {taskNeededError ? (
-              <Text style={styles.error}>{taskNeededError}</Text>
-            ) : (
-              <Text style={styles.error}></Text>
-            )}
-          </View>
-          {/* //* Additional Details */}
-          <View style={styles.inputWrapper}>
-            <Text style={styles.label}>Additional details</Text>
-            <Controller
-              control={control}
-              name="additionalDetails"
-              rules={{ maxLength: 350 }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  onBlur={() =>
-                    setStyleState({ ...styleState, details: false })
-                  }
-                  onFocus={() =>
-                    setStyleState({ ...styleState, details: true })
-                  }
-                  style={{
-                    ...styles.inputLarger2,
-                    borderColor: styleState.details
-                      ? Colors.light.action
-                      : "black",
-                    backgroundColor: styleState.details ? "#faf7ff" : "white"
-                  }}
-                  onChangeText={onChange}
-                  value={value}
-                  multiline
-                  maxLength={350}
-                />
+            </View>
+            {/* //* Additional Details */}
+            <View style={styles.inputWrapper}>
+              <Text style={styles.label}>Additional details</Text>
+              <Controller
+                control={control}
+                name="additionalDetails"
+                rules={{ maxLength: 350 }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    onBlur={() =>
+                      setStyleState({ ...styleState, details: false })
+                    }
+                    onFocus={() =>
+                      setStyleState({ ...styleState, details: true })
+                    }
+                    style={{
+                      ...styles.inputLarger2,
+                      borderColor: styleState.details
+                        ? Colors.light.action
+                        : "black",
+                      backgroundColor: styleState.details ? "#faf7ff" : "white"
+                    }}
+                    onChangeText={onChange}
+                    value={value}
+                    multiline
+                    maxLength={350}
+                  />
+                )}
+              />
+              {errors.additionalDetails ? (
+                <Text style={styles.error}>Something is wrong</Text>
+              ) : (
+                <Text style={styles.error}></Text>
               )}
-            />
-            {errors.additionalDetails ? (
-              <Text style={styles.error}>Something is wrong</Text>
-            ) : (
-              <Text style={styles.error}></Text>
-            )}
-          </View>
-          {/* SERVER ERRORS */}
-          <View>
-            {responseError ? (
-              <Text style={styles.serverError}>{responseError}</Text>
-            ) : (
-              <Text style={styles.serverErrorNone}></Text>
-            )}
-          </View>
+            </View>
+            {/* SERVER ERRORS */}
+            <View>
+              {responseError ? (
+                <Text style={styles.serverError}>{responseError}</Text>
+              ) : (
+                <Text style={styles.serverErrorNone}></Text>
+              )}
+            </View>
+          </ScrollView>
         </View>
         {/* TODO: These need to appear from top as reqModal */}
         {/* {error !== null ? (
