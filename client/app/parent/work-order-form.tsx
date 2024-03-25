@@ -14,7 +14,7 @@ import { Link, router } from "expo-router"
 import { Text, View } from "@/components/Themed"
 import Colors from "@/constants/Colors"
 import { AntDesign } from "@expo/vector-icons"
-import { DESKTOP_IP } from "@/constants/ipConfig"
+import { LAPTOP_CRANFIELD_IP } from "@/constants/ipConfig"
 
 interface FormData {
   classroom: string // dropdown
@@ -51,7 +51,7 @@ export default function WorkOrderForm() {
     setSuccess(null)
     try {
       const res = await fetch(
-        `http://${DESKTOP_IP}:3001/api/maintenance/create-work-order`,
+        `http://${LAPTOP_CRANFIELD_IP}:3001/api/maintenance/create-work-order`,
         {
           method: "POST",
           headers: {
