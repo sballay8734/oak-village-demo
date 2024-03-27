@@ -40,7 +40,7 @@ interface CreateSuccess {
 export const workOrdersApi = createApi({
   reducerPath: "workOrders",
   baseQuery: fetchBaseQuery({
-    baseUrl: `http://${LAPTOP_CRANFIELD_IP}:3001/api/maintenance`
+    baseUrl: `http://${LAPTOP_OAK_VILLAGE_IP}:3001/api/maintenance`
   }),
   tagTypes: ["MaintenanceWorkOrders", "EmployeeWorkOrders"],
   endpoints: (builder) => ({

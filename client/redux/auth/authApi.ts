@@ -37,7 +37,7 @@ interface SignedInUser {
 export const authApi = createApi({
   reducerPath: "auth",
   baseQuery: fetchBaseQuery({
-    baseUrl: `http://${LAPTOP_CRANFIELD_IP}:3001/api/auth`
+    baseUrl: `http://${LAPTOP_OAK_VILLAGE_IP}:3001/api/auth`
   }),
   endpoints: (builder) => ({
     // First is what we get back, second is what we send TODO: !!!

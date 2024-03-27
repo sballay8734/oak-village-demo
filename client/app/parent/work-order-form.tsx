@@ -56,7 +56,7 @@ export default function WorkOrderForm() {
     setSuccess(null)
     try {
       const res = await fetch(
-        `http://${LAPTOP_CRANFIELD_IP}:3001/api/maintenance/create-work-order`,
+        `http://${LAPTOP_OAK_VILLAGE_IP}:3001/api/maintenance/create-work-order`,
         {
           method: "POST",
           headers: {
