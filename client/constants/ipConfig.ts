@@ -32,6 +32,7 @@ export const LAPTOP_OAK_VILLAGE_IP = "192.168.77.139"
 // - REPORTS
 // --- Generate reports and filter (Birthdays, Allergies, Transitioning Soon?)
 // UPCOMING (Child Graduating, )
+// * Should be notified when employee completes onboarding
 
 // * PARENT DASHBOARD (Application, Permissions, Allergies, Address)
 // - UPCOMING
